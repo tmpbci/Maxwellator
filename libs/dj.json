@@ -1,0 +1,261 @@
+{
+"dj": [
+
+    {
+    "_comment": "CENTER part",
+    "Name": "/center/crossfader",
+    "cc": "49",
+    "Info": "Mi",
+    "Function": "/mixer/value"
+  },
+     {
+    "Name": "/center/joystick/ud",
+    "cc": "57",
+    "Info": "--",
+    "Function": "DefaultMacro"
+  },
+     {
+    "Name": "/center/joystick/lr",
+    "cc": "56",
+    "Info": "--",
+    "Function": "DefaultMacro"
+  },
+
+
+
+    {
+    "_comment": "LEFT part",
+    "Name": "/left/menu",
+    "cc": "7",
+    "Info": "--",
+    "Function": "DefaultMacro"
+  },
+     {
+    "Name": "/left/play",
+    "cc": "8",
+    "Info": "--",
+    "Function": "DefaultMacro"
+  },
+     {
+    "Name": "/left/cue",
+    "cc": "9",
+    "Info": "Pr",
+    "Function": "maxwellccs.PrevPatch"
+  },
+     {
+    "Name": "/left/pitch/",
+    "cc": "52",
+    "Info": "Cu",
+    "Function": "maxwellccs.ChangeCurveLeft"
+  },
+     {
+    "Name": "/left/pitch/+",
+    "cc": "19",
+    "Info": "--",
+    "Function": "DefaultMacro"
+  },
+     {
+    "Name": "/left/pitch/-",
+    "cc": "20",
+    "Info": "--",
+    "Function": "DefaultMacro"
+  },
+     {
+    "Name": "/left/jog",
+    "cc": "54",
+    "Info": "--",
+    "Function": "maxwellccs.jogLeft"
+  },
+     {
+    "Name": "/left/headset",
+    "cc": "21",
+    "Info": "In",
+    "Function": "/inversion"
+  },
+     {
+    "Name": "/left/volume",
+    "cc": "50",
+    "Info": "Du",
+    "Function": "/duplicator/num"
+  },
+     {
+    "Name": "/left/loadeck",
+    "cc": "27",
+    "Info": "--",
+    "Function": "DefaultMacro"
+  },
+     {
+    "Name": "/left/beatclock",
+    "cc": "22",
+    "Info": "--",
+    "Function": "DefaultMacro"
+  },
+     {
+    "Name": "/left/1",
+    "cc": "15",
+    "Info": "lX",
+    "Function": "/osc/left/X"
+  },
+     {
+    "Name": "/left/2",
+    "cc": "14",
+    "Info": "lY",
+    "Function": "/osc/left/Y"
+  },
+     {
+    "Name": "/left/3",
+    "cc": "13",
+    "Info": "lZ",
+    "Function": "/osc/left/Z"
+  },
+     {
+    "Name": "/left/bass",
+    "cc": "46",
+    "Info": "Ph",
+    "Function": "/phasemod"
+  },
+     {
+    "Name": "/left/medium",
+    "cc": "47",
+    "Info": "Am",
+    "Function": "/amp"
+  },
+     {
+    "Name": "/left/trebble",
+    "cc": "48",
+    "Info": "Fr",
+    "Function": "/freq"
+  },
+     {
+    "Name": "/left/track/-",
+    "cc": "11",
+    "Info": "--",
+    "Function": "DefaultMacro"
+  },
+     {
+    "Name": "/left/track/+",
+    "cc": "12",
+    "Info": "--",
+    "Function": "DefaultMacro"
+  },
+
+     {  
+    "_comment": "RIGHT part",
+    "Name": "/right/menu",
+    "cc": "1",
+    "Info": "--",
+    "Function": "DefaultMacro"
+  },
+     {
+    "Name": "/right/play",
+    "cc": "2",
+    "Info": "--",
+    "Function": "DefaultMacro"
+  },
+     {
+    "Name": "/right/cue",
+    "cc": "3",
+    "Info": "Ne",
+    "Function": "maxwellccs.NextPatch"
+  },
+     {
+    "Name": "/right/pitch/",
+    "cc": "53",
+    "Info": "Cu",
+    "Function": "maxwellccs.ChangeCurveRight"
+  },
+     {
+    "Name": "/right/pitch/+",
+    "cc": "23",
+    "Info": "--",
+    "Function": "maxwellccs.ChangeCurveRight"
+  },
+     {
+    "Name": "/right/pitch/-",
+    "cc": "24",
+    "Info": "--",
+    "Function": "maxwellccs.ChangeCurveRight"
+  },
+     {
+    "Name": "/right/jog",
+    "cc": "55",
+    "Info": "--",
+    "Function": "maxwellccs.jogRight"
+  },
+     {
+    "Name": "/right/headset",
+    "cc": "25",
+    "Info": "In",
+    "Function": "/inversion"
+  },
+     {
+    "Name": "/right/volume",
+    "cc": "51",
+    "Info": "An",
+    "Function": "/duplicator/offset"
+  },
+     {
+    "Name": "/right/loadeck",
+    "cc": "28",
+    "Info": "--",
+    "Function": "DefaultMacro"
+  },
+     {
+    "Name": "/right/beatclock",
+    "cc": "26",
+    "Info": "--",
+    "Function": "DefaultMacro"
+  },
+     {
+    "Name": "/right/1",
+    "cc": "16",
+    "Info": "rX",
+    "Function": "/osc/right/X"
+  },
+     {
+    "Name": "/right/2",
+    "cc": "17",
+    "Info": "rY",
+    "Function": "/osc/right/Y"
+  },
+     {
+    "Name": "/right/3",
+    "cc": "18",
+    "Info": "rZ",
+    "Function": "/osc/right/Z"
+  },
+     {
+    "Name": "/right/bass",
+    "cc": "43",
+    "Info": "Ph",
+    "Function": "/phasemod"
+  },
+     {
+    "Name": "/right/medium",
+    "cc": "44",
+    "Info": "Am",
+    "Function": "/amp"
+  },
+     {
+    "Name": "/right/trebble",
+    "cc": "45",
+    "Info": "Fr",
+    "Function": "/freq"
+  },
+     {
+    "Name": "/right/track/-",
+    "cc": "5",
+    "Info": "--",
+    "Function": "DefaultMacro"
+  },
+     {
+    "Name": "/right/track/+",
+    "cc": "6",
+    "Info": "--",
+    "Function": "DefaultMacro"
+  }
+
+
+
+]
+}

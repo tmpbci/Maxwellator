@@ -1,0 +1,1163 @@
+{
+"OS": [
+  {
+  	"_comment": "OS Macros",
+  	"name": "m11",
+    "code": "subprocess.call(['/usr/bin/open','/Applications/iTerm.app'])"
+  },
+  {
+    "name": "m12",
+    "code": "subprocess.call(['/usr/bin/open','/Applications/Sublime Text.app'])"
+  },
+  {
+  	"name": "m13",
+    "code": "subprocess.call(['/usr/bin/open','/Applications/Firefox.app'])"
+  },
+  {
+    "name": "m14",
+    "code": "subprocess.call(['/usr/bin/open','/Applications/Firefox.app'])"
+  },
+ {
+    "_comment": "OS Macros LPD8",
+    "name": "n1",
+    "code": "subprocess.call(['/usr/bin/open','/Applications/iTerm.app'])"
+  }
+],
+
+
+
+"Midi1": [
+   {
+    "_comment": "Midi1 First encoder line",
+    "name": "m10",
+    "laser": 0,
+    "type": "encoder",
+    "code": "/mixer/value"
+  },
+  {
+    "_comment": "Midi1",
+    "name": "m11",
+    "laser": 0,
+    "type": "encoder",
+    "code": "/osc/left/X/freq"
+  },
+  {
+    "name": "m12",
+    "laser": 0,
+    "type": "encoder",
+    "code": "/osc/left/X/amp"
+  },
+  {
+    "name": "m13",
+    "laser": 0,
+    "type": "encoder",
+    "code": "/osc/left/X/phasemod"
+  },
+  {
+    "name": "m14",
+    "laser": 0,
+    "type": "encoder",
+    "code": "/lfo/1/freq"
+  },
+  {
+    "name": "m15",
+    "laser": 0,
+    "type": "encoder",
+    "code": "/osc/right/X/freq"
+  },
+  {
+    "name": "m16",
+    "laser": 0,
+    "type": "encoder",
+    "code": "/osc/right/X/amp"
+  },
+  {
+    "name": "m17",
+    "laser": 0,
+    "type": "encoder",
+    "code": "/osc/right/X/phasemod"
+  },
+  {
+    "name": "m18",
+    "laser": 0,
+    "type": "encoder",
+    "code": "/duplicator/num"
+  },
+
+  {
+    "name": "m19",
+    "laser": 0,
+    "type": "encoder",
+    "code": "/duplicator/num"
+  },
+
+
+  {
+    "_comment": "Midi1 Second encoder line",
+    "name": "m20",
+    "laser": 0,
+    "type": "encoder",
+    "code": "/osc/left/Y/freq"
+  },
+    {
+    "name": "m21",
+    "laser": 0,
+    "type": "encoder",
+    "code": "/osc/left/Y/freq"
+  },
+
+  {
+    "name": "m22",
+    "laser": 0,
+    "type": "encoder",
+    "code": "/osc/left/Y/amp"
+  },
+  {
+    "name": "m23",
+    "laser": 0,
+    "type": "encoder",
+    "code": "/osc/left/Y/phasemod"
+  },
+  {
+    "name": "m24",
+    "laser": 0,
+    "type": "encoder",
+    "code": "/lfo/2/freq"
+  },
+  {
+    "name": "m25",
+    "laser": 0,
+    "type": "encoder",
+    "code": "/osc/right/Y/freq"
+  },
+  {
+    "name": "m26",
+    "laser": 0,
+    "type": "encoder",
+    "code": "/osc/right/Y/amp"
+  },
+  {
+    "name": "m27",
+    "laser": 0,
+    "type": "encoder",
+    "code": "/osc/right/Y/phasemod"
+  },
+  {
+    "name": "m28",
+    "laser": 0,
+    "type": "encoder",
+    "code": "/duplicator/offset"
+  },
+
+  {
+    "name": "m29",
+    "laser": 0,
+    "type": "encoder",
+    "code": "/duplicator/offset"
+  },
+
+
+
+
+  {
+    "_comment": "Midi1 3rd encoder line",
+    "name": "m30",
+    "laser": 0,
+    "type": "encoder",
+    "code": "/scaler/scale"
+  },
+  {
+    "name": "m31",
+    "laser": 0,
+    "type": "encoder",
+    "code": "/rotator/X/speed"
+  },
+  {
+    "name": "m32",
+    "laser": 0,
+    "type": "encoder",
+    "code": "/rotator/Y/speed"
+  },
+  {
+    "name": "m33",
+    "laser": 0,
+    "type": "encoder",
+    "code": "/rotator/Z/speed"
+  },
+  {
+    "name": "m34",
+    "laser": 0,
+    "type": "encoder",
+    "code": "/lfo/1/freq"
+  },
+  {
+    "name": "m35",
+    "laser": 0,
+    "type": "encoder",
+    "code": "/translator/X/speed"
+  },
+  {
+    "name": "m36",
+    "laser": 0,
+    "type": "encoder",
+    "code": "/translator/Y/speed"
+  },
+  {
+    "name": "m37",
+    "laser": 0,
+    "type": "encoder",
+    "code": "/translator/Z/speed"
+  },
+  {
+    "name": "m38",
+    "laser": 0,
+    "type": "encoder",
+    "code": "/duplicator/num"
+  },
+
+  {
+    "name": "m39",
+    "laser": 0,
+    "type": "encoder",
+    "code": "/duplicator/num"
+  },
+
+  {
+    "_comment": "Midi1 4th encoder line",
+    "name": "m40",
+    "laser": 0,
+    "type": "encoder",
+    "code": "/rotator/X/direct"
+  },
+  {
+    "name": "m41",
+    "laser": 0,
+    "type": "encoder",
+    "code": "/rotator/X/direct"
+  },
+  {
+    "name": "m42",
+    "laser": 0,
+    "type": "encoder",
+    "code": "/rotator/Y/direct"
+  },
+  {
+    "name": "m43",
+    "laser": 0,
+    "type": "encoder",
+    "code": "/rotator/Z/direct"
+  },
+  {
+    "name": "m44",
+    "laser": 0,
+    "type": "encoder",
+    "code": "/lfo/2/freq"
+  },
+  {
+    "name": "m45",
+    "laser": 0,
+    "type": "encoder",
+    "code": "/translator/X/amt"
+  },
+  {
+    "name": "m46",
+    "laser": 0,
+    "type": "encoder",
+    "code": "/translator/Y/amt"
+  },
+  {
+    "name": "m47",
+    "laser": 0,
+    "type": "encoder",
+    "code": "/translator/Z/amt"
+  },
+  {
+    "name": "m48",
+    "laser": 0,
+    "type": "encoder",
+    "code": "/duplicator/offset"
+  },
+  {
+    "name": "m49",
+    "laser": 0,
+    "type": "encoder",
+    "code": "/duplicator/offset"
+  },
+
+
+  {
+    "_comment": "Midi1 first led line",
+    "name": "m50",
+    "init":  0,
+    "choices": "m50,m51,m52,m53,m54",
+    "laser": 0,
+    "type": "buttonmulti",
+    "code": "/osc/left/X/freqlimit"
+  },
+  {
+    "name": "m51",
+    "init":  1,
+    "choices": "m50,m51,m52,m53,m54",
+    "laser": 0,
+    "type": "buttonmulti",
+    "code": "/osc/left/X/freqlimit"
+  },
+  {
+    "name": "m52",
+    "init":  2,
+    "choices": "m50,m51,m52,m53,m54",
+    "laser": 0,
+    "type": "buttonmulti",
+    "code": "/osc/left/X/freqlimit"
+  },
+  {
+    "name": "m53",
+    "init":  3,
+    "choices": "m50,m51,m52,m53,m54",
+    "laser": 0,
+    "type": "buttonmulti",
+    "code": "/osc/left/X/freqlimit"
+  },
+  {
+    "name": "m54",
+    "init":  4,
+    "choices": "m50,m51,m52,m53,m54",
+    "laser": 0,
+    "type": "buttonmulti",
+    "code": "/osc/left/X/freqlimit"
+  },
+  {
+    "name": "m55",
+    "init":  0,
+    "choices": "m55,m56,m57,m58,m59",
+    "laser": 0,
+    "type": "buttonmulti",
+    "code": "/osc/right/X/freqlimit"
+  },
+  {
+    "name": "m56",
+    "init":  1,
+    "choices": "m55,m56,m57,m58,m59",
+    "laser": 0,
+    "type": "buttonmulti",
+    "code": "/osc/right/X/freqlimit"
+  },
+  {
+    "name": "m57",
+    "init":  2,
+    "choices": "m55,m56,m57,m58,m59",
+    "laser": 0,
+    "type": "buttonmulti",
+    "code": "/osc/right/X/freqlimit"
+  },
+  {
+    "name": "m58",
+    "init":  3,
+    "choices": "m55,m56,m57,m58,m59",
+    "laser": 0,
+    "type": "buttonmulti",
+    "code": "/osc/right/X/freqlimit"
+  },
+  {
+    "name": "m59",
+    "init":  4,
+    "choices": "m55,m56,m57,m58,m59",
+    "laser": 0,
+    "type": "buttonmulti",
+    "code": "/osc/right/X/freqlimit"
+  },
+
+  {
+    "_comment": "Midi1 second led line",
+    "name": "m60",
+    "init":  0,
+    "choices": "m60,m61,m62,m63",
+    "laser": 0,
+    "type": "buttonmulti",
+    "code": "/osc/left/X/curvetype"
+  },
+
+  {
+    "name": "m61",
+    "init":  1,
+    "choices": "m60,m61,m62,m63",
+    "laser": 0,
+    "type": "buttonmulti",
+    "code": "/osc/left/X/curvetype"
+  },
+  {
+    "name": "m62",
+    "init":  2,
+    "choices": "m60,m61,m62,m63",
+    "choice3" : "m64",
+    "laser": 0,
+    "type": "buttonmulti",
+    "code": "/osc/left/X/curvetype"
+  },
+  {
+    "name": "m63",
+    "init":  3,
+    "choices": "m60,m61,m62,m63",
+    "laser": 0,
+    "type": "buttonmulti",
+    "code": "/osc/left/X/curvetype"
+  },
+  {
+    "name": "m64",
+    "type": "buttontoggle",
+    "init": -2,
+    "code": "/osc/left/X/inversion",
+    "laser": 0
+  },
+  {
+    "name": "m65",
+    "init":  0,
+    "choices": "m65,m66,m67,m68",
+    "laser": 0,
+    "type": "buttonmulti",
+    "code": "/osc/right/X/curvetype"
+  },
+  {
+    "name": "m66",
+    "init":  1,
+    "choices": "m65,m66,m67,m68",
+    "laser": 0,
+    "type": "buttonmulti",
+    "code": "/osc/right/X/curvetype"
+  },
+  {
+    "name": "m67",
+    "init":  2,
+    "choices": "m65,m66,m67,m68",
+    "laser": 0,
+    "type": "buttonmulti",
+    "code": "/osc/right/X/curvetype"
+  },
+  {
+    "name": "m68",
+    "init":  3,
+    "choices": "m65,m66,m67,m68",
+    "laser": 0,
+    "type": "buttonmulti",
+    "code": "/osc/right/X/curvetype"
+  },
+  {
+    "name": "m69",
+    "type": "buttontoggle",
+    "init": -2,
+    "code": "/osc/right/X/inversion",
+    "laser": 0
+  },
+
+
+
+
+  {
+    "_comment": "Midi1 3rd led line",
+    "name": "m70",
+    "init":  0,
+    "choices":  "m70,m71,m72,m73",
+    "laser": 0,
+    "type": "buttonmulti",
+    "code": "/osc/left/Y/curvetype"
+  },
+  {
+    "name": "m71",
+    "init":  1,
+    "choices":  "m70,m71,m72,m73",
+    "laser": 0,
+    "type": "buttonmulti",
+    "code": "/osc/left/Y/curvetype"
+  },
+  {
+    "name": "m72",
+    "init":  2,
+    "choices":  "m70,m71,m72,m73",
+    "laser": 0,
+    "type": "buttonmulti",
+    "code": "/osc/left/Y/curvetype"
+  },
+  {
+    "name": "m73",
+    "init":  3,
+    "choices": "m70,m71,m72,m73",
+    "laser": 0,
+    "type": "buttonmulti",
+    "code": "/osc/left/Y/curvetype"
+  },
+  {
+    "name": "m74",
+    "type": "buttontoggle",
+    "init": -2,
+    "code": "/osc/left/Y/inversion",
+    "laser": 0
+  },
+  {
+    "name": "m75",
+    "init":  0,
+    "choices": "m77,m76,m77,m78",
+    "laser": 0,
+    "type": "buttonmulti",
+    "code": "/osc/right/Y/curvetype"
+  },
+  {
+    "name": "m76",
+    "init":  1,
+    "choices": "m67,m76,m77,m78",
+    "laser": 0,
+    "type": "buttonmulti",
+    "code": "/osc/right/Y/curvetype"
+  },
+  {
+    "name": "m77",
+    "init":  2,
+    "choices": "m77,m76,m77,m78",
+    "laser": 0,
+    "type": "buttonmulti",
+    "code": "/osc/right/Y/curvetype"
+  },
+  {
+    "name": "m78",
+    "init":  3,
+    "choices": "m77,m76,m77,m78",
+    "laser": 0,
+    "type": "buttonmulti",
+    "code": "/osc/right/Y/curvetype"
+  },
+
+  {
+    "name": "m79",
+    "init":  3,
+    "type": "buttontoggle",
+    "init": -2,
+    "code": "/osc/right/Y/inversion",
+    "laser": 0
+  }
+
+
+
+],
+
+
+
+
+"Midi2": [
+  {
+    "_comment": "Midi2 Main encoder ",
+    "name": "m10",
+    "laser": 0,
+    "type": "encoder",
+    "code": "/scaler/scale"
+  },
+  {
+    "_comment": "Midi2 First encoder line Group 1",
+    "name": "m11",
+    "laser": 0,
+    "type": "encoder",
+    "code": "/rotator/X/speed"
+  },
+  {
+    "name": "m12",
+    "laser": 0,
+    "type": "encoder",
+    "code": "/rotator/Y/speed"
+  },
+  {
+    "name": "m13",
+    "laser": 0,
+    "type": "encoder",
+    "code": "/rotator/Z/speed"
+  },
+  {
+    "name": "m14",
+    "laser": 0,
+    "type": "encoder",
+    "code": "/lfo/1/freq"
+  },
+  {
+    "name": "m15",
+    "laser": 0,
+    "type": "encoder",
+    "code": "/translator/X/speed"
+  },
+  {
+    "name": "m16",
+    "laser": 0,
+    "type": "encoder",
+    "code": "/translator/Y/speed"
+  },
+  {
+    "name": "m17",
+    "laser": 0,
+    "type": "encoder",
+    "code": "/translator/Z/speed"
+  },
+  {
+    "name": "m18",
+    "laser": 0,
+    "type": "encoder",
+    "code": "/duplicator/num"
+  },
+
+
+  {
+    "_comment": "Midi2 Second encoder line Group 1",
+    "name": "m21",
+    "laser": 0,
+    "type": "encoder",
+    "code": "/rotator/X/direct"
+  },
+  {
+    "name": "m22",
+    "laser": 0,
+    "type": "encoder",
+    "code": "/rotator/Y/direct"
+  },
+  {
+    "name": "m23",
+    "laser": 0,
+    "type": "encoder",
+    "code": "/rotator/Z/direct"
+  },
+  {
+    "name": "m24",
+    "laser": 0,
+    "type": "encoder",
+    "code": "/lfo/2/freq"
+  },
+  {
+    "name": "m25",
+    "laser": 0,
+    "type": "encoder",
+    "code": "/translator/X/amt"
+  },
+  {
+    "name": "m26",
+    "laser": 0,
+    "type": "encoder",
+    "code": "/translator/Y/amt"
+  },
+  {
+    "name": "m27",
+    "laser": 0,
+    "type": "encoder",
+    "code": "/translator/Z/amt"
+  },
+  {
+    "name": "m28",
+    "laser": 0,
+    "type": "encoder",
+    "code": "/duplicator/offset"
+  },
+
+
+  {
+    "_comment": "Midi2 first led line Group 1",
+    "name": "m31",
+    "init":  0,
+    "choices": 4,
+    "choice0" : "m31",
+    "choice1" : "m32",
+    "choice2" : "m33",
+    "choice3" : "m34",
+    "laser": 0,
+    "type": "buttonmulti",
+    "code": "/osc/left/X/freqlimit"
+  },
+  {
+    "name": "m32",
+    "init":  1,
+    "choices": 4,
+    "choice0" : "m31",
+    "choice1" : "m32",
+    "choice2" : "m33",
+    "choice3" : "m34",
+    "laser": 0,
+    "type": "buttonmulti",
+    "code": "/osc/left/X/freqlimit"
+  },
+  {
+    "name": "m33",
+    "init":  2,
+    "choices": 4,
+    "choice0" : "m31",
+    "choice1" : "m32",
+    "choice2" : "m33",
+    "choice3" : "m34",
+    "laser": 0,
+    "type": "buttonmulti",
+    "code": "/osc/left/X/freqlimit"
+  },
+  {
+    "name": "m34",
+    "init":  3,
+    "choices": 4,
+    "choice0" : "m31",
+    "choice1" : "m32",
+    "choice2" : "m33",
+    "choice3" : "m34",
+    "laser": 0,
+    "type": "buttonmulti",
+    "code": "/osc/left/X/freqlimit"
+  },
+  {
+    "name": "m35",
+    "init":  0,
+    "choices": 4,
+    "choice0" : "m35",
+    "choice1" : "m36",
+    "choice2" : "m37",
+    "choice3" : "m38",
+    "laser": 0,
+    "type": "buttonmulti",
+    "code": "/osc/right/X/inversion"
+  },
+  {
+    "name": "m36",
+    "init":  1,
+    "choices": 4,
+    "choice0" : "m35",
+    "choice1" : "m36",
+    "choice2" : "m37",
+    "choice3" : "m38",
+    "laser": 0,
+    "type": "buttonmulti",
+    "code": "/osc/right/X/freqlimit"
+  },
+  {
+    "name": "m37",
+    "init":  2,
+    "choices": 4,
+    "choice0" : "m35",
+    "choice1" : "m36",
+    "choice2" : "m37",
+    "choice3" : "m38",
+    "laser": 0,
+    "type": "buttonmulti",
+    "code": "/osc/right/X/freqlimit"
+  },
+  {
+    "name": "m38",
+    "init":  3,
+    "choices": 4,
+    "choice0" : "m35",
+    "choice1" : "m36",
+    "choice2" : "m37",
+    "choice3" : "m38",
+    "laser": 0,
+    "type": "buttonmulti",
+    "code": "/osc/right/X/freqlimit"
+  },
+
+  {
+    "_comment": "Midi2 second led line Group 1",
+    "name": "m41",
+    "init":  0,
+    "choices": 4,
+    "choice0" : "m41",
+    "choice1" : "m42",
+    "choice2" : "m43",
+    "choice3" : "m44",
+    "laser": 0,
+    "type": "buttonmulti",
+    "code": "/osc/left/Y/freqlimit"
+  },
+  {
+    "name": "m42",
+    "init":  1,
+    "choices": 4,
+    "choice0" : "m41",
+    "choice1" : "m42",
+    "choice2" : "m43",
+    "choice3" : "m44",
+    "laser": 0,
+    "type": "buttonmulti",
+    "code": "/osc/left/Y/freqlimit"
+  },
+  {
+    "name": "m43",
+    "init":  2,
+    "choices": 4,
+    "choice0" : "m41",
+    "choice1" : "m42",
+    "choice2" : "m43",
+    "choice3" : "m44",
+    "laser": 0,
+    "type": "buttonmulti",
+    "code": "/osc/left/Y/freqlimit"
+  },
+  {
+    "name": "m44",
+    "init":  3,
+    "choices": 4,
+    "choice0" : "m41",
+    "choice1" : "m42",
+    "choice2" : "m43",
+    "choice3" : "m44",
+    "laser": 0,
+    "type": "buttonmulti",
+    "code": "/osc/left/Y/freqlimit"
+  },
+  {
+    "name": "m45",
+    "init":  0,
+    "choices": 4,
+    "choice0" : "m45",
+    "choice1" : "m46",
+    "choice2" : "m47",
+    "choice3" : "m48",
+    "laser": 0,
+    "type": "buttonmulti",
+    "code": "/osc/right/Y/inversion"
+  },
+  {
+    "name": "m46",
+    "init":  1,
+    "choices": 4,
+    "choice0" : "m45",
+    "choice1" : "m46",
+    "choice2" : "m47",
+    "choice3" : "m48",
+    "laser": 0,
+    "type": "buttonmulti",
+    "code": "/osc/right/Y/freqlimit"
+  },
+  {
+    "name": "m47",
+    "init":  2,
+    "choices": 4,
+    "choice0" : "m45",
+    "choice1" : "m46",
+    "choice2" : "m47",
+    "choice3" : "m48",
+    "laser": 0,
+    "type": "buttonmulti",
+    "code": "/osc/right/Y/freqlimit"
+  },
+  {
+    "name": "m48",
+    "init":  3,
+    "choices": 4,
+    "choice0" : "m45",
+    "choice1" : "m46",
+    "choice2" : "m47",
+    "choice3" : "m48",
+    "laser": 0,
+    "type": "buttonmulti",
+    "code": "/osc/right/Y/freqlimit"
+  },
+
+
+
+
+  {
+    "_comment": "Midi2 Main encoder ",
+    "name": "m50",
+    "laser": 0,
+    "type": "encoder",
+    "code": "/scaler/scale"
+  },
+  {
+    "_comment": "Midi2 First encoder line Group 2",
+    "name": "m51",
+    "laser": 0,
+    "type": "encoder",
+    "code": "/rotator/X/speed"
+  },
+  {
+    "name": "m52",
+    "laser": 0,
+    "type": "encoder",
+    "code": "/rotator/Y/speed"
+  },
+  {
+    "name": "m53",
+    "laser": 0,
+    "type": "encoder",
+    "code": "/rotator/Z/speed"
+  },
+  {
+    "name": "m54",
+    "laser": 0,
+    "type": "encoder",
+    "code": "/lfo/1/freq"
+  },
+  {
+    "name": "m55",
+    "laser": 0,
+    "type": "encoder",
+    "code": "/translator/X/speed"
+  },
+  {
+    "name": "m56",
+    "laser": 0,
+    "type": "encoder",
+    "code": "/translator/Y/speed"
+  },
+  {
+    "name": "m57",
+    "laser": 0,
+    "type": "encoder",
+    "code": "/translator/Z/speed"
+  },
+  {
+    "name": "m58",
+    "laser": 0,
+    "type": "encoder",
+    "code": "/duplicator/num"
+  },
+
+
+  {
+    "_comment": "Midi2 Second encoder line Group 2",
+    "name": "m61",
+    "laser": 0,
+    "type": "encoder",
+    "code": "/rotator/X/direct"
+  },
+  {
+    "name": "m62",
+    "laser": 0,
+    "type": "encoder",
+    "code": "/rotator/Y/direct"
+  },
+  {
+    "name": "m63",
+    "laser": 0,
+    "type": "encoder",
+    "code": "/rotator/Z/direct"
+  },
+  {
+    "name": "m64",
+    "laser": 0,
+    "type": "encoder",
+    "code": "/lfo/2/freq"
+  },
+  {
+    "name": "m65",
+    "laser": 0,
+    "type": "encoder",
+    "code": "/translator/X/amt"
+  },
+  {
+    "name": "m66",
+    "laser": 0,
+    "type": "encoder",
+    "code": "/translator/Y/amt"
+  },
+  {
+    "name": "m67",
+    "laser": 0,
+    "type": "encoder",
+    "code": "/translator/Z/amt"
+  },
+  {
+    "name": "m68",
+    "laser": 0,
+    "type": "encoder",
+    "code": "/duplicator/offset"
+  },
+
+
+  {
+    "_comment": "Midi2 first led line Group 2",
+    "name": "m71",
+    "init":  0,
+    "choices": 4,
+    "choice0" : "m71",
+    "choice1" : "m72",
+    "choice2" : "m73",
+    "choice3" : "m74",
+    "laser": 0,
+    "type": "buttonmulti",
+    "code": "/osc/left/X/freqlimit"
+  },
+  {
+    "name": "m72",
+    "init":  1,
+    "choices": 4,
+    "choice0" : "m81",
+    "choice1" : "m72",
+    "choice2" : "m73",
+    "choice3" : "m74",
+    "laser": 0,
+    "type": "buttonmulti",
+    "code": "/osc/left/X/freqlimit"
+  },
+  {
+    "name": "m73",
+    "init":  2,
+    "choices": 4,
+    "choice0" : "m81",
+    "choice1" : "m72",
+    "choice2" : "m73",
+    "choice3" : "m74",
+    "laser": 0,
+    "type": "buttonmulti",
+    "code": "/osc/left/X/freqlimit"
+  },
+  {
+    "name": "m74",
+    "init":  3,
+    "choices": 4,
+    "choice0" : "m71",
+    "choice1" : "m72",
+    "choice2" : "m73",
+    "choice3" : "m74",
+    "laser": 0,
+    "type": "buttonmulti",
+    "code": "/osc/left/X/freqlimit"
+  },
+  {
+    "name": "m75",
+    "init":  0,
+    "choices": 4,
+    "choice0" : "m75",
+    "choice1" : "m76",
+    "choice2" : "m77",
+    "choice3" : "m78",
+    "laser": 0,
+    "type": "buttonmulti",
+    "code": "/osc/right/X/inversion"
+  },
+  {
+    "name": "m76",
+    "init":  1,
+    "choices": 4,
+    "choice0" : "m75",
+    "choice1" : "m76",
+    "choice2" : "m77",
+    "choice3" : "m78",
+    "laser": 0,
+    "type": "buttonmulti",
+    "code": "/osc/right/X/freqlimit"
+  },
+  {
+    "name": "m77",
+    "init":  2,
+    "choices": 4,
+    "choice0" : "m75",
+    "choice1" : "m76",
+    "choice2" : "m77",
+    "choice3" : "m78",
+    "laser": 0,
+    "type": "buttonmulti",
+    "code": "/osc/right/X/freqlimit"
+  },
+  {
+    "name": "m78",
+    "init":  3,
+    "choices": 4,
+    "choice0" : "m75",
+    "choice1" : "m76",
+    "choice2" : "m77",
+    "choice3" : "m78",
+    "laser": 0,
+    "type": "buttonmulti",
+    "code": "/osc/right/X/freqlimit"
+  },
+
+
+  {
+    "_comment": "Midi2 second led line Group 2",
+    "name": "m81",
+    "init":  0,
+    "choices": 4,
+    "choice0" : "m81",
+    "choice1" : "m82",
+    "choice2" : "m83",
+    "choice3" : "m84",
+    "laser": 0,
+    "type": "buttonmulti",
+    "code": "/osc/left/Y/freqlimit"
+  },
+  {
+    "name": "m82",
+    "init":  1,
+    "choices": 4,
+    "choice0" : "m81",
+    "choice1" : "m82",
+    "choice2" : "m83",
+    "choice3" : "m84",
+    "laser": 0,
+    "type": "buttonmulti",
+    "code": "/osc/left/Y/freqlimit"
+  },
+  {
+    "name": "m83",
+    "init":  2,
+    "choices": 4,
+    "choice0" : "m81",
+    "choice1" : "m82",
+    "choice2" : "m83",
+    "choice3" : "m84",
+    "laser": 0,
+    "type": "buttonmulti",
+    "code": "/osc/left/Y/freqlimit"
+  },
+  {
+    "name": "m84",
+    "init":  3,
+    "choices": 4,
+    "choice0" : "m81",
+    "choice1" : "m82",
+    "choice2" : "m83",
+    "choice3" : "m84",
+    "laser": 0,
+    "type": "buttonmulti",
+    "code": "/osc/left/Y/freqlimit"
+  },
+  {
+    "name": "m85",
+    "init":  0,
+    "choices": 4,
+    "choice0" : "m85",
+    "choice1" : "m86",
+    "choice2" : "m87",
+    "choice3" : "m88",
+    "laser": 0,
+    "type": "buttonmulti",
+    "code": "/osc/right/Y/inversion"
+  },
+  {
+    "name": "m86",
+    "init":  1,
+    "choices": 4,
+    "choice0" : "m85",
+    "choice1" : "m86",
+    "choice2" : "m87",
+    "choice3" : "m88",
+    "laser": 0,
+    "type": "buttonmulti",
+    "code": "/osc/right/Y/freqlimit"
+  },
+  {
+    "name": "m87",
+    "init":  2,
+    "choices": 4,
+    "choice0" : "m85",
+    "choice1" : "m86",
+    "choice2" : "m87",
+    "choice3" : "m88",
+    "laser": 0,
+    "type": "buttonmulti",
+    "code": "/osc/right/Y/freqlimit"
+  },
+  {
+    "name": "m88",
+    "init":  3,
+    "choices": 4,
+    "choice0" : "m85",
+    "choice1" : "m86",
+    "choice2" : "m87",
+    "choice3" : "m88",
+    "laser": 0,
+    "type": "buttonmulti",
+    "code": "/osc/right/Y/freqlimit"
+  }
+
+
+
+
+]
+}

@@ -1,0 +1,807 @@
+{
+"ccs": [
+  {
+  	"_comment": "Oscillator LEFT X Functions",
+    "Function": "/osc/left/X/curvetype",
+    "init": "sin", 
+    "maxwell": "gen1-x::osc-wave-type"
+  },
+  {
+    "Function": "/osc/left/X/freq",
+    "init": "1",
+    "maxwell": "gen1-x::osc-freq"
+  },
+  {
+    "Function": "/osc/left/X/freqlimit",
+    "init": "127", 
+    "maxwell": "gen1-x::freq-range-menu"
+  },
+    {
+    "Function": "/osc/left/X/amp",
+    "init": "100", 
+    "maxwell": "gen1-x::osc-amp"
+  },
+    {
+    "Function": "/osc/left/X/amptype",
+    "init": "constant", 
+    "maxwell": "gen1-x::amp-mod-src"
+  },
+    {
+    "Function": "/osc/left/X/phasemod",
+    "init": "64", 
+    "maxwell": "gen1-x::phasemod-speed"
+  },
+    {
+    "Function": "/osc/left/X/phasemodtype",
+    "init": "linear", 
+    "maxwell": "gen1-x::phase-mod-src"
+  },
+    {
+    "Function": "/osc/left/X/phaseoffset",
+    "init": "64", 
+    "maxwell": "gen1-x::interfm-phase-offset"
+  },
+    {
+    "Function": "/osc/left/X/phaseoffsettype",
+    "init": "manual", 
+    "maxwell": "gen1-x::offset-mod-src"
+  },
+    {
+    "Function": "/osc/left/X/ampoffset",
+    "init": "64", 
+    "maxwell": "gen1-x::interframe-amp-offset"
+  },
+  {
+    "Function": "/osc/left/X/ampoffsettype",
+    "init": "manual", 
+    "maxwell": "gen1-x::travel-mod-src"
+  },
+
+ {
+    "Function": "/osc/left/X/inversion",
+    "init": "off", 
+    "maxwell": "gen1-x::phase-inv"
+  },
+   
+
+
+ {
+  	"_comment": "Oscillator LEFT Y Functions",
+    "Function": "/osc/left/Y/curvetype",
+    "init": "sin", 
+    "maxwell": "gen1-y::osc-wave-type"
+  },
+  {
+    "Function": "/osc/left/Y/freq",
+    "init": "1",
+    "maxwell": "gen1-y::osc-freq"
+  },
+  {
+    "Function": "/osc/left/Y/freqlimit",
+    "init": "127", 
+    "maxwell":  "gen1-y::freq-range-menu"
+  },
+    {
+    "Function": "/osc/left/Y/amp",
+    "init": "100", 
+    "maxwell": "gen1-y::osc-amp"
+  },
+    {
+    "Function": "/osc/left/Y/amptype",
+    "init": "constant", 
+    "maxwell": "gen1-y::amp-mod-src"
+  },
+    {
+    "Function": "/osc/left/Y/phasemod",
+    "init": "64", 
+    "maxwell": "gen1-y::phasemod-speed"
+  },
+    {
+    "Function": "/osc/left/Y/phasemodtype",
+    "init": "linear", 
+    "maxwell": "gen1-y::phase-mod-src"
+  },
+    {
+    "Function": "/osc/left/Y/phaseoffset",
+    "init": "64", 
+    "maxwell": "gen1-y::interfm-phase-offset"
+  },
+    {
+    "Function": "/osc/left/Y/phaseoffsettype",
+    "init": "manual", 
+    "maxwell": "gen1-y::offset-mod-src"
+  },
+    {
+    "Function": "/osc/left/Y/ampoffset",
+    "init": "64", 
+    "maxwell":  "gen1-y::interframe-amp-offset"
+  },
+  {
+    "Function": "/osc/left/Y/ampoffsettype",
+    "init": "manual", 
+    "maxwell": "gen1-y::travel-mod-src"
+  },
+
+ {
+    "Function": "/osc/left/Y/inversion",
+    "init": "off", 
+    "maxwell": "gen1-y::phase-inv"
+  },
+   
+
+
+  {
+  	"_comment": "Oscillator LEFT Z Functions",
+    "Function": "/osc/left/Z/curvetype",
+    "init": "sin", 
+    "maxwell": "gen1-z::osc-wave-type"
+  },
+  {
+    "Function": "/osc/left/Z/freq",
+    "init": "1",
+    "maxwell" : "gen1-z::osc-freq"
+  },
+  {
+    "Function": "/osc/left/Z/freqlimit",
+    "init": "127", 
+    "maxwell":  "gen1-z::freq-range-menu"
+  },
+    {
+    "Function": "/osc/left/Z/amp",
+    "init": "100", 
+    "maxwell": "gen1-z::osc-amp" 
+  },
+    {
+    "Function": "/osc/left/Z/amptype",
+    "init": "constant", 
+    "maxwell": "gen1-z::amp-mod-src"
+  },
+    {
+    "Function": "/osc/left/Z/phasemod",
+    "init": "64", 
+    "maxwell": "gen1-z::phasemod-speed"
+  },
+    {
+    "Function": "/osc/left/Z/phasemodtype",
+    "init": "linear", 
+    "maxwell": "gen1-z::phase-mod-src"
+  },
+    {
+    "Function": "/osc/left/Z/phaseoffset",
+    "init": "64", 
+    "maxwell": "gen1-z::interfm-phase-offset"
+  },
+    {
+    "Function": "/osc/left/Z/phaseoffsettype",
+    "init": "manual", 
+    "maxwell": "gen1-z::offset-mod-src"
+  },
+    {
+    "Function": "/osc/left/Z/ampoffset",
+    "init": "64", 
+    "maxwell":  "gen1-z::interframe-amp-offset"
+  },
+  {
+    "Function": "/osc/left/Z/ampoffsettype",
+    "init": "manual", 
+    "maxwell": "gen1-z::travel-mod-src"
+  },
+
+ {
+    "Function": "/osc/left/Z/inversion",
+    "init": "off", 
+    "maxwell": "gen1-z::phase-inv"
+  },
+   
+
+  {
+  	"_comment": "Oscillator RIGHT X Functions",
+    "Function": "/osc/right/X/curvetype",
+    "init": "sin", 
+    "maxwell": "gen2-x::osc-wave-type"
+  },
+  {
+    "Function": "/osc/right/X/freq",
+    "init": "1",
+    "maxwell": "gen2-x::osc-freq"
+  },
+  {
+    "Function": "/osc/right/X/freqlimit",
+    "init": "127", 
+    "maxwell":  "gen2-x::freq-range-menu"  },
+    {
+    "Function": "/osc/right/X/amp",
+    "init": "100", 
+    "maxwell": "gen2-x::osc-amp"
+  },
+    {
+    "Function": "/osc/right/X/amptype",
+    "init": "constant", 
+    "maxwell": "gen2-x::amp-mod-src"
+  },
+    {
+    "Function": "/osc/right/X/phasemod",
+    "init": "64", 
+    "maxwell": "gen2-x::phasemod-speed"
+  },
+    {
+    "Function": "/osc/right/X/phasemodtype",
+    "init": "linear", 
+    "maxwell": "gen2-x::phase-mod-src"
+  },
+    {
+    "Function": "/osc/right/X/phaseoffset",
+    "init": "64", 
+    "maxwell": "gen2-x::interfm-phase-offset"
+  },
+    {
+    "Function": "/osc/right/X/phaseoffsettype",
+    "init": "manual", 
+    "maxwell": "gen2-x::offset-mod-src"
+  },
+    {
+    "Function": "/osc/right/X/ampoffset",
+    "init": "64", 
+    "maxwell":  "gen2-x::interframe-amp-offset"
+  },
+  {
+    "Function": "/osc/right/X/ampoffsettype",
+    "init": "manual", 
+    "maxwell": "gen2-x::travel-mod-src"
+  },
+
+ {
+    "Function": "/osc/right/X/inversion",
+    "init": "off", 
+    "maxwell": "gen2-x::phase-inv"
+  },
+   
+
+
+ {
+  	"_comment": "Oscillator RIGHT Y Functions",
+    "Function": "/osc/right/Y/curvetype",
+    "init": "sin", 
+    "maxwell": "gen2-y::osc-wave-type"
+  },
+  {
+    "Function": "/osc/right/Y/freq",
+    "init": "1",
+    "maxwell": "gen2-y::osc-freq"
+  },
+  {
+    "Function": "/osc/right/Y/freqlimit",
+    "init": "127", 
+    "maxwell":  "gen2-y::freq-range-menu"
+  },
+    {
+    "Function": "/osc/right/Y/amp",
+    "init": "100", 
+    "maxwell": "gen2-y::osc-amp"
+  },
+    {
+    "Function": "/osc/right/Y/amptype",
+    "init": "constant", 
+    "maxwell": "gen2-y::amp-mod-src"
+  },
+    {
+    "Function": "/osc/right/Y/phasemod",
+    "init": "64", 
+    "maxwell": "gen2-y::phasemod-speed"
+  },
+    {
+    "Function": "/osc/right/Y/phasemodtype",
+    "init": "linear", 
+    "maxwell": "gen2-y::phase-mod-src"
+  },
+    {
+    "Function": "/osc/right/Y/phaseoffset",
+    "init": "64", 
+    "maxwell": "gen2-y::interfm-phase-offset"
+  },
+    {
+    "Function": "/osc/right/Y/phaseoffsettype",
+    "init": "manual", 
+    "maxwell": "gen2-y::offset-mod-src"
+  },
+    {
+    "Function": "/osc/right/Y/ampoffset",
+    "init": "64", 
+    "maxwell": "gen2-y::interframe-amp-offset"
+  },
+  {
+    "Function": "/osc/right/Y/ampoffsettype",
+    "init": "manual", 
+    "maxwell": "gen2-y::travel-mod-src"
+  },
+
+ {
+    "Function": "/osc/right/Y/inversion",
+    "init": "off", 
+    "maxwell": "gen2-y::phase-inv"
+  },
+   
+
+
+  {
+  	"_comment": "Oscillator RIGHT Z Functions",
+    "Function": "/osc/right/Z/curvetype",
+    "init": "sin", 
+    "maxwell": "gen2-z::osc-wave-type"
+  },
+  {
+    "Function": "/osc/right/Z/freq",
+    "init": "1",
+    "maxwell": "gen2-z::osc-freq"
+  },
+  {
+    "Function": "/osc/right/Z/freqlimit",
+    "init": "127", 
+    "maxwell":  "gen2-z::freq-range-menu"
+  },
+    {
+    "Function": "/osc/right/Z/amp",
+    "init": "100", 
+    "maxwell": "gen2-z::osc-amp"
+  },
+    {
+    "Function": "/osc/right/Z/amptype",
+    "init": "constant", 
+    "maxwell": "gen2-z::amp-mod-src"
+  },
+    {
+    "Function": "/osc/right/Z/phasemod",
+    "init": "64", 
+    "maxwell": "gen2-z::phasemod-speed"
+  },
+    {
+    "Function": "/osc/right/Z/phasemodtype",
+    "init": "linear", 
+    "maxwell": "gen2-z::phase-mod-src"
+  },
+    {
+    "Function": "/osc/right/Z/phaseoffset",
+    "init": "64", 
+    "maxwell": "gen2-z::interfm-phase-offset"
+  },
+    {
+    "Function": "/osc/right/Z/phaseoffsettype",
+    "init": "manual", 
+    "maxwell": "gen2-z::offset-mod-src"
+  },
+    {
+    "Function": "/osc/right/Z/ampoffset",
+    "init": "64", 
+    "maxwell":  "gen2-z::interframe-amp-offset"
+  },
+  {
+    "Function": "/osc/right/Z/ampoffsettype",
+    "init": "manual", 
+    "maxwell": "gen2-z::travel-mod-src"
+  },
+
+ {
+    "Function": "/osc/right/Z/inversion",
+    "init": "off", 
+    "maxwell": "gen2-z::phase-inv"
+  },
+   
+
+
+   
+   
+
+
+   {
+    "_comment": "LFO 1 Functions",
+    "Function": "/lfo/1/curvetype",
+    "init": "sin", 
+    "maxwell": "lfo1::lfo-shape"
+  },
+     {
+    "Function": "/lfo/1/freq",
+    "init": "64", 
+    "maxwell": "lfo1::lfo-freq"
+  },
+  {
+    "Function": "/lfo/1/freqlimit",
+    "init": "127", 
+    "maxwell": "lfo1::lfo-freq-range-menu"
+  },
+
+  {
+    "Function": "/lfo/1/phase",
+    "init": "64", 
+    "maxwell": "lfo1::lfo-phasemod-speed"
+  },
+
+ {
+    "Function": "/lfo/1/inversion",
+    "init": "off", 
+    "maxwell": "lfo1::lfo-inv"
+  },
+
+
+
+   {
+    "_comment": "LFO 2 Functions",
+    "Function": "/lfo/2/curvetype",
+    "init": "sin", 
+    "maxwell": "lfo2::lfo-shape"
+  },
+     {
+    "Function": "/lfo/2/freq",
+    "init": "64", 
+    "maxwell": "lfo2::lfo-freq"
+  },
+  {
+    "Function": "/lfo/2/freqlimit",
+    "init": "127", 
+    "maxwell": "lfo2::lfo-freq-range-menu"
+  },
+
+  {
+    "Function": "/lfo/2/phase",
+    "init": "64", 
+    "maxwell": "lfo2::lfo-phasemod-speed"
+  },
+
+ {
+    "Function": "/lfo/2/inversion",
+    "init": "off", 
+    "maxwell": "lfo2::lfo-inv"
+  },
+
+
+
+
+
+   {
+    "_comment": "LFO 3 Functions",
+    "Function": "/lfo/3/curvetype",
+    "init": "sin", 
+    "maxwell": "lfo3::lfo-shape"
+  },
+     {
+    "Function": "/lfo/3/freq",
+    "init": "64", 
+    "maxwell": "lfo3::lfo-freq"
+  },
+  {
+    "Function": "/lfo/3/freqlimit",
+    "init": "127", 
+    "maxwell": "lfo3::lfo-freq-range-menu"
+  },
+
+  {
+    "Function": "/lfo/3/phase",
+    "init": "64", 
+    "maxwell": "lfo3::lfo-phasemod-speed"
+  },
+
+ {
+    "Function": "/lfo/3/inversion",
+    "init": "off", 
+    "maxwell": "lfo3::lfo-inv"
+  },
+
+
+
+
+
+    {
+    "_comment": "Duplicator Functions",
+    "Function": "/duplicator/num",
+    "init": "0", 
+    "maxwell": "num-duplicates"
+  },
+     {
+    "Function": "/duplicator/offset",
+    "init": "0", 
+    "maxwell": "duplicates-offset"
+  },
+
+    {
+    "_comment": "Mixer Functions",
+    "Function": "/mixer/operation",
+    "init": "+", 
+    "maxwell": "fx-vertex-mixer::mix-operator"
+  },
+     {
+    "Function": "/mixer/value",
+    "init": "0", 
+    "maxwell": "fx-vertex-mixer::mixamt"
+  },
+
+
+
+    {
+    "_comment": "Intensity Functions",
+    "Function": "/intensity/mod",
+    "init": "0", 
+    "maxwell": "int_mod_global"
+  },
+     {
+    "Function": "/intensity/freq",
+    "init": "0", 
+    "maxwell": "int_freq_global"
+  },
+
+
+    {
+    "_comment": "Scaler Functions",
+    "Function": "/scaler/curvetype",
+    "init": "sin", 
+    "maxwell": "scale_modulator::lfo-shape"
+  },
+     {
+    "Function": "/scaler/speed",
+    "init": "64", 
+    "maxwell": "scale_modulator::lfo-phasemod-speed"
+  },
+     {
+    "Function": "/scaler/switch",
+    "init": "off", 
+    "maxwell": "scale-lfo-toggle"
+  },
+     {
+    "Function": "/scaler/width",
+    "init": "64", 
+    "maxwell": "scale-lfo-width"
+  },
+
+     {
+    "Function": "/scaler/amt",
+    "init": "64", 
+    "maxwell": "scale-lfo-amount" 
+  },
+   {
+    "Function": "/scaler/scale",
+    "init": "64", 
+    "maxwell": "global-scale"
+  },
+
+
+
+    {
+    "_comment": "Rotator X Functions",
+    "Function": "/rotator/X/curvetype",
+    "init": "sin", 
+    "maxwell": "fx-vertex-rotator::rot_lfo_x::lfo-shape"
+  },
+     {
+    "Function": "/rotator/X/speed",
+    "init": "64", 
+    "maxwell": "fx-vertex-rotator::rot_lfo_x::lfo-phasemod-speed" 
+  },
+
+     {
+    "Function": "/rotator/X/lfo/switch",
+    "init": "off", 
+    "maxwell": "fx-vertex-rotator::x-rot-lfo-toggle"
+  },
+
+     {
+    "Function": "/rotator/X/direct",
+    "init": "64", 
+    "maxwell": "fx-vertex-rotator::x-rot"
+  },
+
+
+
+    {
+    "_comment": "Rotator Y Functions",
+    "Function": "/rotator/Y/curvetype",
+    "init": "sin", 
+    "maxwell":  "fx-vertex-rotator::rot_lfo_y::lfo-shape"
+  },
+     {
+    "Function": "/rotator/Y/speed",
+    "init": "64", 
+    "maxwell":  "fx-vertex-rotator::rot_lfo_y::lfo-phasemod-speed" 
+  },
+
+     {
+    "Function": "/rotator/Y/lfo/switch",
+    "init": "off", 
+    "maxwell": "fx-vertex-rotator::y-rot-lfo-toggle"
+  },
+
+     {
+    "Function": "/rotator/Y/direct",
+    "init": "64", 
+    "maxwell": "fx-vertex-rotator::y-rot"
+  },
+
+
+
+
+    {
+    "_comment": "Rotator Z Functions",
+    "Function": "/rotator/Z/curvetype",
+    "init": "sin", 
+    "maxwell":  "fx-vertex-rotator::rot_lfo_z::lfo-shape"
+  },
+     {
+    "Function": "/rotator/Z/speed",
+    "init": "64", 
+    "maxwell":  "fx-vertex-rotator::rot_lfo_z::lfo-phasemod-speed" 
+  },
+
+     {
+    "Function": "/rotator/Z/lfo/switch",
+    "init": "off", 
+    "maxwell": "fx-vertex-rotator::z-rot-lfo-toggle"
+  },
+
+     {
+    "Function": "/rotator/Z/direct",
+    "init": "64", 
+    "maxwell": "fx-vertex-rotator::z-rot"
+  },
+
+
+
+    {
+    "_comment": "Translator X Functions",
+    "Function": "/translator/X/curvetype",
+    "init": "sin", 
+    "maxwell": "fx-vertex-translator::trans_mod_x::lfo-shape"
+  },
+     {
+    "Function": "/translator/X/speed",
+    "init": "64", 
+    "maxwell": "fx-vertex-translator::trans_mod_x::lfo-phasemod-speed" 
+  },
+
+     {
+    "Function": "/translator/X/lfo/switch",
+    "init": "off", 
+    "maxwell": "fx-vertex-translator::x-off-lfo-toggle"
+  },
+
+     {
+    "Function": "/translator/X/amt",
+    "init": "64", 
+    "maxwell": "fx-vertex-translator::x-offset"
+  },
+
+
+
+
+    {
+    "_comment": "Translator Y Functions",
+    "Function": "/translator/Y/curvetype",
+    "init": "sin", 
+    "maxwell": "fx-vertex-translator::trans_mod_y::lfo-shape"
+  },
+     {
+    "Function": "/translator/Y/speed",
+    "init": "64", 
+    "maxwell": "fx-vertex-translator::trans_mod_y::lfo-phasemod-speed" 
+  },
+
+     {
+    "Function": "/translator/Y/lfo/switch",
+    "init": "off", 
+    "maxwell": "fx-vertex-translator::y-off-lfo-toggle"
+  },
+
+     {
+    "Function": "/translator/Y/amt",
+    "init": "64", 
+    "maxwell": "fx-vertex-translator::y-offset"
+  },
+
+
+
+
+
+    {
+    "_comment": "Translator Z Functions",
+    "Function": "/translator/Z/curvetype",
+    "init": "sin", 
+    "maxwell": "fx-vertex-translator::trans_mod_z::lfo-shape"
+  },
+     {
+    "Function": "/translator/Z/speed",
+    "init": "64", 
+    "maxwell": "fx-vertex-translator::trans_mod_z::lfo-phasemod-speed"
+  },
+
+     {
+    "Function": "/translator/Z/lfo/switch",
+    "init": "off", 
+    "maxwell": "fx-vertex-translator::z-off-lfo-toggle"
+  },
+
+     {
+    "Function": "/translator/Z/amt",
+    "init": "64", 
+    "maxwell": "fx-vertex-translator::z-offset"
+  },
+
+
+
+
+
+
+   {
+    "_comment": "Colors Functions",
+    "Function": "/color/colortype",
+    "init": "solid", 
+    "maxwell": "line-fx::line-color-src" 
+  },
+     {
+    "Function": "/color/huewidth",
+    "init": "0", 
+    "maxwell": "line-fx::hue-width"
+  },
+      {
+    "Function": "/color/hueoff",
+    "init": "0", 
+    "maxwell": "line-fx::hue_off"
+  },
+      {
+    "Function": "/color/huemod",
+    "init": "0", 
+    "maxwell": "line-fx::color-hue-mod"
+  },
+      {
+    "Function": "/color/huerot",
+    "init": "0", 
+    "maxwell": "line-fx::hue-rot"
+  },
+      {
+    "Function": "/color/intwidth",
+    "init": "0", 
+    "maxwell": "line-fx::bright-width"
+  },
+      {
+    "Function": "/color/intoff",
+    "init": "0", 
+    "maxwell": "line-fx::intensity_dial"
+  },
+      {
+    "Function": "/color/intmod",
+    "init": "0", 
+    "maxwell": "line-fx::color-bright-mod"
+  },
+      {
+    "Function": "/color/intfreq",
+    "init": "0", 
+    "maxwell": "line-fx::int_freq_loop"
+  },
+
+      {
+    "Function": "/color/satwidth",
+    "init": "0", 
+    "maxwell": "line-fx::sat-width"
+  },
+
+       {
+    "Function": "/color/satmod",
+    "init": "0", 
+    "maxwell": "line-fx::color-sat-mod"
+  },
+      {
+    "Function": "/color/saturation",
+    "init": "127", 
+    "maxwell": "line-fx::color-sat-dial"
+  },
+      {
+    "Function": "/color/modtype",
+    "init": "sin",
+    "maxwell": "line-fx::linear-expo-chooser"
+  },
+      {
+    "Function": "/color/picker",
+    "init": "0",
+    "maxwell": "line-fx::line-color-picker"
+  }
+
+
+
+
+]
+}

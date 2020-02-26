@@ -1,0 +1,1159 @@
+{
+"OS": [
+  {
+  	"_comment": "OS Macros",
+  	"name": "m11",
+    "code": "subprocess.call(['/usr/bin/open','/Applications/iTerm.app'])"
+  },
+  {
+    "name": "m12",
+    "code": "subprocess.call(['/usr/bin/open','/Applications/Sublime Text.app'])"
+  },
+  {
+  	"name": "m13",
+    "code": "subprocess.call(['/usr/bin/open','/Applications/Firefox.app'])"
+  },
+  {
+    "name": "m14",
+    "code": "subprocess.call(['/usr/bin/open','/Applications/Firefox.app'])"
+  },
+ {
+    "_comment": "OS Macros LPD8",
+    "name": "n1",
+    "code": "subprocess.call(['/usr/bin/open','/Applications/iTerm.app'])"
+  }
+],
+
+
+
+"LccZcc": [
+  {
+    "_comment": "Laser CC, Music CC OUT ",
+    "name": "bass",
+    "songname": "song1",
+    "chanIN" : 1,
+    "ccs" : 10,
+    "chanOUT" : 1,
+    "ccOUT": 10,
+    "value" : "linear",
+    "mididest" : "Bus 1"
+  },
+  {
+    "name": "bass",
+    "songname": "song2",
+    "chanIN" : 1,
+    "ccs" : "all",
+    "chanOUT" : 1,
+    "ccOUT": 10,
+    "value" : "curved",
+    "mididest" : "Bus 1"
+  }
+],
+
+
+"XY": [
+  {
+    "_comment": "XY Main encoder ",
+    "name": "m10",
+    "laser": 0,
+    "type": "encoder",
+    "code": "/mixer/value"
+  },
+  {
+    "_comment": "XY First encoder line ",
+    "name": "m11",
+    "laser": 0,
+    "type": "encoder",
+    "code": "/osc/left/X/freq"
+  },
+  {
+    "name": "m12",
+    "laser": 0,
+    "type": "encoder",
+    "code": "/osc/left/X/amp"
+  },
+  {
+    "name": "m13",
+    "laser": 0,
+    "type": "encoder",
+    "code": "/osc/left/X/phasemod"
+  },
+  {
+    "name": "m14",
+    "laser": 0,
+    "type": "encoder",
+    "code": "/lfo/1/freq"
+  },
+  {
+    "name": "m15",
+    "laser": 0,
+    "type": "encoder",
+    "code": "/osc/right/X/freq"
+  },
+  {
+    "name": "m16",
+    "laser": 0,
+    "type": "encoder",
+    "code": "/osc/right/X/amp"
+  },
+  {
+    "name": "m17",
+    "laser": 0,
+    "type": "encoder",
+    "code": "/osc/right/X/phasemod"
+  },
+  {
+    "name": "m18",
+    "laser": 0,
+    "type": "encoder",
+    "code": "/duplicator/num"
+  },
+
+
+  {
+    "_comment": "XY Second encoder line ",
+    "name": "m21",
+    "laser": 0,
+    "type": "encoder",
+    "code": "/osc/left/Y/freq"
+  },
+  {
+    "name": "m22",
+    "laser": 0,
+    "type": "encoder",
+    "code": "/osc/left/Y/amp"
+  },
+  {
+    "name": "m23",
+    "laser": 0,
+    "type": "encoder",
+    "code": "/osc/left/Y/phasemod"
+  },
+  {
+    "name": "m24",
+    "laser": 0,
+    "type": "encoder",
+    "code": "/lfo/2/freq"
+  },
+  {
+    "name": "m25",
+    "laser": 0,
+    "type": "encoder",
+    "code": "/osc/right/Y/freq"
+  },
+  {
+    "name": "m26",
+    "laser": 0,
+    "type": "encoder",
+    "code": "/osc/right/Y/amp"
+  },
+  {
+    "name": "m27",
+    "laser": 0,
+    "type": "encoder",
+    "code": "/osc/right/Y/phasemod"
+  },
+  {
+    "name": "m28",
+    "laser": 0,
+    "type": "encoder",
+    "code": "/duplicator/offset"
+  },
+
+
+  {
+    "_comment": "XY first led line ",
+    "name": "m31",
+    "init":  0,
+    "choices": "m31,m32,m33,m34",
+    "cc": 0,
+    "value": 1,
+    "laser": 0,
+    "type": "buttonmulti",
+    "code": "/osc/left/X/curvetype"
+  },
+  {
+    "name": "m32",
+    "init":  1,
+    "choices": "m31,m32,m33,m34",
+    "cc": 0,
+    "value": 33,
+    "laser": 0,
+    "type": "buttonmulti",
+    "code": "/osc/left/X/curvetype"
+  },
+  {
+    "name": "m33",
+    "init":  2,
+    "choices":  "m31,m32,m33,m34",
+    "cc": 0,
+    "value": 95,
+    "laser": 0,
+    "type": "buttonmulti",
+    "code": "/osc/left/X/curvetype"
+  },
+  {
+    "name": "m34",
+    "init":  3,
+    "choices":  "m31,m32,m33,m34",
+    "cc": 0,
+    "value": 127,
+    "laser": 0,
+    "type": "buttonmulti",
+    "code": "/osc/left/X/curvetype"
+  },
+  {
+    "name": "m35",
+    "init":  0,
+    "choices":  "m35,m36,m37,m38",
+    "cc": 36,
+    "value": 1,
+    "laser": 0,
+    "type": "buttonmulti",
+    "code": "/osc/right/X/curvetype"
+  },
+  {
+    "name": "m36",
+    "init":  1,
+    "choices":  "m35,m36,m37,m38",
+    "cc": 36,
+    "value": 33,
+    "laser": 0,
+    "type": "buttonmulti",
+    "code": "/osc/right/X/curvetype"
+  },
+  {
+    "name": "m37",
+    "init":  2,
+    "choices": "m35,m36,m37,m38",
+    "cc": 36,
+    "value": 95,
+    "laser": 0,
+    "type": "buttonmulti",
+    "code": "/osc/right/X/curvetype"
+  },
+  {
+    "name": "m38",
+    "init":  3,
+    "choices":  "m35,m36,m37,m38",
+    "cc": 36,
+    "value": 127,
+    "laser": 0,
+    "type": "buttonmulti",
+    "code": "/osc/right/X/curvetype"
+  },
+
+
+  {
+    "_comment": "XY second led line ",
+    "name": "m41",
+    "init":  0,
+    "choices": "m41,m42,m43,m44",
+    "cc": 12,
+    "value": 1,
+    "laser": 0,
+    "type": "buttonmulti",
+    "code": "/osc/left/Y/curvetype"
+  },
+  {
+    "name": "m42",
+    "init":  1,
+    "choices": "m41,m42,m43,m44",
+    "cc": 12,
+    "value": 33,
+    "laser": 0,
+    "type": "buttonmulti",
+    "code": "/osc/left/Y/curvetype"
+  },
+  {
+    "name": "m43",
+    "init":  2,
+    "choices": "m41,m42,m43,m44",
+    "cc": 12,
+    "value": 95,
+    "laser": 0,
+    "type": "buttonmulti",
+    "code": "/osc/left/Y/curvetype"
+  },
+  {
+    "name": "m44",
+    "init":  3,
+    "choices": "m41,m42,m43,m44",
+    "cc": 12,
+    "value": 127,
+    "laser": 0,
+    "type": "buttonmulti",
+    "code": "/osc/left/Y/curvetype"
+  },
+  {
+    "name": "m45",
+    "init":  0,
+    "choices":  "m45,m46,m47,m48",
+    "cc": 48,
+    "value": 1,
+    "laser": 0,
+    "type": "buttonmulti",
+    "code": "/osc/right/Y/curvetype"
+  },
+  {
+    "name": "m46",
+    "init":  1,
+    "choices": "m45,m46,m47,m48",
+    "cc": 48,
+    "value": 33,
+    "laser": 0,
+    "type": "buttonmulti",
+    "code": "/osc/right/Y/curvetype"
+  },
+  {
+    "name": "m47",
+    "init":  2,
+    "choices": "m45,m46,m47,m48",
+    "cc": 48,
+    "value": 95,
+    "laser": 0,
+    "type": "buttonmulti",
+    "code": "/osc/right/Y/curvetype"
+  },
+  {
+    "name": "m48",
+    "init":  3,
+    "choices": "m45,m46,m47,m48",
+    "cc": 48,
+    "value": 127,
+    "laser": 0,
+    "type": "buttonmulti",
+    "code": "/osc/right/Y/curvetype"
+  }
+
+],
+
+
+
+
+"TraRot": [
+  {
+    "_comment": "TraRot Main encoder ",
+    "name": "m10",
+    "laser": 0,
+    "type": "encoder",
+    "code": "/scaler/scale"
+  },
+  {
+    "_comment": "TraRot First encoder line",
+    "name": "m11",
+    "laser": 0,
+    "type": "encoder",
+    "code": "/translator/X/speed"
+  },
+  {
+    "name": "m12",
+    "laser": 0,
+    "type": "encoder",
+    "code": "/translator/Y/speed"
+  },
+  {
+    "name": "m13",
+    "laser": 0,
+    "type": "encoder",
+    "code": "/translator/Z/speed"
+  },
+  {
+    "name": "m14",
+    "laser": 0,
+    "type": "encoder",
+    "code": "/lfo/1/freq"
+  },
+  {
+    "name": "m15",
+    "laser": 0,
+    "type": "encoder",
+    "code": "/rotator/X/speed"
+  },
+  {
+    "name": "m16",
+    "laser": 0,
+    "type": "encoder",
+    "code": "/rotator/Y/speed"
+  },
+  {
+    "name": "m17",
+    "laser": 0,
+    "type": "encoder",
+    "code": "/rotator/Z/speed"
+  },
+  {
+    "name": "m18",
+    "laser": 0,
+    "type": "encoder",
+    "code": "/duplicator/num"
+  },
+
+
+  {
+    "_comment": "TraRot Second encoder line ",
+    "name": "m21",
+    "laser": 0,
+    "type": "encoder",
+    "code": "/translator/X/amt"
+  },
+  {
+    "name": "m22",
+    "laser": 0,
+    "type": "encoder",
+    "code": "/translator/Y/amt"
+  },
+  {
+    "name": "m23",
+    "laser": 0,
+    "type": "encoder",
+    "code": "/translator/Z/amt"
+  },
+  {
+    "name": "m24",
+    "laser": 0,
+    "type": "encoder",
+    "code": "/lfo/2/freq"
+  },
+  {
+    "name": "m25",
+    "laser": 0,
+    "type": "encoder",
+    "code": "/rotator/X/direct"
+  },
+  {
+    "name": "m26",
+    "laser": 0,
+    "type": "encoder",
+    "code": "/rotator/Y/direct"
+  },
+  {
+    "name": "m27",
+    "laser": 0,
+    "type": "encoder",
+    "code": "/rotator/Z/direct"
+  },
+  {
+    "name": "m28",
+    "laser": 0,
+    "type": "encoder",
+    "code": "/duplicator/offset"
+  },
+
+
+  {
+    "_comment": "TraRot first led line ",
+    "name": "m31",
+    "init":  0,
+    "choices": "m31,m32,m33,m34",
+    "cc": 0,
+    "value": 1,
+    "laser": 0,
+    "type": "buttonmulti",
+    "code": "/osc/left/X/freqlimit"
+  },
+  {
+    "name": "m32",
+    "init":  1,
+    "choices": "m31,m32,m33,m34",
+    "cc": 0,
+    "value": 1,
+    "laser": 0,
+    "type": "buttonmulti",
+    "code": "/osc/left/X/freqlimit"
+  },
+  {
+    "name": "m33",
+    "init":  2,
+    "choices": "m31,m32,m33,m34",
+    "cc": 0,
+    "value": 1,
+    "laser": 0,
+    "type": "buttonmulti",
+    "code": "/osc/left/X/freqlimit"
+  },
+  {
+    "name": "m34",
+    "init":  3,
+    "choices": "m31,m32,m33,m34",
+    "cc": 0,
+    "value": 1,
+    "laser": 0,
+    "type": "buttonmulti",
+    "code": "/osc/left/X/freqlimit"
+  },
+  {
+    "name": "m35",
+    "init":  0,
+    "choices": "m35,m36,m37,m38",
+    "cc": 0,
+    "value": 1,
+    "laser": 0,
+    "type": "buttonmulti",
+    "code": "/osc/right/X/inversion"
+  },
+  {
+    "name": "m36",
+    "init":  1,
+    "choices": "m35,m36,m37,m38",
+    "cc": 0,
+    "value": 1,
+    "laser": 0,
+    "type": "buttonmulti",
+    "code": "/osc/right/X/freqlimit"
+  },
+  {
+    "name": "m37",
+    "init":  2,
+    "choices": "m35,m36,m37,m38",
+    "cc": 0,
+    "value": 1,
+    "laser": 0,
+    "type": "buttonmulti",
+    "code": "/osc/right/X/freqlimit"
+  },
+  {
+    "name": "m38",
+    "init":  3,
+    "choices": "m35,m36,m37,m38",
+    "cc": 0,
+    "value": 1,
+    "laser": 0,
+    "type": "buttonmulti",
+    "code": "/osc/right/X/freqlimit"
+  },
+
+  {
+    "_comment": "TraRot second led line ",
+    "name": "m41",
+    "init":  0,
+    "choices": "m41,m42,m43,m44",
+    "cc": 0,
+    "value": 1,
+    "laser": 0,
+    "type": "buttonmulti",
+    "code": "/osc/left/Y/freqlimit"
+  },
+  {
+    "name": "m42",
+    "init":  1,
+    "choices": "m41,m42,m43,m44",
+    "cc": 0,
+    "value": 1,
+    "laser": 0,
+    "type": "buttonmulti",
+    "code": "/osc/left/Y/freqlimit"
+  },
+  {
+    "name": "m43",
+    "init":  2,
+    "choices": "m41,m42,m43,m44",
+    "cc": 0,
+    "value": 1,
+    "laser": 0,
+    "type": "buttonmulti",
+    "code": "/osc/left/Y/freqlimit"
+  },
+  {
+    "name": "m44",
+    "init":  3,
+    "choices": "m41,m42,m43,m44",
+    "cc": 0,
+    "value": 1,
+    "laser": 0,
+    "type": "buttonmulti",
+    "code": "/osc/left/Y/freqlimit"
+  },
+  {
+    "name": "m45",
+    "init":  0,
+    "choices": "m45,m46,m47,m48",
+    "cc": 0,
+    "value": 1,
+    "laser": 0,
+    "type": "buttonmulti",
+    "code": "/osc/right/Y/inversion"
+  },
+  {
+    "name": "m46",
+    "init":  1,
+    "choices": "m45,m46,m47,m48",
+    "cc": 0,
+    "value": 1,
+    "laser": 0,
+    "type": "buttonmulti",
+    "code": "/osc/right/Y/freqlimit"
+  },
+  {
+    "name": "m47",
+    "init":  2,
+    "choices": "m45,m46,m47,m48",
+    "cc": 0,
+    "value": 1,
+    "laser": 0,
+    "type": "buttonmulti",
+    "code": "/osc/right/Y/freqlimit"
+  },
+  {
+    "name": "m48",
+    "init":  3,
+    "choices": "m45,m46,m47,m48",
+    "cc": 0,
+    "value": 1,
+    "laser": 0,
+    "type": "buttonmulti",
+    "code": "/osc/right/Y/freqlimit"
+  }
+
+
+],
+
+
+
+
+"HueInt": [
+  {
+    "_comment": "HueInt Main encoder ",
+    "name": "m10",
+    "laser": 0,
+    "type": "encoder",
+    "code": "/scaler/scale"
+  },
+  {
+    "_comment": "HueInt First encoder line ",
+    "name": "m11",
+    "laser": 0,
+    "type": "encoder",
+    "code": "/color/huewidth"
+  },
+  {
+    "name": "m12",
+    "laser": 0,
+    "type": "encoder",
+    "code": "/color/huemod"
+  },
+  {
+    "name": "m13",
+    "laser": 0,
+    "type": "encoder",
+    "code": "/color/intwidth"
+  },
+  {
+    "name": "m14",
+    "laser": 0,
+    "type": "encoder",
+    "code": "/color/intmod"
+  },
+  {
+    "name": "m15",
+    "laser": 0,
+    "type": "encoder",
+    "code": "/translator/X/speed"
+  },
+  {
+    "name": "m16",
+    "laser": 0,
+    "type": "encoder",
+    "code": "/translator/Y/speed"
+  },
+  {
+    "name": "m17",
+    "laser": 0,
+    "type": "encoder",
+    "code": "/translator/Z/speed"
+  },
+  {
+    "name": "m18",
+    "laser": 0,
+    "type": "encoder",
+    "code": "/duplicator/num"
+  },
+
+
+  {
+    "_comment": "HueInt Second encoder line ",
+    "name": "m21",
+    "laser": 0,
+    "type": "encoder",
+    "code": "/color/hueoff"
+  },
+  {
+    "name": "m22",
+    "laser": 0,
+    "type": "encoder",
+    "code": "/color/huerot"
+  },
+  {
+    "name": "m23",
+    "laser": 0,
+    "type": "encoder",
+    "code": "/color/intoff"
+  },
+  {
+    "name": "m24",
+    "laser": 0,
+    "type": "encoder",
+    "code": "/color/intfreq"
+  },
+  {
+    "name": "m25",
+    "laser": 0,
+    "type": "encoder",
+    "code": "/translator/X/amt"
+  },
+  {
+    "name": "m26",
+    "laser": 0,
+    "type": "encoder",
+    "code": "/translator/Y/amt"
+  },
+  {
+    "name": "m27",
+    "laser": 0,
+    "type": "encoder",
+    "code": "/translator/Z/amt"
+  },
+  {
+    "name": "m28",
+    "laser": 0,
+    "type": "encoder",
+    "code": "/duplicator/offset"
+  },
+
+
+  {
+    "_comment": "HueInt first led line ",
+    "name": "m31",
+    "init":  0,
+    "choices": "m31,m32,m33,m34",
+    "cc": 0,
+    "value": 1,
+    "laser": 0,
+    "type": "buttonmulti",
+    "code": "/osc/left/X/freqlimit"
+  },
+  {
+    "name": "m32",
+    "init":  1,
+    "choices": "m31,m32,m33,m34",
+    "cc": 0,
+    "value": 1,
+    "laser": 0,
+    "type": "buttonmulti",
+    "code": "/osc/left/X/freqlimit"
+  },
+  {
+    "name": "m33",
+    "init":  2,
+    "choices": "m31,m32,m33,m34",
+    "cc": 0,
+    "value": 1,
+    "laser": 0,
+    "type": "buttonmulti",
+    "code": "/osc/left/X/freqlimit"
+  },
+  {
+    "name": "m34",
+    "init":  3,
+    "choices": "m31,m32,m33,m34",
+    "cc": 0,
+    "value": 1,
+    "laser": 0,
+    "type": "buttonmulti",
+    "code": "/osc/left/X/freqlimit"
+  },
+  {
+    "name": "m35",
+    "init":  0,
+    "choices": "m35,m36,m37,m38",
+    "cc": 0,
+    "value": 1,
+    "laser": 0,
+    "type": "buttonmulti",
+    "code": "/osc/right/X/inversion"
+  },
+  {
+    "name": "m36",
+    "init":  1,
+    "choices": "m35,m36,m37,m38",
+    "cc": 0,
+    "value": 1,
+    "laser": 0,
+    "type": "buttonmulti",
+    "code": "/osc/right/X/freqlimit"
+  },
+  {
+    "name": "m37",
+    "init":  2,
+    "choices": "m35,m36,m37,m38",
+    "cc": 0,
+    "value": 1,
+    "laser": 0,
+    "type": "buttonmulti",
+    "code": "/osc/right/X/freqlimit"
+  },
+  {
+    "name": "m38",
+    "init":  3,
+    "choices": "m35,m36,m37,m38",
+    "cc": 0,
+    "value": 1,
+    "laser": 0,
+    "type": "buttonmulti",
+    "code": "/osc/right/X/freqlimit"
+  },
+
+  {
+    "_comment": "HueInt second led line ",
+    "name": "m41",
+    "init":  0,
+    "choices": "m41,m42,m43,m44",
+    "cc": 0,
+    "value": 1,
+    "laser": 0,
+    "type": "buttonmulti",
+    "code": "/osc/left/Y/freqlimit"
+  },
+  {
+    "name": "m42",
+    "init":  1,
+    "choices": "m41,m42,m43,m44",
+    "cc": 0,
+    "value": 1,
+    "laser": 0,
+    "type": "buttonmulti",
+    "code": "/osc/left/Y/freqlimit"
+  },
+  {
+    "name": "m43",
+    "init":  2,
+    "choices": "m41,m42,m43,m44",
+    "cc": 0,
+    "value": 1,
+    "laser": 0,
+    "type": "buttonmulti",
+    "code": "/osc/left/Y/freqlimit"
+  },
+  {
+    "name": "m44",
+    "init":  3,
+    "choices": "m41,m42,m43,m44",
+    "cc": 0,
+    "value": 1,
+    "laser": 0,
+    "type": "buttonmulti",
+    "code": "/osc/left/Y/freqlimit"
+  },
+  {
+    "name": "m45",
+    "init":  0,
+    "choices": "m45,m46,m47,m48",
+    "cc": 0,
+    "value": 1,
+    "laser": 0,
+    "type": "buttonmulti",
+    "code": "/osc/right/Y/inversion"
+  },
+  {
+    "name": "m46",
+    "init":  1,
+    "choices": "m45,m46,m47,m48",
+    "cc": 0,
+    "value": 1,
+    "laser": 0,
+    "type": "buttonmulti",
+    "code": "/osc/right/Y/freqlimit"
+  },
+  {
+    "name": "m47",
+    "init":  2,
+    "choices": "m45,m46,m47,m48",
+    "cc": 0,
+    "value": 1,
+    "laser": 0,
+    "type": "buttonmulti",
+    "code": "/osc/right/Y/freqlimit"
+  },
+  {
+    "name": "m48",
+    "init":  3,
+    "choices": "m45,m46,m47,m48",
+    "cc": 0,
+    "value": 1,
+    "laser": 0,
+    "type": "buttonmulti",
+    "code": "/osc/right/Y/freqlimit"
+  }
+
+
+],
+
+
+
+
+"Zregulators": [
+  {
+    "_comment": "Zregulators Main encoder ",
+    "name": "m10",
+    "laser": 0,
+    "type": "encoder",
+    "code": "/mixer/value"
+  },
+  {
+    "_comment": "Zregulators First encoder line ",
+    "name": "m11",
+    "laser": 0,
+    "type": "encoder",
+    "code": "/osc/left/Z/freq"
+  },
+  {
+    "name": "m12",
+    "laser": 0,
+    "type": "encoder",
+    "code": "/osc/left/Z/amp"
+  },
+  {
+    "name": "m13",
+    "laser": 0,
+    "type": "encoder",
+    "code": "/osc/left/Z/phasemod"
+  },
+  {
+    "name": "m14",
+    "laser": 0,
+    "type": "encoder",
+    "code": "/lfo/1/freq"
+  },
+  {
+    "name": "m15",
+    "laser": 0,
+    "type": "encoder",
+    "code": "/osc/right/Z/freq"
+  },
+  {
+    "name": "m16",
+    "laser": 0,
+    "type": "encoder",
+    "code": "/osc/right/Z/amp"
+  },
+  {
+    "name": "m17",
+    "laser": 0,
+    "type": "encoder",
+    "code": "/osc/right/Z/phasemod"
+  },
+  {
+    "name": "m18",
+    "laser": 0,
+    "type": "encoder",
+    "code": "/duplicator/num"
+  },
+
+
+  {
+    "_comment": "Zregulators Second encoder line ",
+    "name": "m21",
+    "laser": 0,
+    "type": "encoder",
+    "code": "maxwellccs.grate"
+  },
+  {
+    "name": "m22",
+    "laser": 0,
+    "type": "encoder",
+    "code": "maxwellccs.gsteps"
+  },
+  {
+    "name": "m23",
+    "laser": 0,
+    "type": "encoder",
+    "code": "maxwellccs.grange"
+  },
+  {
+    "name": "m24",
+    "laser": 0,
+    "type": "encoder",
+    "code": "maxwellccs.ginhib"
+  },
+  {
+    "name": "m25",
+    "laser": 0,
+    "type": "encoder",
+    "code":  "/scaler/scale"
+  },
+  {
+    "name": "m26",
+    "laser": 0,
+    "type": "encoder",
+    "code": "/osc/right/Y/amp"
+  },
+  {
+    "name": "m27",
+    "laser": 0,
+    "type": "encoder",
+    "code": "/osc/right/Y/phasemod"
+  },
+  {
+    "name": "m28",
+    "laser": 0,
+    "type": "encoder",
+    "code": "/duplicator/offset"
+  },
+
+
+  {
+    "_comment": "Zregulators first led line ",
+    "name": "m31",
+    "cc": 0,
+    "laser": 0,
+    "type": "button",
+    "code": "maxwellccs.gselect"
+  },
+  {
+    "name": "m32",
+    "laser": 0,
+    "cc": 256,
+    "type": "button",
+    "code": "maxwellccs.rateselect"
+  },
+  {
+    "name": "m33",
+    "laser": 0,
+    "cc": 256,
+    "type": "button",
+    "code": "maxwellccs.stepsselect"
+  },
+  {
+    "name": "m34",
+    "cc": 256,
+    "laser": 0,
+    "type": "button",
+    "code": "maxwellccs.lasermode"
+  },
+  {
+    "name": "m35",
+    "init":  0,
+    "choices":  "m35,m36,m37,m38",
+    "cc": 36,
+    "value": 1,
+    "laser": 0,
+    "type": "buttonmulti",
+    "code": "/osc/right/X/curvetype"
+  },
+  {
+    "name": "m36",
+    "init":  1,
+    "choices":  "m35,m36,m37,m38",
+    "cc": 36,
+    "value": 33,
+    "laser": 0,
+    "type": "buttonmulti",
+    "code": "/osc/right/X/curvetype"
+  },
+  {
+    "name": "m37",
+    "init":  2,
+    "choices": "m35,m36,m37,m38",
+    "cc": 36,
+    "value": 95,
+    "laser": 0,
+    "type": "buttonmulti",
+    "code": "/osc/right/X/curvetype"
+  },
+  {
+    "name": "m38",
+    "init":  3,
+    "choices":  "m35,m36,m37,m38",
+    "cc": 36,
+    "value": 127,
+    "laser": 0,
+    "type": "buttonmulti",
+    "code": "/osc/right/X/curvetype"
+  },
+
+
+  {
+    "_comment": "Zregulators second led line ",
+    "name": "m41",
+    "init":  0,
+    "choices": "m41,m42,m43,m44",
+    "cc": 12,
+    "value": 1,
+    "laser": 0,
+    "type": "buttonmulti",
+    "code": "/osc/left/Y/curvetype"
+  },
+  {
+    "name": "m42",
+    "init":  1,
+    "choices": "m41,m42,m43,m44",
+    "cc": 12,
+    "value": 33,
+    "laser": 0,
+    "type": "buttonmulti",
+    "code": "/osc/left/Y/curvetype"
+  },
+  {
+    "name": "m43",
+    "init":  2,
+    "choices": "m41,m42,m43,m44",
+    "cc": 12,
+    "value": 95,
+    "laser": 0,
+    "type": "buttonmulti",
+    "code": "/osc/left/Y/curvetype"
+  },
+  {
+    "name": "m44",
+    "init":  3,
+    "choices": "m41,m42,m43,m44",
+    "cc": 12,
+    "value": 127,
+    "laser": 0,
+    "type": "buttonmulti",
+    "code": "/osc/left/Y/curvetype"
+  },
+  {
+    "name": "m45",
+    "init":  0,
+    "choices":  "m45,m46,m47,m48",
+    "cc": 48,
+    "value": 1,
+    "laser": 0,
+    "type": "buttonmulti",
+    "code": "/osc/right/Y/curvetype"
+  },
+  {
+    "name": "m46",
+    "init":  1,
+    "choices": "m45,m46,m47,m48",
+    "cc": 48,
+    "value": 33,
+    "laser": 0,
+    "type": "buttonmulti",
+    "code": "/osc/right/Y/curvetype"
+  },
+  {
+    "name": "m47",
+    "init":  2,
+    "choices": "m45,m46,m47,m48",
+    "cc": 48,
+    "value": 95,
+    "laser": 0,
+    "type": "buttonmulti",
+    "code": "/osc/right/Y/curvetype"
+  },
+  {
+    "name": "m48",
+    "init":  3,
+    "choices": "m45,m46,m47,m48",
+    "cc": 48,
+    "value": 127,
+    "laser": 0,
+    "type": "buttonmulti",
+    "code": "/osc/right/Y/curvetype"
+  }
+
+]
+
+}

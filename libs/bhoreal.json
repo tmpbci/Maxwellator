@@ -1,0 +1,1326 @@
+{
+"OS": [
+  {
+  	"_comment": "OS Macros",
+  	"name": "m11",
+    "color": 64,
+    "code": "subprocess.call(['/usr/bin/open','/Applications/iTerm.app'])"
+  },
+  {
+    "name": "m12",
+    "color": 64,
+    "code": "subprocess.call(['/usr/bin/open','/Applications/Sublime Text.app'])"
+  },
+  {
+  	"name": "m13",
+    "color": 64,
+    "code": "subprocess.call(['/usr/bin/open','/Applications/Firefox.app'])"
+  },
+  {
+    "name": "m14",
+    "color": 64,
+    "code": "subprocess.call(['/usr/bin/open','/Applications/Firefox.app'])"
+  },
+ {
+    "_comment": "OS Macros LPD8",
+    "name": "n1",
+    "color": 64,
+    "code": "subprocess.call(['/usr/bin/open','/Applications/iTerm.app'])"
+  }
+],
+
+
+
+"Maxwell1": [
+  {
+    "_comment": "Maxwell1 First led line :  patch selection",
+    "name": "m11",
+    "color": 64,
+    "laser": 0,
+    "type": "button",
+    "code": "patch"
+  },
+  {
+    "name": "m12",
+    "color": 64,
+    "laser": 0,
+    "type": "button",
+    "code": "patch"
+  },
+  {
+    "name": "m13",
+    "color": 64,
+    "laser": 0,
+    "type": "button",
+    "code": "patch"
+  },
+  {
+    "name": "m14",
+    "color": 64,
+    "laser": 0,
+    "type": "button",
+    "code": "patch"
+  },
+  {
+    "name": "m15",
+    "color": 64,
+    "laser": 0,
+    "type": "button",
+    "code": "patch"
+  },
+  {
+    "name": "m16",
+    "color": 64,
+    "laser": 0,
+    "type": "button",
+    "code": "patch"
+  },
+  {
+    "name": "m17",
+    "color": 64,
+    "laser": 0,
+    "type": "button",
+    "code": "patch"
+  },
+  {
+    "name": "m18",
+    "color": 64,
+    "laser": 0,
+    "type": "button",
+    "code": "patch"
+  },
+
+
+  {
+    "_comment": "Maxwell1 Second led line : patch selection ",
+    "name": "m21",
+    "color": 64,
+    "laser": 0,
+    "type": "button",
+    "code": "patch"
+  },
+  {
+    "name": "m22",
+    "color": 64,
+    "laser": 0,
+    "type": "button",
+    "code": "patch"
+  },
+  {
+    "name": "m23",
+    "color": 64,
+    "laser": 0,
+    "type": "button",
+    "code": "patch"
+  },
+  {
+    "name": "m24",
+    "color": 64,
+    "laser": 0,
+    "type": "button",
+    "code": "patch"
+  },
+  {
+    "name": "m25",
+    "color": 64,
+    "laser": 0,
+    "type": "button",
+    "code": "patch"
+  },
+  {
+    "name": "m26",
+    "color": 64,
+    "laser": 0,
+    "type": "button",
+    "code": "patch"
+  },
+  {
+    "name": "m27",
+    "color": 64,
+    "laser": 0,
+    "type": "button",
+    "code": "patch"
+  },
+  {
+    "name": "m28",
+    "color": 64,
+    "laser": 0,
+    "type": "button",
+    "code": "patch"
+  },
+
+
+  {
+    "_comment": "Maxwell1 Third led line : patch selection ",
+    "name": "m31",
+    "color": 64,
+    "laser": 0,
+    "type": "button",
+    "code": "patch"
+  },
+  {
+    "name": "m32",
+    "color": 64,
+    "laser": 0,
+    "type": "button",
+    "code": "patch"
+  },
+  {
+    "name": "m33",
+    "color": 64,
+    "laser": 0,
+    "type": "button",
+    "code": "patch"
+  },
+  {
+    "name": "m34",
+    "color": 64,
+    "laser": 0,
+    "type": "button",
+    "code": "patch"
+  },
+  {
+    "name": "m35",
+    "color": 64,
+    "laser": 0,
+    "type": "button",
+    "code": "patch"
+  },
+  {
+    "name": "m36",
+    "color": 64,
+    "laser": 0,
+    "type": "button",
+    "code": "patch"
+  },
+  {
+    "name": "m37",
+    "color": 64,
+    "laser": 0,
+    "type": "button",
+    "code": "patch"
+  },
+  {
+    "name": "m38",
+    "color": 64,
+    "laser": 0,
+    "type": "button",
+    "code": "patch"
+  },
+
+
+  {
+    "_comment": "Maxwell1 Fourth led line : patch selection",
+    "name": "m41",
+    "color": 64,
+    "laser": 0,
+    "type": "button",
+    "code": "patch"
+  },
+  {
+    "name": "m42",
+    "color": 64,
+    "laser": 0,
+    "type": "button",
+    "code": "patch"
+  },
+  {
+    "name": "m43",
+    "color": 64,
+    "laser": 0,
+    "type": "button",
+    "code": "patch"
+  },
+  {
+    "name": "m44",
+    "color": 64,
+    "laser": 0,
+    "type": "button",
+    "code": "patch"
+  },
+  {
+    "name": "m45",
+    "color": 64,
+    "laser": 0,
+    "type": "button",
+    "code": "patch"
+  },
+  {
+    "name": "m46",
+    "color": 64,
+    "laser": 0,
+    "type": "button",
+    "code": "patch"
+  },
+  {
+    "name": "m47",
+    "color": 64,
+    "laser": 0,
+    "type": "button",
+    "code": "patch"
+  },
+  {
+    "name": "m48",
+    "color": 64,
+    "laser": 0,
+    "type": "button",
+    "code": "patch"
+  },
+
+  {
+    "_comment": "Maxwell1 Fith led line : patch selection",
+    "name": "m51",
+    "color": 64,
+    "laser": 0,
+    "type": "button",
+    "code": "patch"
+  },
+  {
+    "name": "m52",
+    "color": 64,
+    "laser": 0,
+    "type": "button",
+    "code": "patch"
+  },
+  {
+    "name": "m53",
+    "color": 64,
+    "laser": 0,
+    "type": "button",
+    "code": "patch"
+  },
+  {
+    "name": "m54",
+    "color": 64,
+    "laser": 0,
+    "type": "button",
+    "code": "patch"
+  },
+  {
+    "name": "m55",
+    "color": 64,
+    "laser": 0,
+    "type": "button",
+    "code": "patch"
+  },
+  {
+    "name": "m56",
+    "color": 64,
+    "laser": 0,
+    "type": "button",
+    "code": "patch"
+  },
+  {
+    "name": "m57",
+    "color": 64,
+    "laser": 0,
+    "type": "button",
+    "code": "patch"
+  },
+  {
+    "name": "m58",
+    "color": 64,
+    "laser": 0,
+    "type": "button",
+    "code": "patch"
+  },
+
+
+  {
+    "_comment": "Maxwell1 Sixth led line : Bhoreal functions ",
+    "name": "m61",
+    "color": 40,
+    "laser": 0,
+    "type": "button",
+    "code": "maxwellccs.PPatch"
+  },
+  {
+    "name": "m62",
+    "color": 40,
+    "laser": 0,
+    "type": "button",
+    "code": "maxwellccs.NPatch"
+  },
+  {
+    "name": "m63",
+    "color": 48,
+    "laser": 0,
+    "type": "button",
+    "code": "maxwellccs.Reload"
+  },
+  {
+    "name": "m64",
+    "color": 48,
+    "laser": 0,
+    "type": "button",
+    "code": "maxwellccs.Load"
+  },
+  {
+    "name": "m65",
+    "color": 54,
+    "laser": 0,
+    "type": "buttontoggle",
+    "init": -2,
+    "code": "/osc/left/X/inversion"
+  },
+  {
+    "name": "m66",
+    "color": 54,
+    "laser": 0,
+    "type": "buttontoggle",
+    "init": -2,
+    "code": "/osc/right/X/inversion"
+  },
+  {
+    "name": "m67",
+    "color": 0,
+    "laser": 0,
+    "code": "maxwellccs.Empty"
+  },
+  {
+    "name": "m68",
+    "color": 0,
+    "laser": 0,
+    "code": "maxwellccs.Empty"
+  },
+
+
+  {
+    "_comment": "Maxwell1 Seventh led line : Bhoreal functions ",
+    "name": "m71",
+    "color": 30,
+    "laser": 0,
+    "code": "maxwellccs.L"
+  },
+  {
+    "name": "m72",
+    "color": 30,
+    "laser": 0,
+    "code": "maxwellccs.R"
+  },
+  {
+    "name": "m73",
+    "color": 21,
+    "laser": 0,
+    "code": "maxwellccs.BPLayer"
+  },
+  {
+    "name": "m74",
+    "color": 21,
+    "laser": 0,
+    "code": "maxwellccs.BNLayer"
+  },
+  {
+    "name": "m75",
+    "color": 54,
+    "laser": 0,
+    "type": "buttontoggle",
+    "init": -2,
+    "code": "/osc/left/Y/inversion"
+  },
+  {
+    "name": "m76",
+    "color": 54,
+    "laser": 0,
+    "type": "buttontoggle",
+    "init": -2,
+    "code": "/osc/right/Y/inversion"
+  },
+  {
+    "name": "m77",
+    "color": 0,
+    "laser": 0,
+    "type": "button",
+    "code": "maxwellccs.Empty"
+  },
+  {
+    "name": "m78",
+    "color": 0,
+    "laser": 0,
+    "type": "button",
+    "code": "maxwellccs.Empty"
+  },
+
+
+  {
+    "_comment": "Maxwell1 Last led line : Bhoreal functions ",
+  	"name": "m81",
+    "color": 4,
+    "laser": 0,
+    "type": "button",
+    "code": "maxwellccs.Launchpad"
+  },
+  {
+    "name": "m82",
+    "color": 5,
+    "laser": 0,
+    "type": "button",
+    "code": "maxwellccs.Bhoreal"
+  },
+  {
+    "name": "m83",
+    "color": 6,
+    "laser": 0,
+    "type": "button",
+    "code": "maxwellccs.Beatstep"
+  },
+  {
+    "name": "m84",
+    "color": 7,
+    "laser": 0,
+    "type": "button",
+    "code": "maxwellccs.Maxwell"
+  },
+  {
+    "name": "m85",
+    "color": 1,
+    "laser": 0,
+    "type": "button",
+    "code": "maxwellccs.Laser0"
+  },
+  {
+    "name": "m86",
+    "color": 1,
+    "laser": 0,
+    "type": "button",
+    "code": "maxwellccs.Laser1"
+  },
+  {
+    "name": "m87",
+    "color": 1,
+    "laser": 0,
+    "type": "button",
+    "code": "maxwellccs.Laser2"
+  },
+  {
+    "name": "m88",
+    "color": 1,
+    "laser": 0,
+    "type": "button",
+    "code": "maxwellccs.Laser3"
+  }
+
+],
+
+
+
+"Maxwell2": [
+  {
+    "_comment": "Maxwell2 First led line : OSC left X (6) + ",
+    "name": "m11",
+    "color": 64,
+    "laser": 0,
+    "code": "/osc/right/X/curvetype"
+  },
+  {
+    "name": "m12",
+    "color": 64,
+    "laser": 0,
+    "code": "/osc/right/X/freqlimit"
+  },
+  {
+    "name": "m13",
+    "color": 64,
+    "laser": 0,
+    "code": "/osc/right/X/amptype"
+  },
+  {
+    "name": "m14",
+    "color": 64,
+    "laser": 0,
+    "code": "/osc/right/X/phasemodtype"
+  },
+  {
+    "name": "m15",
+    "color": 64,
+    "laser": 0,
+    "code": "/osc/right/X/phaseoffsettype"
+  },
+  {
+    "name": "m16",
+    "color": 64,
+    "laser": 0,
+    "code": "/osc/right/X/ampoffsettype"
+  },
+  {
+    "name": "m17",
+    "color": 64,
+    "laser": 0,
+    "code": "maxwellccs.MinusTenRight"
+  },
+  {
+    "name": "m18",
+    "color": 64,
+    "laser": 0,
+    "code": "maxwellccs.PlusTenRight"
+  },
+
+
+  {
+    "_comment": "Maxwell2 Second led line : OSC left X 2 (6) + ",
+    "name": "m21",
+    "color": 64,
+    "laser": 0,
+    "code": "/osc/right/X/freq"
+  },
+  {
+    "name": "m22",
+    "color": 64,
+    "laser": 0,
+    "code": "/osc/right/X/amp"
+  },
+  {
+    "name": "m23",
+    "color": 64,
+    "laser": 0,
+    "code": "/osc/right/X/phasemod"
+  },
+  {
+    "name": "m24",
+    "color": 64,
+    "laser": 0,
+    "code": "/osc/right/X/phaseoffset"
+  },
+  {
+    "name": "m25",
+    "color": 64,
+    "laser": 0,
+    "code": "/osc/right/X/ampoffset"
+  },
+  {
+    "name": "m26",
+    "color": 64,
+    "laser": 0,
+    "code": "/osc/right/Y/inversion"
+  },
+  {
+    "name": "m27",
+    "color": 64,
+    "laser": 0,
+    "code": "maxwellccs.MinusOneRight"
+  },
+  {
+    "name": "m28",
+    "color": 64,
+    "laser": 0,
+    "code": "maxwellccs.PlusOneRight"
+  },
+
+
+  {
+    "_comment": "Maxwell2 Third led line : OSC left Y (6) + ",
+    "name": "m31",
+    "color": 64,
+    "laser": 0,
+    "code": "/osc/right/Y/curvetype"
+  },
+  {
+    "name": "m32",
+    "color": 64,
+    "laser": 0,
+    "code": "/osc/right/Y/freqlimit"
+  },
+  {
+    "name": "m33",
+    "color": 64,
+    "laser": 0,
+    "code": "/osc/right/Y/amptype"
+  },
+  {
+    "name": "m34",
+    "color": 64,
+    "laser": 0,
+    "code": "/osc/right/Y/phasemodtype"
+  },
+  {
+    "name": "m35",
+    "color": 64,
+    "laser": 0,
+    "code": "/osc/right/Y/phaseoffsettype"
+  },
+  {
+    "name": "m36",
+    "color": 64,
+    "laser": 0,
+    "code": "/osc/right/Y/ampoffsettype"
+  },
+  {
+    "name": "m37",
+    "color": 64,
+    "laser": 0,
+    "code": "/osc/right/Y/phaseoffsettype"
+  },
+  {
+    "name": "m38",
+    "color": 64,
+    "laser": 0,
+    "code": "/osc/right/Y/ampoffsettype"
+  },
+
+
+  {
+    "_comment": "Maxwell2 Fourth led line : OSC left Y 2 (6) + ",
+    "name": "m41",
+    "color": 64,
+    "laser": 0,
+    "code": "/osc/right/Y/freq"
+  },
+  {
+    "name": "m42",
+    "color": 64,
+    "laser": 0,
+    "code": "/osc/right/Y/amp"
+  },
+  {
+    "name": "m43",
+    "color": 64,
+    "laser": 0,
+    "code": "/osc/right/Y/phasemod"
+  },
+  {
+    "name": "m44",
+    "color": 64,
+    "laser": 0,
+    "code": "/osc/right/Y/phaseoffset"
+  },
+  {
+    "name": "m45",
+    "color": 64,
+    "laser": 0,
+    "code": "/osc/right/Y/ampoffset"
+  },
+  {
+    "name": "m46",
+    "color": 64,
+    "laser": 0,
+    "code": "/osc/right/Y/inversion"
+  },
+  {
+    "name": "m47",
+    "color": 64,
+    "laser": 0,
+    "code": "/osc/right/Y/phaseoffsettype"
+  },
+  {
+    "name": "m48",
+    "color": 64,
+    "laser": 0,
+    "code": "/osc/right/Y/ampoffsettype"
+  },
+
+  {
+    "_comment": "Maxwell2 Fith led line : OSC left Z (6) + ",
+    "name": "m51",
+    "color": 64,
+    "laser": 0,
+    "code": "/osc/right/Z/curvetype"
+  },
+  {
+    "name": "m52",
+    "color": 64,
+    "laser": 0,
+    "code": "/osc/right/Z/freqlimit"
+  },
+  {
+    "name": "m53",
+    "color": 64,
+    "laser": 0,
+    "code": "/osc/right/Z/amptype"
+  },
+  {
+    "name": "m54",
+    "color": 64,
+    "laser": 0,
+    "code": "/osc/right/Z/phasemodtype"
+  },
+  {
+    "name": "m55",
+    "color": 64,
+    "laser": 0,
+    "code": "/osc/right/Z/phaseoffsettype"
+  },
+  {
+    "name": "m56",
+    "color": 64,
+    "laser": 0,
+    "code": "/osc/right/Z/ampoffsettype"
+  },
+  {
+    "name": "m57",
+    "color": 64,
+    "laser": 0,
+    "code": "/osc/right/Z/phaseoffsettype"
+  },
+  {
+    "name": "m58",
+    "color": 64,
+    "laser": 0,
+    "code": "/osc/right/Z/ampoffsettype"
+  },
+
+
+  {
+    "_comment": "Maxwell2 Sixth led line : OSC left Z 2 (6) + ",
+    "name": "m61",
+    "color": 64,
+    "laser": 0,
+    "code": "/osc/right/Z/freq"
+  },
+  {
+    "name": "m62",
+    "color": 64,
+    "laser": 0,
+    "code": "/osc/right/Z/amp"
+  },
+  {
+    "name": "m63",
+    "color": 64,
+    "laser": 0,
+    "code": "/osc/right/Z/phasemod"
+  },
+  {
+    "name": "m64",
+    "color": 64,
+    "laser": 0,
+    "code": "/osc/right/Z/phaseoffset"
+  },
+  {
+    "name": "m65",
+    "color": 64,
+    "laser": 0,
+    "code": "/osc/right/Z/ampoffset"
+  },
+  {
+    "name": "m66",
+    "color": 64,
+    "laser": 0,
+    "code": "/osc/right/Y/inversion"
+  },
+  {
+    "name": "m67",
+    "color": 64,
+    "laser": 0,
+    "code": "/osc/right/Z/phaseoffsettype"
+  },
+  {
+    "name": "m68",
+    "color": 64,
+    "laser": 0,
+    "code": "/osc/right/Z/ampoffsettype"
+  },
+
+
+  {
+    "_comment": "Maxwell2 Seventh led line : LFO1 (5) + ",
+    "name": "m71",
+    "color": 64,
+    "laser": 0,
+    "code": "/lfo/2/curvetype"
+  },
+  {
+    "name": "m72",
+    "color": 64,
+    "laser": 0,
+    "code": "/lfo/2/freq"
+  },
+  {
+    "name": "m73",
+    "color": 64,
+    "laser": 0,
+    "code": "/lfo/2/freqlimitd"
+  },
+  {
+    "name": "m74",
+    "color": 64,
+    "laser": 0,
+    "code": "/lfo/2/phase"
+  },
+  {
+    "name": "m75",
+    "color": 64,
+    "laser": 0,
+    "code": "/lfo/2/inversion"
+  },
+  {
+    "name": "m76",
+    "color": 64,
+    "laser": 0,
+    "code": "/osc/right/Y/inversion"
+  },
+  {
+    "name": "m77",
+    "color": 64,
+    "laser": 0,
+    "code": "maxwellccs.MinusTen"
+  },
+  {
+    "name": "m78",
+    "color": 64,
+    "laser": 0,
+    "code": "maxwellccs.PlusTen"
+  },
+
+
+  {
+    "_comment": "Maxwell2 Last led line : Scaler (6) + ",
+    "name": "m81",
+    "color": 64,
+    "laser": 0,
+    "code": "/scaler/curvetype"
+  },
+  {
+    "name": "m82",
+    "color": 64,
+    "laser": 0,
+    "code": "/scaler/speed"
+  },
+  {
+    "name": "m83",
+    "color": 64,
+    "laser": 0,
+    "code": "/scaler/switch"
+  },
+  {
+    "name": "m84",
+    "color": 64,
+    "laser": 0,
+    "code": "/scaler/width"
+  },
+  {
+    "name": "m85",
+    "color": 64,
+    "laser": 0,
+    "code": "/scaler/amt"
+  },
+  {
+    "name": "m86",
+    "color": 64,
+    "laser": 0,
+    "code": "/scaler/scale"
+  },
+  {
+    "name": "m87",
+    "color": 64,
+    "laser": 0,
+    "code": "maxwellccs.MinusOne"
+  },
+  {
+    "name": "m88",
+    "color": 64,
+    "laser": 0,
+    "code": "maxwellccs.PlusOne"
+  }
+
+],
+
+
+"Maxwell3": [
+  {
+    "_comment": "Maxwell3 First led line : Trans X (4) + Rot X (4)",
+    "name": "m11",
+    "color": 64,
+    "laser": 0,
+    "code": "/translator/X/curvetype"
+  },
+  {
+    "name": "m12",
+    "color": 64,
+    "laser": 0,
+    "code": "/translator/X/speed"
+  },
+  {
+    "name": "m13",
+    "color": 64,
+    "laser": 0,
+    "code": "/translator/X/lfo/switch"
+  },
+  {
+    "name": "m14",
+    "color": 64,
+    "laser": 0,
+    "code": "/translator/X/amt"
+  },
+  {
+    "name": "m15",
+    "color": 64,
+    "laser": 0,
+    "code": "/rotator/X/curvetype"
+  },
+  {
+    "name": "m16",
+    "color": 64,
+    "laser": 0,
+    "code": "/rotator/X/speed"
+  },
+  {
+    "name": "m17",
+    "color": 64,
+    "laser": 0,
+    "code": "/rotator/X/lfo/switch"
+  },
+  {
+    "name": "m18",
+    "color": 64,
+    "laser": 0,
+    "code": "/rotator/X/direct"
+  },
+
+
+  {
+    "_comment": "Maxwell3 Second led line : Trans Y (4) + Rot Y (4)",
+    "name": "m21",
+    "color": 64,
+    "laser": 0,
+    "code": "/translator/Y/curvetype"
+  },
+  {
+    "name": "m22",
+    "color": 64,
+    "laser": 0,
+    "code": "/translator/Y/speed"
+  },
+  {
+    "name": "m23",
+    "color": 64,
+    "laser": 0,
+    "code": "/translator/Y/lfo/switch"
+  },
+  {
+    "name": "m24",
+    "color": 64,
+    "laser": 0,
+    "code": "/translator/Y/amt"
+  },
+  {
+    "name": "m25",
+    "color": 64,
+    "laser": 0,
+    "code": "/rotator/Y/curvetype"
+  },
+  {
+    "name": "m26",
+    "color": 64,
+    "laser": 0,
+    "code": "/rotator/Y/speed"
+  },
+  {
+    "name": "m27",
+    "color": 64,
+    "laser": 0,
+    "code": "/rotator/Y/lfo/switch"
+  },
+  {
+    "name": "m28",
+    "color": 64,
+    "laser": 0,
+    "code": "/rotator/Y/direct"
+  },
+
+
+  {
+    "_comment": "Maxwell3 Third led line  : Trans Z (4) + Rot Z (4)",
+    "name": "m31",
+    "color": 64,
+    "laser": 0,
+    "code": "/translator/Z/curvetype"
+  },
+  {
+    "name": "m32",
+    "color": 64,
+    "laser": 0,
+    "code": "/translator/Z/speed"
+  },
+  {
+    "name": "m33",
+    "color": 64,
+    "laser": 0,
+    "code": "/translator/Z/lfo/switch"
+  },
+  {
+    "name": "m34",
+    "color": 64,
+    "laser": 0,
+    "code": "/translator/Z/amt"
+  },
+  {
+    "name": "m35",
+    "color": 64,
+    "laser": 0,
+    "code": "/rotator/Z/curvetype"
+  },
+  {
+    "name": "m36",
+    "color": 64,
+    "laser": 0,
+    "code": "/rotator/Z/speed"
+  },
+  {
+    "name": "m37",
+    "color": 64,
+    "laser": 0,
+    "code": "/rotator/Z/lfo/switch"
+  },
+  {
+    "name": "m38",
+    "color": 64,
+    "laser": 0,
+    "code": "/rotator/Z/direct"
+  },
+
+
+  {
+    "_comment": "Maxwell3 Fourth led line",
+    "name": "m41",
+    "color": 64,
+    "laser": 0,
+    "code": "/osc/left/Y/freq"
+  },
+  {
+    "name": "m42",
+    "color": 64,
+    "laser": 0,
+    "code": "/osc/left/Y/amp"
+  },
+  {
+    "name": "m43",
+    "color": 64,
+    "laser": 0,
+    "code": "/osc/left/Y/phasemod"
+  },
+  {
+    "name": "m44",
+    "color": 64,
+    "laser": 0,
+    "code": "/osc/left/Y/phaseoffset"
+  },
+  {
+    "name": "m45",
+    "color": 64,
+    "laser": 0,
+    "code": "/osc/left/Y/ampoffset"
+  },
+  {
+    "name": "m46",
+    "color": 64,
+    "laser": 0,
+    "code": "/osc/left/Y/inversion"
+  },
+  {
+    "name": "m47",
+    "color": 64,
+    "laser": 0,
+    "code": "/osc/left/Y/phaseoffsettype"
+  },
+  {
+    "name": "m48",
+    "color": 64,
+    "laser": 0,
+    "code": "/osc/left/Y/ampoffsettype"
+  },
+
+  {
+    "_comment": "Maxwell3 Fith led line",
+    "name": "m51",
+    "color": 64,
+    "laser": 0,
+    "code": "/osc/left/Z/curvetype"
+  },
+  {
+    "name": "m52",
+    "color": 64,
+    "laser": 0,
+    "code": "/osc/left/Z/freqlimit"
+  },
+  {
+    "name": "m53",
+    "color": 64,
+    "laser": 0,
+    "code": "/osc/left/Z/amptype"
+  },
+  {
+    "name": "m54",
+    "color": 64,
+    "laser": 0,
+    "code": "/osc/left/Z/phasemodtype"
+  },
+  {
+    "name": "m55",
+    "color": 64,
+    "laser": 0,
+    "code": "/osc/left/Z/phaseoffsettype"
+  },
+  {
+    "name": "m56",
+    "color": 64,
+    "laser": 0,
+    "code": "/osc/left/Z/ampoffsettype"
+  },
+  {
+    "name": "m57",
+    "color": 64,
+    "laser": 0,
+    "code": "/osc/left/Z/phaseoffsettype"
+  },
+  {
+    "name": "m58",
+    "color": 64,
+    "laser": 0,
+    "code": "/osc/left/Z/ampoffsettype"
+  },
+
+
+  {
+    "_comment": "Maxwell3 Sixth led line",
+    "name": "m61",
+    "color": 64,
+    "laser": 0,
+    "code": "/osc/left/Z/freq"
+  },
+  {
+    "name": "m62",
+    "color": 64,
+    "laser": 0,
+    "code": "/osc/left/Z/amp"
+  },
+  {
+    "name": "m63",
+    "color": 64,
+    "laser": 0,
+    "code": "/osc/left/Z/phasemod"
+  },
+  {
+    "name": "m64",
+    "color": 64,
+    "laser": 0,
+    "code": "/osc/left/Z/phaseoffset"
+  },
+  {
+    "name": "m65",
+    "color": 64,
+    "laser": 0,
+    "code": "/osc/left/Z/ampoffset"
+  },
+  {
+    "name": "m66",
+    "color": 64,
+    "laser": 0,
+    "code": "/osc/left/Y/inversion"
+  },
+  {
+    "name": "m67",
+    "color": 64,
+    "laser": 0,
+    "code": "/osc/left/Z/phaseoffsettype"
+  },
+  {
+    "name": "m68",
+    "color": 64,
+    "laser": 0,
+    "code": "/osc/left/Z/ampoffsettype"
+  },
+
+
+  {
+    "_comment": "Maxwell3 Seventh led line",
+    "name": "m71",
+    "color": 64,
+    "laser": 0,
+    "code": "/lfo/1/curvetype"
+  },
+  {
+    "name": "m72",
+    "color": 64,
+    "laser": 0,
+    "code": "/lfo/1/freq"
+  },
+  {
+    "name": "m73",
+    "color": 64,
+    "laser": 0,
+    "code": "/lfo/1/freqlimitd"
+  },
+  {
+    "name": "m74",
+    "color": 64,
+    "laser": 0,
+    "code": "/lfo/1/phase"
+  },
+  {
+    "name": "m75",
+    "color": 64,
+    "laser": 0,
+    "code": "/lfo/1/inversion"
+  },
+  {
+    "name": "m76",
+    "color": 64,
+    "laser": 0,
+    "code": "/osc/left/Y/inversion"
+  },
+  {
+    "name": "m77",
+    "color": 64,
+    "laser": 0,
+    "code": "maxwellccs.MinusTen"
+  },
+  {
+    "name": "m78",
+    "color": 64,
+    "laser": 0,
+    "code": "maxwellccs.PlusTen"
+  },
+
+
+  {
+    "_comment": "Maxwell3 Last led line",
+    "name": "m81",
+    "color": 64,
+    "laser": 0,
+    "code": "maxwellccs.MixerLeft"
+  },
+  {
+    "name": "m82",
+    "color": 64,
+    "laser": 0,
+    "code": "maxwellccs.MixerRight"
+  },
+  {
+    "name": "m83",
+    "color": 64,
+    "laser": 0,
+    "code": "/osc/left/X/phasemod"
+  },
+  {
+    "name": "m84",
+    "color": 64,
+    "laser": 0,
+    "code": "/osc/left/X/phaseoffset"
+  },
+  {
+    "name": "m85",
+    "color": 64,
+    "laser": 0,
+    "code": "/osc/left/X/ampoffset"
+  },
+  {
+    "name": "m86",
+    "color": 64,
+    "laser": 0,
+    "code": "/osc/left/Y/inversion"
+  },
+  {
+    "name": "m87",
+    "color": 64,
+    "laser": 0,
+    "code": "maxwellccs.MinusOne"
+  },
+  {
+    "name": "m88",
+    "color": 64,
+    "laser": 0,
+    "code": "maxwellccs.PlusOne"
+  }
+
+]
+
+}
