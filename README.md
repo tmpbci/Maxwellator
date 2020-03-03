@@ -1,5 +1,5 @@
 
-Maxwellator v0.2.3 (python3)
+Maxwellator v0.2.3b (python3)
 By Sam Neurohack, AC
 
 LICENCE : CC NC
@@ -12,6 +12,8 @@ Even it's not sure wether Maxwell is still in dev, we use it a lot for lasers wo
 
 Main idea is to easily control several lasers/computers/Maxwells in live performances in a DJ manner : no computer screens, no mouses, just buttons, rotating stuff and one tablet for feedback/control.
 
+Note that Maxwellator is still in beta stage.
+
 
 ![Controllers](https://www.teamlaser.fr/images/maxwellatorui1.png)
 
@@ -20,7 +22,7 @@ Control Features :
 - Yes ! : you can easily control and see all parameters of 4 Maxwell/laser with only one iPad (4*140 parameters !!)
 - Easy midi learn. Maxwellator give names to Maxwell functions.
 - It's possible to setup macros or an all show via your favorite midi/DMX/Artnet software.
-- Supports different midi controller : Launchpad mini, Bhoreal, LPD8, Beatstep, DJmp3.
+- Supports different midi controller : Launchpad mini, Bhoreal, LPD8, Beatstep, BCR 2000 and DJmp3.
 - Each supported controller have several layer you can select.
 - Uses Maxwell presets ('patch') files. 
 
@@ -33,6 +35,10 @@ Every feature is an OSC function :
 Yes you can do all that with midi learn and rtpmidi. Problems starts with several Maxwells, presets changes and hardware interface with 130+ buttons are not easy to find, deal with. 
 
 ![Tablet Beatstep UI](https://www.teamlaser.fr/images/maxwellatorui2.png)
+
+# What's new ?
+
+- v0.2.3b : BCR 2000 module, BPM tap tempo, Songs
 
 # Modes 
 
@@ -50,7 +56,7 @@ Different modes are available, you obviously need to run it in "programall" mode
 
 - "osc" : will only forward osc message (OSC port is 8090) and redis stored artnet to maxwell
 
-- "live" : Listen to Artnet frame/publish to redis + forward osc message (OSC port is 8090) to maxwell
+- "live" : Listen to Midi/OSC and (Artnet published to redis) then forward incoming messages to the local Maxwell or to selected computer/Maxwell/laser over OSC.
 
 - "Mitraille" : Read specific explanation
 
@@ -80,7 +86,7 @@ if note < E3 set Maxwell right part
 
 # Midi Mapping
 
-2 maxwellator "modules" have advanced midi mapping to laser <-> "music" only midi instrument : sequencer and beatstep. Sequencer is a generic name, you need to edit gstt to your device Midi names, i.e for an Electribe 2 : SequencerNameIN = 'electribe2 SOUND' and SequencerNameOUT = 'electribe2 PAD/KNOB'
+2 maxwellator "modules" have advanced midi mapping to laser <-> "music" only midi instrument : sequencer, BCR 2000 and beatstep. Sequencer is a generic name, you need to edit gstt to your device Midi names, i.e for an Electribe 2 : SequencerNameIN = 'electribe2 SOUND' and SequencerNameOUT = 'electribe2 PAD/KNOB'
 
 - Each mapped function can be valid for all or given : song, midi channel,... 
 - CC output maybe translated on linear or squareroot curve (0-127)
@@ -94,25 +100,52 @@ All Maxwell interface buttons are midi CC, notes are for presets change.
 To overwrite a midi assignement (green color) click on the given maxwell UI button with shift key : button get purple so you can assign a midi CC.
 
 Midi changes are saved when Maxwell quit. On MacOS midi learned stuff is in 
-/Library/Application Support/Maxwell (midimap.json and controllist.json)
+~/Library/ApplicationSupport/Maxwell/ (midimap.json and controllist.json)
 
 Maxwellator is tested on MacOS and send midi only to "to Maxwell 1", on channels 1 and 2/
 You can of course use Maxwell built in midi learn capabilities but it will listen on all midi port. You can monitor the midi process with a tool like midi monitor.
 
 
 
+
+# "Devices" configuration files
+
+Are in devices directory :
+
+- beatstep.beatstep, for manufacturer's Midi control center
+- BCR1.bcr, for BC Manager
+- C4, for touchOSC
+
+
+
 # How to use it :
 
-You should look the config file (libs/gstt.py) to fit your network layout,...
-Your Maxwell presets files must be in patchs directory.
+First Use : 
 
-Load in maxwell the preset file if needed. Everything else will be via maxwellator. On a each computer with Maxwell running :
+- You should edit the config file (libs/gstt.py) to fit your network layout,...
+- *To talk to Maxwell correctly YOU MUST run Maxwellator in "programall" mode at least once on each computer. See "Modes" in this readme.* : python3 maxwellator.py -m "programall"
+- Your Maxwell presets files must be in patchs directory. In live condition, you should switch Maxwell presets from Maxwellator.
+- With many etherdreams, it's a nightmare to get one Maxwell feed the etherdream you want. To make Maxwell talk to a given etherdream (i.e 192.168.1.3) on OS X, we made a custom libetherdream. (greetings to Cocoadaemon)
+
+1/ Replace /Applications/Maxwell.app/Contents/Frameworks/etherdream.dylib by the one in libetherdream/etherdream.dylib or you can compile it. 
+
+2/ Edit Maxwell.sh : modify the IP to your need.
+
+3/ launch Maxwell from terminal with a Maxwell.sh.
+
+Launching many Maxwell on a given computer is not recommended, they usually crash at some point, not because of this "hack" but probably of resources that get shared like midi device name,...
+
+
+Typical use : 
+
+Launch redis server, i.e from CLI : redis-server &
+
+Load in maxwell the preset file if needed. Everything else will be via maxwellator. 
+
+On a each computer with Maxwell :
 
 python3 maxwellator.py 
 
-*To talk to Maxwell correctly YOU MUST run Maxwellator in "programall" mode at least once on each computer. See "Modes" in this readme.*
-
-python3 maxwellator.py -m "programall"
 
 To run a particular mode : 
 
@@ -126,15 +159,6 @@ Read the help :
 python3 maxwellator.py -h
 
 
-With many etherdreams, it's a nightmare to get one Maxwell feed the etherdream you want. To make Maxwell talk to a given etherdream (i.e 192.168.1.3) on OS X, we made a custom libetherdream. (greetings to Cocoadaemon)
-
-1/ Replace /Applications/Maxwell.app/Contents/Frameworks/etherdream.dylib by the one in libetherdream/etherdream.dylib or you can compile it. 
-
-2/ Edit Maxwell.sh : modify the IP to your need.
-
-3/ launch Maxwell from terminal with a Maxwell.sh (modify the IP to your needs).
-
-Launching many Maxwell on a given computer is not recommended, they usually crash at some point, not because of this "hack" but probably of resources that get shared like midi device name,...
 
 
 # Install
@@ -157,7 +181,7 @@ pip3 install numpy
 
 
 
-# compile it with nuitka :
+# Compile Maxwellator with nuitka :
 
 python3 -m nuitka --follow-imports --plugin-enable=pylint-warnings --include-package=rtmidi  maxwellator.py
 
@@ -179,7 +203,7 @@ Global OSC commands :
 /cc/			Send CC to Maxwell.
 
 
-/laser			Select current laser
+/laser number 	Select given laser
 
 
 /bhoreal 		Prefix to forward the osc command to bhoreal module (in bhoreal.py OSC Handler)
@@ -192,8 +216,11 @@ Global OSC commands :
 
 /C4				Prefix to forward the osc command to C4 module
 
+/bcr			Prefix to forward the osc command to BCR 2000 module
+
 /blackout		Self explanatory
 
+/states			Prefix for Maxwellator parameters
 
 Each module has it's own OSC commands and common ones :
 /modulename/status
@@ -537,4 +564,12 @@ Colors Functions
 
 /color/modtype is Artnet 135  MIDI Channel 2 CC 8
 
-136 functions
+/color/picker is Artnet 136 MIDI Channel 2 CC 9
+
+
+Draw Functions 
+
+/draw/mode is Artnet 137 MIDI Channel 2 CC 10
+
+
+137 functions

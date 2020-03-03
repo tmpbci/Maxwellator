@@ -17,6 +17,8 @@ Midi Handler :
 - LPD8
 - Hercules DJmp3
 - Arturia Beatstep
+- Electribe 2 as external musical sequencer
+- BCR 2000
 
 
 todo :
@@ -58,13 +60,13 @@ from OSC3 import OSCServer, OSCClient, OSCMessage
 
 print()
 #print('midi3')
-print('Midi startup.')
+#print('Midi startup.')
 
 sys.path.append('libs/')
 
 import gstt, bhoreal
 import launchpad
-import LPD8, dj, beatstep, sequencer
+import LPD8, dj, beatstep, sequencer, bcr
 
 
 
@@ -85,7 +87,7 @@ BhorealMidiName = "Leonardo"
 LaunchMidiName = "Launch"
 DJName = "DJ"
 BeatstepName = "Arturia BeatStep"
-
+BCRName = "BCR2000"
 
 BhorealPort, Midi1Port, Midi2Port, VirtualPort, MPort = -1,-1,-1, -1, -1
 VirtualName = "LaunchPad Mini"
@@ -168,6 +170,9 @@ def send(msg,device):
     if device == "Beatstep":
         midiport[beatstep.Here].send_message(msg)
 
+    if device == "BCR2000":
+        midiport[bcr.Here].send_message(msg)
+
     if device == gstt.SequencerNameIN:
         midiport[sequencer.Here].send_message(msg)
 
@@ -241,7 +246,7 @@ def msg(note, mididest):
 # mididest : all or specifiname, won't be sent to launchpad or Bhoreal.
 def MidiMsg(midimsg, mididest, laser = gstt.lasernumber):
     
-    print("midi3 got MidiMsg :", midimsg, "  Dest :", mididest, "  laser :", laser)
+    #print("midi3 got MidiMsg :", midimsg, "  Dest :", mididest, "  laser :", laser)
     desterror = -1
 
     #for port in range(MidInsNumber):
@@ -256,7 +261,7 @@ def MidiMsg(midimsg, mididest, laser = gstt.lasernumber):
             desterror = 0
 
         # To All 
-        elif mididest == "all" and midiname[port].find(mididest) == -1 and  midiname[port].find(BhorealMidiName) == -1 and midiname[port].find(LaunchMidiName) == -1 and midiname[port].find(DJName) == -1 and midiname[port].find(BeatstepName) == -1 and midiname[port].find(gstt.SequencerNameIN) == -1:
+        elif mididest == "all" and midiname[port].find(mididest) == -1 and  midiname[port].find(BhorealMidiName) == -1 and midiname[port].find(LaunchMidiName) == -1 and midiname[port].find(DJName) == -1 and midiname[port].find(BeatstepName) == -1 and midiname[port].find(gstt.SequencerNameIN) == -1 and midiname[port].find(gstt.BCRName) == -1:
             #print("all sending to port",port,"name", midiname[port])
             midiport[port].send_message(midimsg)
             desterror = 0
@@ -398,14 +403,14 @@ def MidinProcess(inqueue, portname):
 
                 # octave is frequency. 25.6 is CC range (128)/5 low "pentatonic octave"
                 #SendCC('/lfo/1/freq',round(MidiNote/12)*25.6)
-                MidiMsg((CONTROLLER_CHANGE,75,round(MidiNote/12)*25.6),mididest)
+                MidiMsg((CONTROLLER_CHANGE,75,round(MidiNote/12)*25.6), mididest)
 
                 # note is phase : decimal part of midinote number = CC range percentage 
                 #SendCC('/lfo/1/phase',(MidiNote/12)%1*128)
-                MidiMsg((CONTROLLER_CHANGE,73,(MidiNote/12)%1*128),mididest)
+                MidiMsg((CONTROLLER_CHANGE,73,(MidiNote/12)%1*128), mididest)
 
                 # velocity is scale
-                MidiMsg((CONTROLLER_CHANGE, 98, maxwellccs.curved(MidiVel)),mididest)
+                MidiMsg((CONTROLLER_CHANGE, 98, maxwellccs.curved(MidiVel)), mididest)
 
         #else:
         NoteOn(msg[1],msg[2],mididest)
@@ -546,9 +551,6 @@ def OutConfig():
                 OutDevice.append(OutObject(name, "livid", port))
                 #print("Livid Guitar Wing start animation")
                 gstt.WingHere = port
-                #print(gstt.WingHere)
-                
-                #guitarwing.StartWing(port)
                 time.sleep(0.2)    
 
             # Search for a DJmp3
@@ -557,9 +559,6 @@ def OutConfig():
                 #print("DJmp3 start animation")
                 #dj.StartDJ(port)
                 dj.Here = port
-
-                
-                #guitarwing.StartWing(port)
                 time.sleep(0.2)   
 
             # Search for a Beatstep
@@ -568,9 +567,15 @@ def OutConfig():
                 print("BeatStep start animation")
                 beatstep.Start(port)
                 beatstep.Here = port
+                time.sleep(0.2) 
 
-                
-                #guitarwing.StartWing(port)
+
+            # Search for a BCR 2000
+            elif name.find(BCRName) == 0:
+                OutDevice.append(OutObject(name, "BCR2000", port))
+                print("BCR2000 start animation")
+                bcr.Start(port)
+                bcr.Here = port
                 time.sleep(0.2)   
 
             # Search for a Sequencer
@@ -579,9 +584,6 @@ def OutConfig():
                 #print("Sequencer start animation")
                 #beatstep.Start(port)
                 sequencer.Here = port
-
-                
-                #guitarwing.StartWing(port)
                 time.sleep(0.2)   
 
             else:
@@ -686,7 +688,8 @@ def InConfig():
         outport = FindOutDevice(name)
         midinputsname[port]=name
         
-        print("name",name, "Port",port, "Outport", outport)
+        #print()
+        # print("name",name, "Port",port, "Outport", outport)
         
         '''
         # New Bhoreal found ?
@@ -715,12 +718,12 @@ def InConfig():
                 bhorealin, port_name = open_midiinput(outport) # weird rtmidi call port number is not the same in mido enumeration and here
             except (EOFError, KeyboardInterrupt):
                 sys.exit
-            print()
-            print('Bhoreal Found..')
+
+            #print('Bhoreal Found..')
             #midinputs.append(bhorealin)
             InDevice.append(InObject(name, "bhoreal", outport, bhorealin))
             # thread launch to handle all queued MIDI messages from Bhoreal device    
-            print ("Launching Bhoreal thread..")
+            print("Launching Thread for Bhoreal")
             thread = Thread(target=bhoreal.MidinProcess, args=(bhoreal.bhorqueue,))
             #thread = Thread(target=bhoreal.MidinProcess, args=(InDevice[port].queue,))
             thread.setDaemon(True)
@@ -759,15 +762,15 @@ def InConfig():
             except (EOFError, KeyboardInterrupt):
                 sys.exit()
             #midinputs.append(launchin)
-            print()
-            print('Launchpad Found..')
+
+            #print('Launchpad Found..')
             InDevice.append(InObject(name, "launchpad", outport, launchin))
-            print ("Launching Launchpad thread..")
+            print("Launching Thread for Launchpad")
             thread = Thread(target=launchpad.MidinProcess, args=(launchpad.launchqueue,))
             #thread = Thread(target=launchpad.MidinProcess, args=(InDevice[port].queue,))
             thread.setDaemon(True)
             thread.start()
-            print(name, "port", port, "portname", port_name)
+            # print(name, "port", port, "portname", port_name)
             InDevice[port].rtmidi.set_callback(launchpad.LaunchAddQueue(name))
             #launchin.set_callback(launchpad.LaunchAddQueue(name))
 
@@ -775,8 +778,7 @@ def InConfig():
         # LPD8 Found ?
         if name.find('LPD8') == 0:
    
-            print()
-            print('LPD8 Found..')
+            #print('LPD8 Found..')
             
             try:
                 LPD8in, port_name = open_midiinput(outport)
@@ -784,71 +786,90 @@ def InConfig():
                 sys.exit()
             #midinputs.append(LPD8in)
             InDevice.append(InObject(name, "LPD8", outport, LPD8in))
-            print ("Launching LPD8 thread..")
+            print("Launching Thread for Launchpad")
             thread = Thread(target=LPD8.MidinProcess, args=(LPD8.LPD8queue,))
             #thread = Thread(target=LPD8.MidinProcess, args=(InDevice[port].queue,))
             thread.setDaemon(True)
             thread.start()
-            print(name, "port", port, "portname", port_name)
+            # print(name, "port", port, "portname", port_name)
             InDevice[port].rtmidi.set_callback(LPD8.LPD8AddQueue(name))
   
         # DJmp3 Found ?
         if name.find(DJName) == 0:
    
-            print()
-            print('DJmp3 Found..')
+
+            #print('DJmp3 Found..')
             
             try:
                 DJin, port_name = open_midiinput(outport)
             except (EOFError, KeyboardInterrupt):
                 sys.exit()
             InDevice.append(InObject(name, "DJmp3", outport, DJin))
-            print ("Launching DJmp3 thread..")
+            print("Launching Thread for DJmp3")
             thread = Thread(target=dj.MidinProcess, args=(dj.DJqueue,))
             thread.setDaemon(True)
             thread.start()
-            print(name, "port", port, "portname", port_name)
+            # print(name, "port", port, "portname", port_name)
             InDevice[port].rtmidi.set_callback(dj.DJAddQueue(name))
 
         # Beatstep Found ?
         if name.find(BeatstepName) == 0:
    
-            print()
-            print('Beatstep Found..')
+
+            #print('Beatstep Found..')
             
             try:
                 Beatstepin, port_name = open_midiinput(outport)
             except (EOFError, KeyboardInterrupt):
                 sys.exit()
             InDevice.append(InObject(name, "Beatstep", outport, Beatstepin))
-            print ("Launching Beatstep thread..")
+            print("Launching Thread for Beatstep")
             thread = Thread(target=beatstep.MidinProcess, args=(beatstep.BEATSTEPqueue,))
             thread.setDaemon(True)
             thread.start()
-            print(name, "port", port, "portname", port_name)
+            # print(name, "port", port, "portname", port_name)
             InDevice[port].rtmidi.set_callback(beatstep.BeatstepAddQueue(name))
+
+        # BCR 2000 Found ?
+        if name.find(BCRName) == 0:
+   
+            #print('BCR2000 Found..')
+            
+            try:
+                BCRin, port_name = open_midiinput(outport)
+            except (EOFError, KeyboardInterrupt):
+                sys.exit()
+            InDevice.append(InObject(name, "BCR2000", outport, BCRin))
+            print("Launching Thread for BCR 2000")
+            thread = Thread(target=bcr.MidinProcess, args=(bcr.BCRqueue,))
+            thread.setDaemon(True)
+            thread.start()
+            # print(name, "port", port, "portname", port_name)
+            InDevice[port].rtmidi.set_callback(bcr.BCRAddQueue(name))
+
+
 
         # Sequencer Found ?
         if name.find(gstt.SequencerNameOUT) == 0:
    
-            print()
-            print('Sequencer Found..')
+
+            #print('Sequencer Found..')
             
             try:
                 Sequencerin, port_name = open_midiinput(outport)
             except (EOFError, KeyboardInterrupt):
                 sys.exit()
             InDevice.append(InObject(name, "Sequencer", outport, Sequencerin))
-            print ("Launching Sequencer thread..")
+            print("Launching Thread for Sequencer")
             thread = Thread(target=sequencer.MidinProcess, args=(sequencer.SEQUENCERqueue,))
             thread.setDaemon(True)
             thread.start()
-            print(name, "port", port, "portname", port_name)
+            # print(name, "port", port, "portname", port_name)
             InDevice[port].rtmidi.set_callback(sequencer.SequencerAddQueue(name))
 
 
-        # Everything that is not Bhoreal, Launchpad, beatstep, Sequencer, LPD8 or DJmp3
-        if name.find(BhorealMidiName) != 0 and name.find(LaunchMidiName) != 0 and name.find('LPD8') != 0 and name.find(DJName) != 0 and name.find(BeatstepName) != 0 and name.find(gstt.SequencerNameOUT) != 0:
+        # Everything that is not Bhoreal, Launchpad, beatstep, Sequencer, LPD8, BCR 2000 or DJmp3
+        if name.find(BhorealMidiName) != 0 and name.find(LaunchMidiName) != 0 and name.find('LPD8') != 0 and name.find(DJName) != 0 and name.find(BeatstepName) != 0  and name.find(BCRName) != 0 and name.find(gstt.SequencerNameOUT) != 0:
 
             try:
                 #print (name, name.find("RtMidi output"))
@@ -865,7 +886,7 @@ def InConfig():
                     thread.setDaemon(True)
                     thread.start() 
 
-                    print(name, "port", port, "portname", port_name)
+                    print("Launching thread for", name, "port", port, "portname", port_name)
                     #midinputs[port].set_callback(AddQueue(name),midinputsqueue[port])
                     #midinputs[port].set_callback(AddQueue(name))
                     #genericnumber += 1

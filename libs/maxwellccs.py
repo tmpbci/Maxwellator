@@ -23,7 +23,8 @@ from rtmidi.midiconstants import (CHANNEL_PRESSURE, CONTROLLER_CHANGE, NOTE_ON, 
                                   PITCH_BEND, POLY_PRESSURE, PROGRAM_CHANGE)
 
 import os, json
-import midi3, gstt, beatstep, launchpad, bhoreal, LPD8, C4
+from datetime import datetime, timedelta
+import midi3, gstt, beatstep, launchpad, bhoreal, LPD8, C4, bcr
 #import tkinter.filedialog
 import easygui
 
@@ -163,6 +164,8 @@ def cc(ccnumber, value, dest=mididest, midichannel = 1):
     if gstt.lasernumber == 0:
         midi3.MidiMsg([CONTROLLER_CHANGE+midichannel-1, ccnumber, value], dest)
         UpdateCCs(ccnumber, value, laser = 0)
+        # update CCs TouchOSC screen
+        SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/cc/'+str(ccnumber),[value])
     else:
         SendOSC(gstt.computerIP[gstt.lasernumber], gstt.MaxwellatorPort, '/cc/'+str(ccnumber),[value])
 
@@ -176,6 +179,7 @@ def UpdateCCs(ccnumber, value, laser = 0):
     LPD8.UpdateCC(ccnumber, value, laser)
     launchpad.UpdateCC(ccnumber, value, laser)
     C4.UpdateCC(ccnumber, value, laser)
+    bcr.UpdateCC(ccnumber, value, laser)
 
 
 def NoteOn(note,velocity, dest=mididest, laser = gstt.lasernumber):
@@ -404,14 +408,19 @@ def runPatch(number, laser = 0):
         gstt.patchnumber[laser] = number
         for ccnumber in range(len(maxwell['ccs'])):
 
-            # update cc variable content and OSC UI for given laser
+            # Update cc variable content and OSC UI for given laser
             gstt.ccs[laser][ccnumber] = getPatchValue(gstt.patchnumber[laser], ccnumber)
             SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/cc/'+str(ccnumber), [getPatchValue(gstt.patchnumber[laser], ccnumber)])
-
+            
+            # Update BCR 2000 CC if exists
+            if bcr.Here != -1:
+                midi3.MidiMsg([CONTROLLER_CHANGE, ccnumber, getPatchValue(gstt.patchnumber[laser], ccnumber)], "BCR2000")
         
         # Update OSC UI patch number and send to Maxwell via midi
         SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/laser/patch/'+str(laser), [gstt.patchnumber[laser]])
         midi3.NoteOn(gstt.patchnumber[laser], 127, 'to Maxwell 1')
+        
+
         #print("Laser", laser, ": current patch is now :", gstt.patchnumber[laser], 'ccs', gstt.ccs[laser])
     else:
         print("Patch doesnt exists")
@@ -450,7 +459,7 @@ def changeCC(value, path):
     if gstt.ccs[0][MaxwellCC] + value < 127 and gstt.ccs[0][MaxwellCC] + value >0:
         gstt.ccs[0][MaxwellCC] += value
 
-    print("Change CC : path =", path, "CC :", FindCC(path), "is now ", gstt.ccs[0][MaxwellCC])
+    print("Change CC in maxwellccs : path =", path, "CC :", FindCC(path), "is now ", gstt.ccs[0][MaxwellCC])
     cc(MaxwellCC, gstt.ccs[0][MaxwellCC] , dest ='to Maxwell 1')
     
 
@@ -779,6 +788,41 @@ def PSong():
         print("New song :",gstt.songs[gstt.song])
         SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/song/status', [gstt.songs[gstt.song]])
 
+# Forward incoming sequencer CC changes to local (= on midi channel 16) display i.e BCR 2000
+def ELCC(ccnumber,value):
+    
+    print("ELCC forward CC", ccnumber,":", value, "to TouchOSC and BCR 2000 channel 16")
+
+    SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/states/cc/'+str(ccnumber), [value])
+    midi3.MidiMsg((CONTROLLER_CHANGE+15, ccnumber, int(value)), mididest = "BCR2000")
+
+
+
+
+# Get BPM from tap tempo or note from a sequencer 
+# BPM channel 16 CC 127 
+def autotempo(note):
+    global lastime
+
+    currentime = datetime.now()
+    delta = currentime - lastime 
+    lastime = currentime
+    gstt.currentbpm = round(60/delta.total_seconds())
+    print("length between notes :", delta.total_seconds(),"seconds -> bpm :", gstt.currentbpm)
+
+    SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/states/bpm', [gstt.currentbpm])
+
+    # STUPID : need to find a way to display bpm > 127
+    # tell BCR 2000 the new bpm on channel 16 
+    if gstt.currentbpm > 127:
+        midi3.MidiMsg((CONTROLLER_CHANGE+15, 127, 127), mididest = "BCR2000")
+    else:
+        midi3.MidiMsg((CONTROLLER_CHANGE+15, 127, gstt.currentbpm), mididest = "BCR2000")
+
+
+lastime  = datetime.now()
+tempotime = lastime
+print("Sequencer time", lastime)
 
 
 LoadPatchFile(gstt.PatchFiles[gstt.lasernumber])

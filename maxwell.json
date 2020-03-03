@@ -798,9 +798,12 @@
     "Function": "/color/picker",
     "init": "0",
     "maxwell": "line-fx::line-color-picker"
+  },
+      {
+    "Function": "/draw/mode",
+    "init": "64",
+    "maxwell": "laser-drawmode"
   }
-
-
 
 
 ]

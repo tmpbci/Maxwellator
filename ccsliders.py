@@ -15,10 +15,11 @@ midi3.check()
 
 #mididest = 'to Maxwell 1'
 mididest =  'electribe2 SOUND'
-cc0 = 74
-cc1 = 71
-cc2 = 11
-cc3 = 12
+mididest =  'BCR2000'
+cc0 = 0
+cc1 = 82
+cc2 = 83
+cc3 = 84
 midichannel = 1
 
 ccs = [0,0,0,0]

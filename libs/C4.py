@@ -217,7 +217,7 @@ def Encoder(macroname, value):
 
     if macronumber != -1:
         macrocode = macros[gstt.C4Layers[gstt.C4Layer]][macronumber]["code"]
-        print("C4 Layer", gstt.C4Layers[gstt.C4Layer], ":",macrocode)
+        #print("C4 Layer", gstt.C4Layers[gstt.C4Layer], ":",macrocode)
 
         if macrocode.count('/') > 0:
 
@@ -432,6 +432,7 @@ def UpdatePatch(patchnumber):
                 SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/C4/'+macroname+'/line1', [macrocode[:macrocode.rfind('/')]])
 
 
+            '''
             # Display text LINE 2
             #if macronumber < 17 or (macronumber > 32 and macronumber < 50):
             if macrotype == 'encoder':
@@ -452,7 +453,7 @@ def UpdatePatch(patchnumber):
                 #print("button", typevalue, macrotype)
                 #print("init", init, "value", values[init][1] )
                 SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/C4/'+macroname+'/line2', [values[init][1]])
-
+            '''
 
             # Display LASER number value
             SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/C4/'+macroname+'/laser', [macrolaser])
@@ -463,11 +464,10 @@ def UpdatePatch(patchnumber):
             print(macrocode.index('.'))
             SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/C4/'+macroname+'/line1', [macrocode[macrocode.index('.')+1:]])
      
-
+# Update one CC value on C4 TouchOSC UI 
 def UpdateCC(ccnumber, value, laser = 0):
 
     #print('C4 UpdateCC', ccnumber, value)
-    # update iPad UI
     for macronumber in range(33):
         macrocode = macros[gstt.C4Layers[gstt.C4Layer]][macronumber]["code"]
         
@@ -475,6 +475,7 @@ def UpdateCC(ccnumber, value, laser = 0):
            
             macroname = macros[gstt.C4Layers[gstt.C4Layer]][macronumber]["name"]
             SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/C4/'+macroname+'/value', [format(gstt.ccs[laser][ccnumber], "03d")])
+
             break
            
 
@@ -518,40 +519,7 @@ def CLayer(value):
 
 def Start(port):
 
-    SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/C4/on', [1])
-
-    # if pads are CC 0, 12, 36, 48
-    CCpad(0, 1, dest = 'Arturia')
-    CCpad(0, 33, dest = 'Arturia')
-    CCpad(0, 95, dest = 'Arturia')
-    CCpad(0, 127, dest = 'Arturia')
-    time.sleep(0.3)
-    CCpad(0, 0, dest = 'Arturia')
-    CCpad(12, 0, dest = 'Arturia')
-    CCpad(36, 0, dest = 'Arturia')
-    CCpad(48, 0, dest = 'Arturia')
-
-
-    '''
-    # Circle effect
-    # if Pads are matrix CCs 31-48
-    for pad1 in range(31,39):
-        CCpad(pad1, 0, dest = 'Arturia')
-    for pad2 in range(41,49):
-        CCpad(pad2, 0, dest = 'Arturia')
-
-    for pad1 in range(31,39):
-        CCpad(pad1, 127, dest = 'Arturia')
-        time.sleep(0.01)
-        CCpad(pad1, 0, dest = 'Arturia')
-    for pad2 in range(49,41,-1):
-        CCpad(pad2, 127, dest = 'Arturia')
-        time.sleep(0.01)
-        maxwellccs.cc(pad2, 0, dest = 'Arturia')
-    CCpad(31, 127, dest = 'Arturia')
-    time.sleep(0.01)
-    CCpad(31, 0, dest = 'Arturia')
-    '''
+    pass
 
 
 

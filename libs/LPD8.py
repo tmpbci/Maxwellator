@@ -379,11 +379,11 @@ def UpdatePatch(patchnumber):
         else:
             SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/lpd8/'+macroname+'/line1', [macrocode])
      
-
+# update LPD8 TouchOSC UI
 def UpdateCC(ccnumber, value, laser = 0):
 
-    #print('LPD8 UpdateCC', ccnumber, value)
-    # update iPad UI
+       
+    # print('LPD8 UpdateCC', ccnumber, value)
     for macronumber in range(nbmacro):
         macrocode = macros[gstt.lpd8Layers[gstt.lpd8Layer]][macronumber]["code"]
         

@@ -1,0 +1,455 @@
+$rev R1 ; Firmware 1.10; BC Manager 4.0.2.1
+$global
+  .midimode U-3
+  .startup last
+  .footsw auto
+  .rxch off
+  .txinterval 2
+  .deadtime 0
+$preset
+  .name 'Preset 1                '
+;~textcolor=00000000
+  .snapshot off
+  .request off
+  .egroups 4
+  .fkeys on
+  .lock off
+;~disabledbackcolor=00C0C0C0
+  .init
+$encoder 9 ;Electr. X
+  .easypar CC 16 103 0 127 absolute
+  .showvalue on
+  .mode 1dot
+  .default 0
+$encoder 10 ;Electri. Y
+  .easypar CC 16 103 5 127 absolute
+  .showvalue on
+  .mode 1dot
+  .default 0
+$encoder 11 ;Electr. Cutoff
+  .easypar CC 16 74 0 127 absolute
+  .showvalue on
+  .mode 1dot
+  .default 0
+$encoder 12 ;Electr. Reson
+  .easypar CC 16 71 0 127 absolute
+  .showvalue off
+  .mode 1dot
+  .default 0
+$encoder 13 ;Electr. Relea
+  .easypar CC 16 72 0 127 absolute
+  .showvalue on
+  .mode 1dot
+  .default 0
+$encoder 14 ;Electr. Atta
+  .easypar CC 16 73 0 127 absolute
+  .showvalue on
+  .mode 1dot
+  .default 0
+$encoder 33 ;LXfr
+  .easypar CC 1 1 0 127 absolute
+  .showvalue on
+  .mode 1dot
+  .default 0
+$encoder 34 ;LXam
+  .easypar CC 1 3 0 127 absolute
+  .showvalue on
+  .mode 1dot
+  .default 0
+$encoder 35 ;LXpm
+  .easypar CC 1 5 0 127 absolute
+  .showvalue on
+  .mode 1dot
+  .default 0
+$encoder 36 ;TraXSpeed 112
+  .easypar CC 1 112 0 127 absolute
+  .showvalue on
+  .mode 1dot
+  .default 0
+$encoder 37 ;RotXSpeed
+  .easypar CC 1 100 0 127 absolute
+  .showvalue on
+  .mode 1dot
+  .default 0
+$encoder 38 ;RXfr
+  .easypar CC 1 37 0 127 absolute
+  .showvalue on
+  .mode 1dot
+  .default 0
+$encoder 39 ;RXam
+  .easypar CC 1 39 0 127 absolute
+  .showvalue on
+  .mode 1dot
+  .default 0
+$encoder 40 ;RXpm
+  .easypar CC 1 41 0 127 absolute
+  .showvalue on
+  .mode 1dot
+  .default 0
+$encoder 41 ;LYfr 
+  .easypar CC 1 13 0 127 absolute
+  .showvalue on
+  .mode 1dot
+  .default 0
+$encoder 42 ;LYam
+  .easypar CC 1 15 0 127 absolute
+  .showvalue on
+  .mode 1dot
+  .default 0
+$encoder 43 ;LYpm
+  .easypar CC 1 17 0 127 absolute
+  .showvalue on
+  .mode 1dot
+  .default 0
+$encoder 44 ;TraYSpeed
+  .easypar CC 1 116 0 127 absolute
+  .showvalue on
+  .mode 1dot
+  .default 0
+$encoder 45 ;RotYSpeed
+  .easypar CC 1 104 0 127 absolute
+  .showvalue on
+  .mode 1dot
+  .default 0
+$encoder 46 ;RYfr
+  .easypar CC 1 49 0 127 absolute
+  .showvalue on
+  .mode 1dot
+  .default 0
+$encoder 47 ;RYam
+  .easypar CC 1 51 0 127 absolute
+  .showvalue on
+  .mode 1dot
+  .default 0
+$encoder 48 ;RYpm
+  .easypar CC 1 53 0 127 absolute
+  .showvalue on
+  .mode 1dot
+  .default 0
+$encoder 49 ;Mixer
+  .easypar CC 1 90 0 127 absolute
+  .showvalue on
+  .mode 1dot
+  .default 0
+$encoder 50 ;Scale
+  .easypar CC 1 98 0 127 absolute
+  .showvalue on
+  .mode 1dot
+  .default 0
+$encoder 52 ;TraZspeed
+  .easypar CC 1 120 0 127 absolute
+  .showvalue on
+  .mode 1dot
+  .default 0
+$encoder 53 ;RotZSpeed
+  .easypar CC 1 108 0 127 absolute
+  .showvalue on
+  .mode 1dot
+  .default 0
+$encoder 55 ;Dupl
+  .easypar CC 1 87 0 127 absolute
+  .showvalue on
+  .mode 1dot
+  .default 0
+$encoder 56 ;DuplAng
+  .easypar CC 1 88 0 127 absolute
+  .showvalue on
+  .mode 1dot
+  .default 0
+$button 37
+  .easypar NOTE 1 66 1 toggleon
+  .showvalue on
+  .default 0
+$button 40 ;Tempo
+  .easypar NOTE 16 127 1 toggleon
+  .showvalue on
+  .default 3
+$store 1
+$preset
+  .name '                        '
+  .snapshot off
+  .request off
+  .egroups 4
+  .fkeys on
+  .lock off
+  .init
+$store 2
+$preset
+  .name '                        '
+  .snapshot off
+  .request off
+  .egroups 4
+  .fkeys on
+  .lock off
+  .init
+$store 3
+$preset
+  .name '                        '
+  .snapshot off
+  .request off
+  .egroups 4
+  .fkeys on
+  .lock off
+  .init
+$store 4
+$preset
+  .name '                        '
+  .snapshot off
+  .request off
+  .egroups 4
+  .fkeys on
+  .lock off
+  .init
+$store 5
+$preset
+  .name '                        '
+  .snapshot off
+  .request off
+  .egroups 4
+  .fkeys on
+  .lock off
+  .init
+$store 6
+$preset
+  .name '                        '
+  .snapshot off
+  .request off
+  .egroups 4
+  .fkeys on
+  .lock off
+  .init
+$store 7
+$preset
+  .name '                        '
+  .snapshot off
+  .request off
+  .egroups 4
+  .fkeys on
+  .lock off
+  .init
+$store 8
+$preset
+  .name '                        '
+  .snapshot off
+  .request off
+  .egroups 4
+  .fkeys on
+  .lock off
+  .init
+$store 9
+$preset
+  .name '                        '
+  .snapshot off
+  .request off
+  .egroups 4
+  .fkeys on
+  .lock off
+  .init
+$store 10
+$preset
+  .name '                        '
+  .snapshot off
+  .request off
+  .egroups 4
+  .fkeys on
+  .lock off
+  .init
+$store 11
+$preset
+  .name '                        '
+  .snapshot off
+  .request off
+  .egroups 4
+  .fkeys on
+  .lock off
+  .init
+$store 12
+$preset
+  .name '                        '
+  .snapshot off
+  .request off
+  .egroups 4
+  .fkeys on
+  .lock off
+  .init
+$store 13
+$preset
+  .name '                        '
+  .snapshot off
+  .request off
+  .egroups 4
+  .fkeys on
+  .lock off
+  .init
+$store 14
+$preset
+  .name '                        '
+  .snapshot off
+  .request off
+  .egroups 4
+  .fkeys on
+  .lock off
+  .init
+$store 15
+$preset
+  .name '                        '
+  .snapshot off
+  .request off
+  .egroups 4
+  .fkeys on
+  .lock off
+  .init
+$store 16
+$preset
+  .name '                        '
+  .snapshot off
+  .request off
+  .egroups 4
+  .fkeys on
+  .lock off
+  .init
+$store 17
+$preset
+  .name '                        '
+  .snapshot off
+  .request off
+  .egroups 4
+  .fkeys on
+  .lock off
+  .init
+$store 18
+$preset
+  .name '                        '
+  .snapshot off
+  .request off
+  .egroups 4
+  .fkeys on
+  .lock off
+  .init
+$store 19
+$preset
+  .name '                        '
+  .snapshot off
+  .request off
+  .egroups 4
+  .fkeys on
+  .lock off
+  .init
+$store 20
+$preset
+  .name '                        '
+  .snapshot off
+  .request off
+  .egroups 4
+  .fkeys on
+  .lock off
+  .init
+$store 21
+$preset
+  .name '                        '
+  .snapshot off
+  .request off
+  .egroups 4
+  .fkeys on
+  .lock off
+  .init
+$store 22
+$preset
+  .name '                        '
+  .snapshot off
+  .request off
+  .egroups 4
+  .fkeys on
+  .lock off
+  .init
+$store 23
+$preset
+  .name '                        '
+  .snapshot off
+  .request off
+  .egroups 4
+  .fkeys on
+  .lock off
+  .init
+$store 24
+$preset
+  .name '                        '
+  .snapshot off
+  .request off
+  .egroups 4
+  .fkeys on
+  .lock off
+  .init
+$store 25
+$preset
+  .name '                        '
+  .snapshot off
+  .request off
+  .egroups 4
+  .fkeys on
+  .lock off
+  .init
+$store 26
+$preset
+  .name '                        '
+  .snapshot off
+  .request off
+  .egroups 4
+  .fkeys on
+  .lock off
+  .init
+$store 27
+$preset
+  .name '                        '
+  .snapshot off
+  .request off
+  .egroups 4
+  .fkeys on
+  .lock off
+  .init
+$store 28
+$preset
+  .name '                        '
+  .snapshot off
+  .request off
+  .egroups 4
+  .fkeys on
+  .lock off
+  .init
+$store 29
+$preset
+  .name '                        '
+  .snapshot off
+  .request off
+  .egroups 4
+  .fkeys on
+  .lock off
+  .init
+$store 30
+$preset
+  .name '                        '
+  .snapshot off
+  .request off
+  .egroups 4
+  .fkeys on
+  .lock off
+  .init
+$store 31
+$preset
+  .name '                        '
+  .snapshot off
+  .request off
+  .egroups 4
+  .fkeys on
+  .lock off
+  .init
+$store 32
+$preset
+  .name 'Preset0                 '
+  .snapshot off
+  .request off
+  .egroups 4
+  .fkeys on
+  .lock off
+  .init
+$end

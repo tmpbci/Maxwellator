@@ -222,9 +222,15 @@ def FromOSC(path, args):
                 SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/pad/r'+ str(number) +'/button', [1])
                 #RightUpdate()
 
- 
 
-        #padCC('m'+path[2:4], int(args[0]))
+            if path.find('/button') > -1:
+                       #number = NoteXY(int(path[3:4]),int(path[2:3]))
+               #print()
+               if path.find('/prev') > -1:
+                   PLayer()
+                   
+               elif path.find('/next') > -1:
+                   NLayer()
 
 
 #
@@ -529,17 +535,20 @@ def UpdateDisplay():
                 SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/pad/' + macroname, [macrocode])
             #macros[gstt.LaunchpadLayers[gstt.LaunchpadLayer]][macronumber]["code"]
 
+# Update one CC value on TouchOSC UI and BCR 2000
 def UpdateCC(ccnumber, value, laser = 0):
 
     #print('Launchpad UpdateCC', ccnumber, value)
-    # update iPad UI
     for macronumber in range(nbmacro):
         macrocode = macros[gstt.LaunchpadLayers[gstt.LaunchpadLayer]][macronumber]["code"]
         
         if macrocode == maxwellccs.maxwell['ccs'][ccnumber]['Function']:
            
             macroname = macros[gstt.LaunchpadLayers[gstt.LaunchpadLayer]][macronumber]["name"]
+            
+            # Update TouchOSC UI
             SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/pad/'+macroname+'/value', [format(gstt.ccs[laser][ccnumber], "03d")])
+
             break
 
 def ChangeLayer(layernumber, laser = 0):
@@ -552,6 +561,18 @@ def ChangeLayer(layernumber, laser = 0):
     
     UpdateDisplay()
     
+def NLayer():
+
+    print(gstt.LaunchpadLayer + 1, len(gstt.LaunchpadLayers))
+    if gstt.LaunchpadLayer + 1 < len(gstt.LaunchpadLayers):
+        ChangeLayer(gstt.LaunchpadLayer + 1)
+
+def PLayer():
+
+    if gstt.LaunchpadLayer != 0:
+        ChangeLayer(gstt.LaunchpadLayer - 1)
+
+
 
 #       
 # Events from Midi
@@ -637,9 +658,10 @@ def LedOn(number):
     macrotype = macros[gstt.LaunchpadLayers[gstt.LaunchpadLayer]][number]["type"]
     print('Launchpad Ledon number', number,'code',macrocode,"maxled",number%8+16*(number//7))
 
-    # Patch 
+    # Maxwell Patch change
     if macrocode == "patch":
         realnumber = number%8+16*(number//7)
+
         # If patch exist in loaded maxwell patchs
         if (str(realnumber+1) in gstt.patchs['pattrstorage']['slots']) == True:
             print('Launchpad ledon', number, '/pad/' + macros[gstt.LaunchpadLayers[gstt.LaunchpadLayer]][realnumber]["name"]+'/led')
@@ -647,9 +669,9 @@ def LedOn(number):
             #PadNoteOn(gstt.patchnumber[0],127)
             # Change color of pushed led
             bhoreal.NoteOn(realnumber, 127)
-            
             SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/bhoreal/' +macros[gstt.LaunchpadLayers[gstt.LaunchpadLayer]][realnumber]["name"]+'/button', [1])
             bhoreal.NoteOn(gstt.patchnumber[0],18)
+
             PadNoteOn(number, 21)
             SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/bhoreal/' +macros[gstt.LaunchpadLayers[gstt.LaunchpadLayer]][gstt.patchnumber[0]]["name"]+'/button', [0])
             SendOSC(gstt.computerIP[gstt.lasernumber], 8090, '/bhoreal/note', realnumber)

@@ -258,17 +258,20 @@ def DisplayUpdate():
             else:
                 SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/bhoreal/' + macros[gstt.BhorealLayers[gstt.BhorealLayer]][led]["name"], [macrocode])
 
+# Update one CC value on TouchOSC Bhoreal UI
 def UpdateCC(ccnumber, value, laser = 0):
 
-    #print('Bhoreal UpdateCC', ccnumber, value)
-    # update iPad UI
+
+    # print('Bhoreal UpdateCC', ccnumber, value)
     for macronumber in range(nbmacro):
         macrocode = macros[gstt.BhorealLayers[gstt.BhorealLayer]][macronumber]["code"]
         
         if macrocode == maxwellccs.maxwell['ccs'][ccnumber]['Function']:
            
             macroname = macros[gstt.BhorealLayers[gstt.BhorealLayer]][macronumber]["name"]
+            # Update TouchOSC Bhoreal UI
             SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/bhoreal/'+macroname+'/value', [format(gstt.ccs[laser][ccnumber], "03d")])
+            
             break
 
 # Update Laser 

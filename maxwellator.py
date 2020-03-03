@@ -6,7 +6,7 @@
 """
 
 Maxwellator
-v0.2.3
+v0.2.3b
 
 
 LICENCE : CC
@@ -50,7 +50,7 @@ from OSC3 import OSCServer, OSCClient, OSCMessage
 print ("")
 print ("")
 print ("")
-print ("Maxwellator v0.2.2")
+print ("Maxwellator v0.2.3b")
 print ("Loading modules and auto configuring...")
 
 #myHostName = socket.gethostname()
@@ -65,7 +65,7 @@ r = redis.StrictRedis(host='127.0.0.1', port=6379, db=0)
 from rtmidi.midiconstants import (CHANNEL_PRESSURE, CONTROLLER_CHANGE, NOTE_ON, NOTE_OFF,
                                   PITCH_BEND, POLY_PRESSURE, PROGRAM_CHANGE)
 
-import gstt, midi3, beatstep, laser, LPD8, C4, sequencer
+import gstt, midi3, beatstep, laser, LPD8, C4, sequencer, bcr
 import binascii
 
 midi3.check()
@@ -276,12 +276,16 @@ def OSChandler(path, tags, args, source):
         #print('Incoming OSC Beatstep with path', path[8:])
         beatstep.FromOSC(path[9:],args)
 
+    if path.find('/bcr') == 0:
+        #print('Incoming OSC BCR with path', path[8:])
+        bcr.FromOSC(path[4:],args)
+
     if path.find('/pad') == 0:
-        print('Default : Incoming OSC launchpad with path', path[4:])
+        #print('Default : Incoming OSC launchpad with path', path[4:])
         launchpad.FromOSC(path[4:],args)
 
     if path.find('/laser') == 0:
-        print('Incoming OSC laser with path', path[6:], "args", args)
+        #print('Incoming OSC laser with path', path[6:], "args", args)
         laser.FromOSC(path[6:], [1.0])
 
     if path[:4] =='/cc/':
@@ -291,11 +295,11 @@ def OSChandler(path, tags, args, source):
         #maxwellccs.UpdateCCs(int(path[4:]), int(args[0]))
 
     if path.find('/LPD8') == 0:
-        print('Incoming OSC LPD8 with path', path[5:])
+        #print('Incoming OSC LPD8 with path', path[5:])
         LPD8.FromOSC(path[5:],args)
 
     if path.find('/C4') == 0:
-        print('Default : Incoming OSC C4 with path', path[4:])
+        #print('Default : Incoming OSC C4 with path', path[4:])
         C4.FromOSC(path[4:],args)
 
     if path.find('/song/prev') > -1:
@@ -322,6 +326,7 @@ def OSCNote(path, tags, args, source):
     #print('New patch received',args)
     maxwellccs.runPatch(gstt.patchnumber[0])
     beatstep.UpdatePatch(gstt.patchnumber[0])
+    bcr.UpdatePatch(gstt.patchnumber[0])
     C4.UpdatePatch(gstt.patchnumber[0])
     launchpad.UpdateDisplay()
     bhoreal.DisplayUpdate()
@@ -478,11 +483,8 @@ def senddmx0():
 def senddmx(dmxchannel, value):
 
     print("Setting dmxchannel %d to %d" % (i,value))
-    #mydmx.setChannel((dmxchannel + 1 ), value, autorender=True)
-    # calling render() is better more reliable to actually sending data
-    # Some strange bug. Need to add one to required dmx channel is done automatically
-    mydmx.setChannel((dmxchannel ), value)
-    mydmx.render()
+    mydmx.set_channel(dmxchannel, value)  # Sets DMX channel 1 to max 255
+    mydmx.submit()  # Sends the update to the controller
     print("Sending DMX Channel : ", str(dmxchannel), " value : ", str(value))
 
 def updateDmxValue(dmxchannel, val):
@@ -494,6 +496,8 @@ def updateDmxValue(dmxchannel, val):
     # DMX UPDATE!!! WOW!!!
     if dmxstates[dmxchannel] != val:
         dmxstates[dmxchannel] = val
+        print()
+        print("Incoming Artnet change...")
         print("updating DMX channel", dmxchannel, "with ", val )
 
         if mydmx != False:
@@ -519,6 +523,7 @@ def StartArtnet():
     for i in range(1,514):
         dmxstates.append(-1)
             
+
     # Search for DMX devices
     #print("Available serial devices...")
     ports = list(list_ports.comports())
@@ -531,20 +536,20 @@ def StartArtnet():
         print(i, ":", p)
     
         if p[0]== "/dev/ttyUSB0":
-          portname[portnumber] = p[0]
+          gstt.dmxport[portnumber] = p[0]
           portnumber += 1
     
     
         if platform == 'darwin' and p[1].find("DMX USB PRO") != -1:
-          portname[portnumber] = p[0]
+          gstt.dmxport[portnumber] = p[0]
           portnumber += 1
     
     #print("Found", portnumber, "DMX devices")
     
     if portnumber > 0:
     
-        print("with serial names", portname)
-        mydmx = pysimpledmx.DMXConnection(gstt.serdmx[0])
+        print("with serial names", gstt.dmxport)
+        mydmx = pysimpledmx.DMXConnection(gstt.dmxport[portnumber])
         senddmx0()
         time.sleep(1)
     
@@ -701,7 +706,8 @@ def Live():
                     messageCC = messageCC.decode('utf_8')
                     artnetCC = messageCC.split(":")               
                     if len(artnetCC) > 1:
-                        cc(int(artnetCC[0]), round(int(artnetCC[1])/2))
+                        print("incoming Artnet will change cc", artnetCC[0], "to", round(int(artnetCC[1])/2) )
+                        maxwellccs.cc(int(artnetCC[0]), round(int(artnetCC[1])),  dest="to Maxwell 1")
                         print()
          
     except Exception:
@@ -775,9 +781,10 @@ def Program():
         while True:
 
             OSCframe()
-            print("Please put Maxwell in Midi learn mode.")
+            print()
+            print("Please put Maxwell in Midi LEARN mode.")
 
-            path = input("What function ? (q to quit) : ")
+            path = input("Type function for Maxwell to learn ? (q to quit) : ")
             if path == "q" or path == "Q":
                 break
             
@@ -1179,22 +1186,28 @@ oscserver.addMsgHandler( "/mixer/operation", OSCMixerOperation )
 maxwellccs.LoadCC()
 LoadCC()
 laser.ResetUI()
+print("CurrentBPM :", gstt.currentbpm)
 #maxwellccs.runPatch(0)
-print ("Beatstep Layer :",gstt.BeatstepLayer)
+
+print()
+print("Updating TouchOSC UI...")
+#print ("Beatstep Layer :",gstt.BeatstepLayer)
 beatstep.ChangeLayer(gstt.BeatstepLayer)
-print ("Beatstep Layer :",gstt.BeatstepLayers[gstt.BeatstepLayer])
+#print ("Beatstep Layer :",gstt.BeatstepLayers[gstt.BeatstepLayer])
 LPD8.ChangeLayer(gstt.lpd8Layer)
 launchpad.ChangeLayer(gstt.LaunchpadLayer)
 bhoreal.ChangeLayer(gstt.BhorealLayer)
 bhoreal.NoteOn(gstt.patchnumber[0],0)
 C4.ChangeLayer(gstt.C4Layer)
 sequencer.ChangeLayer(gstt.SequencerLayer)
+bcr.ChangeLayer(gstt.BCRLayer)
 SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/laser/patch/0', [0])
 SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/laser/patch/1', [0])
 SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/laser/patch/2', [0])
 SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/laser/patch/3', [0])
 SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/laser/led/'+str(gstt.lasernumber), [1])
 SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/song/status', [gstt.songs[gstt.song]])
+
 print()
 print("Running in",mode,"mode")
 print()

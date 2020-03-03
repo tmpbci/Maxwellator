@@ -28,14 +28,14 @@
 
 "Midi1": [
    {
-    "_comment": "Midi1 First encoder line",
+    "_comment": "Midi1 Layer First encoder line",
     "name": "m10",
     "laser": 0,
     "type": "encoder",
     "code": "/osc/left/X/freq"
   },
   {
-    "_comment": "Midi1",
+    "_comment": "Midi1 Layer",
     "name": "m11",
     "laser": 0,
     "type": "encoder",
@@ -93,7 +93,7 @@
 
 
   {
-    "_comment": "Midi1 Second encoder line",
+    "_comment": "Midi1 Layer Second encoder line",
     "name": "m20",
     "laser": 0,
     "type": "encoder",
@@ -160,7 +160,7 @@
 
 
   {
-    "_comment": "Midi1 3rd encoder line",
+    "_comment": "Midi1 Layer 3rd encoder line",
     "name": "m30",
     "laser": 0,
     "type": "encoder",
@@ -223,7 +223,7 @@
   },
 
   {
-    "_comment": "Midi1 4th encoder line",
+    "_comment": "Midi1 Layer 4th encoder line",
     "name": "m40",
     "laser": 0,
     "type": "encoder",
@@ -287,7 +287,7 @@
 
 
  {
-    "_comment": "Midi1 5th encoder line",
+    "_comment": "Midi1 Layer 5th encoder line",
     "name": "m50",
     "laser": 0,
     "type": "encoder",
@@ -356,14 +356,14 @@
 
 "Midi2": [
   {
-    "_comment": "Midi2 Main encoder ",
+    "_comment": "Midi2 Layer Main encoder ",
     "name": "m10",
     "laser": 0,
     "type": "encoder",
     "code": "/scaler/scale"
   },
   {
-    "_comment": "Midi2 First encoder line Group 1",
+    "_comment": "Midi2 Layer First encoder line Group 1",
     "name": "m11",
     "laser": 0,
     "type": "encoder",
@@ -414,7 +414,7 @@
 
 
   {
-    "_comment": "Midi2 Second encoder line Group 1",
+    "_comment": "Midi2 Layer Second encoder line Group 1",
     "name": "m21",
     "laser": 0,
     "type": "encoder",
@@ -465,7 +465,7 @@
 
 
   {
-    "_comment": "Midi2 first led line Group 1",
+    "_comment": "Midi2 Layer first led line Group 1",
     "name": "m31",
     "init":  0,
     "choices": 4,
@@ -563,7 +563,7 @@
   },
 
   {
-    "_comment": "Midi2 second led line Group 1",
+    "_comment": "Midi2 Layer second led line Group 1",
     "name": "m41",
     "init":  0,
     "choices": 4,
@@ -664,7 +664,7 @@
 
 
   {
-    "_comment": "Midi2 5th encoder line",
+    "_comment": "Midi2 Layer 5th encoder line",
     "name": "m50",
     "laser": 0,
     "type": "encoder",

@@ -26,12 +26,29 @@
 
 
 
+
+"Specials": [
+  {
+    "_comment": "Auto tempo from notes",
+    "name": "autotempo",
+    "songname": "song1",
+    "chanIN" : 1,
+    "notes" : "all",
+    "notetype" : "on",
+    "code": "maxwellccs.autotempo",
+    "value" : 105,
+    "laser" : 0
+  }
+],
+
+
+
 "ZnotesLcc": [
   {
     "_comment": "Midi note IN, Laser CC OUT ",
     "name": "bassON",
     "songname": "song1",
-    "chanIN" : "all",
+    "chanIN" : 1,
     "notes" : "all",
     "notetype" : "on",
     "code": "/scaler/scale",
@@ -41,10 +58,31 @@
   {
     "name": "bassOFF",
     "songname": "song1",
-    "chanIN" : "all",
+    "chanIN" : 1,
     "notes" : "all",
     "notetype" : "off",
     "code": "/scaler/scale",
+    "value" : 100,
+    "laser" : 0
+  },
+
+  {
+    "name": "snareON",
+    "songname": "song1",
+    "chanIN" : 10,
+    "notes" : "all",
+    "notetype" : "on",
+    "code": "/translator/X/amt",
+    "value" : 105,
+    "laser" : 0
+  },
+  {
+    "name": "snareOFF",
+    "songname": "song1",
+    "chanIN" : 10,
+    "notes" : "all",
+    "notetype" : "off",
+    "code": "/translator/X/amt",
     "value" : 100,
     "laser" : 0
   }
@@ -69,6 +107,18 @@
     "ccs" : "all",
     "code": "/scaler/scale",
     "value" : 50,
+    "laser" : 0
+  },
+
+  {
+    "_comment": "Electribe CC Display",
+    "name": "ELCC",
+    "songname": "song1",
+    "chanIN" : "all",
+    "ccs" : "all",
+    "notetype" : "on",
+    "code": "maxwellccs.ELCC",
+    "value" : 105,
     "laser" : 0
   }
 ],
