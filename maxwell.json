@@ -801,9 +801,21 @@
   },
       {
     "Function": "/draw/mode",
-    "init": "64",
+    "init": "solid",
     "maxwell": "laser-drawmode"
+  },
+      {
+    "Function": "/points/number",
+    "init": "64",
+    "maxwell": "numpoints"
+  },
+      {
+    "Function": "/points/x10",
+    "init": "0",
+    "maxwell": "points_x_10"
   }
+
+
 
 
 ]

@@ -85,6 +85,16 @@
     "code": "/translator/X/amt",
     "value" : 100,
     "laser" : 0
+  },
+  {
+    "name": "BangBang",
+    "songname": "all",
+    "chanIN" : 1,
+    "notes" : "all",
+    "notetype" : "on",
+    "code": "maxwellccs.bangbang",
+    "value" : 105,
+    "laser" : 0
   }
 ],
 

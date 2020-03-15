@@ -16,7 +16,7 @@ BhorealLayers = ['Maxwell1','Maxwell2','Maxwell3']
 LaunchpadLayer = 0
 LaunchpadLayers = ['Maxwell1','Maxwell2','OS']
 
-BeatstepLayer = 0
+BeatstepLayer = 2
 BeatstepLayers = ['XY','TraRot',"HueInt","Zregulators"]
 
 BCRLayer = 0
@@ -43,14 +43,30 @@ TouchOSCIP = '192.168.2.67' 	# iPad 1
 #TouchOSCIP = '192.168.2.156' 	# iPad mini
 #TouchOSCIP = '192.168.43.146' 	# iPad mini @ fuzz
 #TouchOSCIP = '192.168.151.213' # CCN
+#TouchOSCIP = '127.0.0.1'		# Localhost
 
 myIP= '127.0.0.1'
-computerIP = ['127.0.0.1','192.168.2.42','192.168.2.52','127.0.0.1',
-              '127.0.0.1','127.0.0.1','127.0.0.1','127.0.0.1']
+computerIP = ['192.168.2.43','192.168.2.42','192.168.2.166',
+              '127.0.0.1','127.0.0.1','127.0.0.1','127.0.0.1', '127.0.0.1']
 basemidichannel = 1
 lasernumber = 0
 patchnumber = [0,0,0,0]
+patchnext = [1,1,1,1]
+
+morphsteps = 50
+morphing = -1
+morphCCinc = [0.0] * 140
+morphCC = [0] * 140
+
+# reset CC mode OFF
+resetCC = -1
+
+# Bang mode OFF
+bang = -1
+bangbang = -1
+
 ccs =[[0] * 140] * 4
+
 #PatchFiles = ["3d.json","3d.json","3d.json","3d.json"]
 PatchFiles = ["3d.json","rands.json","rands.json","rands.json"]
 Midikeyboards = ["midikeys","Samson Carbon49"]

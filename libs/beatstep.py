@@ -70,7 +70,7 @@ BEATSTEPqueue = Queue()
 
 mode = "maxwell"
 mididest = 'BeatStep'
-gstt.BeatstepLayer = 0
+# gstt.BeatstepLayer = 0
 
 midichannel = 1
 CChannel = 0

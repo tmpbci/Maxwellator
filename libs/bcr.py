@@ -26,6 +26,16 @@ Possible encoder & buttons functions (goes to "code" in bcr.json)
     subprocess.call(['/usr/bin/open','/Applications/iTerm.app'])
 
 
+Modes avances : cf bcr.json
+
+Auto tempo      : chan 16 note 127 note on  
+Mode resetCC    : chan 16 note 126 ON sur note on / OFF sur note off
+Mode Bang       : chan 16 note 125 ON sur note on / OFF sur note off
+
+Maxwell functions 
+
+Color type      : chan 16 CC 123 LFO sur 127 / Solid sur 0
+
 
 by Sam Neurohack 
 from /team/laser
@@ -170,10 +180,10 @@ def MidinProcess(BCRqueue):
 
         BCRqueue_get = BCRqueue.get
         msg = BCRqueue_get()
-        print("BCR got", msg)
+        #print("BCR got", msg)
 
-        # Noteon message (will trigger even if midivel = 0)
-        if NOTE_ON -1 < msg[0] < 160:
+        # Noteon message on all midi channels   
+        if NOTE_ON -1 < msg[0] < 160 and msg[2] !=0 :
   
             # note mode
             #ModeNote(msg[1], msg[2], mididest)
@@ -202,14 +212,55 @@ def MidinProcess(BCRqueue):
                         
                         # python function on velocity > 0
                         if macrocode.count('.') > 0 and MidiVel > 0:
-                            print(macrocode+"("+str(MidiNote)+')')
+                            #print(macrocode+"("+str(MidiNote)+')')
                             eval(macrocode+"("+str(MidiNote)+')')
 
                         # Maxwell function
                         elif macrocode.count('/') > 0:
-                            print("Specials NoteON got Song :", macros["Specials"][counter]["songname"],"  IN Channel :", macros["Specials"][counter]["chanIN"],"  Code :", macrocode, "  CC", maxwellccs.FindCC(macros["Specials"][counter]["code"]), "  value :",macros["Specials"][counter]["value"], "  laser :", macros["ZccLcc"][counter]["laser"] )
+                            #print("Specials NoteON got Song :", macros["Specials"][counter]["songname"],"  IN Channel :", macros["Specials"][counter]["chanIN"],"  Code :", macrocode, "  CC", maxwellccs.FindCC(macros["Specials"][counter]["code"]), "  value :",macros["Specials"][counter]["value"], "  laser :", macros["ZccLcc"][counter]["laser"] )
                             midi3.MidiMsg((CONTROLLER_CHANGE, maxwellccs.FindCC(macros["Specials"][counter]["code"]), macros["Specials"][counter]["value"]), mididest, laser = macros["Specials"][counter]["laser"])
 
+
+
+        # Note Off or Note with 0 velocity on all midi channels
+        if NOTE_OFF -1 < msg[0] < 144 or (NOTE_OFF -1 < msg[0] < 160 and msg[2] == 0):
+
+            if msg[0] > 144:
+                MidiChannel = msg[0]-143
+            else:
+                MidiChannel = msg[0]-128
+            
+            MidiNote = msg[1]
+            MidiVel = msg[2]
+
+            print ("NOTE OFF :", MidiNote, "Channel", MidiChannel)
+            
+
+            # Specials features ?
+            if len(macros["Specials"]) > 0:
+                            
+                for counter in range(len(macros["Specials"])):
+
+                    # print()
+                    # print("Name", macros["Specials"][counter]["name"])
+                    # print("Song", macros["Specials"][counter]["songname"], gstt.songs[gstt.song])    # name, "all"
+                    # print("Channel", macros["Specials"][counter]["chanIN"], MidiChannel)             # number, "all"
+                    # print("Note", macros["Specials"][counter]["notes"], MidiNote)                    # number, "all"
+                    # print("Notetype", macros["Specials"][counter]["notetype"], "on")                 # "on", "off", "all"
+
+                    if (macros["Specials"][counter]["songname"] == gstt.songs[gstt.song] or macros["Specials"][counter]["songname"] == "all") and (macros["Specials"][counter]["chanIN"] == MidiChannel or macros["Specials"][counter]["chanIN"] == "all") and  (macros["Specials"][counter]["notes"] == MidiNote or macros["Specials"][counter]["notes"] == "all")  and  (macros["Specials"][counter]["notetype"] == "off" or macros["Specials"][counter]["notetype"] == "all") :
+                        macrocode = macros["Specials"][counter]["code"]
+                        print("Specials function :",macros["Specials"][counter]["songname"], ":", macros["Specials"][counter]["name"], macrocode)
+                        
+                        # python function
+                        if macrocode.count('.') > 0:
+                            #print(macrocode+"("+str(MidiNote)+')')
+                            eval(macrocode+"("+str(MidiNote)+')')
+
+                        # Maxwell function
+                        elif macrocode.count('/') > 0:
+                            #print("Specials NoteON got :", macros["Specials"][counter]["songname"],"  IN Channel :", macros["Specials"][counter]["chanIN"],"  Code :", macrocode, "  CC", maxwellccs.FindCC(macros["Specials"][counter]["code"]), "  value :",macros["Specials"][counter]["value"], "  laser :", macros["ZccLcc"][counter]["laser"] )
+                            midi3.MidiMsg((CONTROLLER_CHANGE, maxwellccs.FindCC(macros["Specials"][counter]["code"]), macros["Specials"][counter]["value"]), mididest, laser = macros["Specials"][counter]["laser"])
 
 
 
@@ -222,8 +273,8 @@ def MidinProcess(BCRqueue):
             computer = int(msg[1])
 
 
-        # BCR2000 Encoders are on Midi Channel 1 : CCnumber is matrix name -> midi CC          
-        if msg[0] == CONTROLLER_CHANGE:
+        # CC on all Midi Channels         
+        if CONTROLLER_CHANGE -1 < msg[0] < 192:
 
             if computer == 0 or computer == 1:
 
@@ -232,10 +283,19 @@ def MidinProcess(BCRqueue):
                 MidiChannel = msg[0]-175
                 MidiCC = msg[1]
                 MidiVal = msg[2]
-                gstt.ccs[0][MidiCC] =  MidiVal
-                print("BCR CC change on channel :",MidiChannel, "CC", MidiCC, "Val", MidiVal)
-                #print("Change CC (in bcr) : path =", path, "CC :", midi3.FindCC(path), "is now ", gstt.ccs[0][MaxwellCC])
-                maxwellccs.cc(MidiCC, gstt.ccs[0][MidiCC] , dest ='to Maxwell 1')
+
+                if gstt.resetCC == 0:
+                    gstt.ccs[0][MidiCC] =  64
+                    print("BCR CC Reset on channel :",MidiChannel, "CC", MidiCC)
+                    #print("Change CC (in bcr) : path =", path, "CC :", midi3.FindCC(path), "is now ", gstt.ccs[0][MaxwellCC])
+                    maxwellccs.cc(MidiCC, 64 , midichannel = MidiChannel, dest ='to Maxwell 1')
+                    SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/status', ["CC", MidiCC, "to 64"])
+
+                else:
+                    gstt.ccs[0][MidiCC] =  MidiVal
+                    print("BCR CC change on channel :",MidiChannel, "CC", MidiCC, "Val", MidiVal)
+                    #print("Change CC (in bcr) : path =", path, "CC :", midi3.FindCC(path), "is now ", gstt.ccs[0][MaxwellCC])
+                    maxwellccs.cc(MidiCC, gstt.ccs[0][MidiCC] , midichannel = MidiChannel, dest ='to Maxwell 1')
 
                 #midi3.MidiMsg([CONTROLLER_CHANGE+MidiChannel-1, MidiCC, MidiVal], "to Maxwell 1")
                 # Encoder(macroname, macroargs)
@@ -282,7 +342,7 @@ def MidinProcess(BCRqueue):
                 SendOSC(gstt.computerIP[computer-1], gstt.MaxwellatorPort, '/cc', [int(msg[1]), int(msg[2])])
 
 
-
+        '''
         # BCR2000 Pads are on channel 10
         if msg[0] == CONTROLLER_CHANGE + 10 -1:
 
@@ -292,7 +352,7 @@ def MidinProcess(BCRqueue):
             
             padCC(macros[gstt.BCRLayers[gstt.BCRLayer]][macronumber]["name"],state)
         
-        '''
+
         # Midi Channel 10 : ccnumber is actual CC number 
         if msg[0] == CONTROLLER_CHANGE + 10 -1 and msg[2] > 0:
 
@@ -318,21 +378,22 @@ def MidinProcess(BCRqueue):
 def padCC(buttonname, state):
 
     macronumber = findMacros(buttonname, gstt.BCRLayers[gstt.BCRLayer])
-    macrotype = macros[gstt.BCRLayers[gstt.BCRLayer]][macronumber]["type"]
-    #print()
     print("padCC buttoname", buttonname,"in", gstt.BCRLayers[gstt.BCRLayer], "macronumber" , macronumber, "state", state)
-    
-    #if macronumber != -1:
+    macrotype = macros[gstt.BCRLayers[gstt.BCRLayer]][macronumber]["type"]
+    macrocode = macros[gstt.BCRLayers[gstt.BCRLayer]][macronumber]["code"]
+    typevalue = macrocode[macrocode.rfind('/')+1:]
+    #print("typevalue :", typevalue, macros[gstt.BCRLayers[gstt.BCRLayer]][macronumber] )
+    values = list(enumerate(maxwellccs.specificvalues[typevalue]))
+    #print("matrix :", buttonname, "macrocode :", macrocode, "typevalue :", typevalue,"macronumber :", macronumber, "values :", values, "cc :", maxwellccs.FindCC(macrocode) )
+    init = macros[gstt.BCRLayers[gstt.BCRLayer]][macronumber]["init"]
+
+ 
+    #print("matrix :", buttonname, "macrocode :", macrocode, "typevalue :", typevalue,"macronumber :", macronumber, "values :", values, "init :", init, "value :", values[init][1], "cc :", maxwellccs.FindCC(macrocode), "=", maxwellccs.specificvalues[typevalue][values[init][1]] )
 
     # Patch Led ?
     if state >0:
 
         SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/bcr/'+buttonname+'/button', [1])
-        macrocode = macros[gstt.BCRLayers[gstt.BCRLayer]][macronumber]["code"]
-        typevalue = macrocode[macrocode.rfind('/')+1:]
-        values = list(enumerate(maxwellccs.specificvalues[typevalue]))
-        init = macros[gstt.BCRLayers[gstt.BCRLayer]][macronumber]["init"]
-        #print("matrix", buttonname, "macrocode", macrocode, "typevalue", typevalue,"macronumber", macronumber, "values", values, "init", init, "value", values[init][1], "cc", maxwellccs.FindCC(macrocode), "=", maxwellccs.specificvalues[typevalue][values[init][1]] )
         numbertime[macronumber] = time.time()
 
         # Toggle Button
@@ -342,11 +403,15 @@ def padCC(buttonname, state):
             if init == -2:
                 # goes ON
                 print(macrocode, 'ON')
+                SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/status', [macrocode+" ON"])
+                SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/bcr/status', [macrocode+" ON"])
                 maxwellccs.cc(maxwellccs.FindCC(macrocode), 127, 'to Maxwell 1')
                 macros[gstt.BCRLayers[gstt.BCRLayer]][macronumber]["init"] = -1
             else:
                 # goes OFF
                 print(macrocode, 'OFF')
+                SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/status', [macrocode+" OFF"])
+                SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/bcr/status', [macrocode+" OFF"])
                 maxwellccs.cc(maxwellccs.FindCC(macrocode), 0, 'to Maxwell 1')
                 macros[gstt.BCRLayers[gstt.BCRLayer]][macronumber]["init"] = -2
         
@@ -379,9 +444,9 @@ def padCC(buttonname, state):
             maxwellccs.cc(maxwellccs.FindCC(macrocode), maxwellccs.specificvalues[typevalue][values[init][1]], 'to Maxwell 1')
         '''
 
+    # Button released
     if state == 0:
-        # Button released
-        macrocode = macros[gstt.BCRLayers[gstt.BCRLayer]][macronumber]["code"]
+        
         #print('reselect button /bcr/'+buttonname+'/button')
         print('elapsed push :', buttonname, macrotype, macronumber, state, macrocode, time.time()-numbertime[macronumber])
         #numbertime[macronumber] = time.time()
@@ -390,8 +455,16 @@ def padCC(buttonname, state):
         if macronumber != -1 and macrotype == 'button':
             value = 0
  
-            print(macrocode+"("+str(value)+',"'+buttonname+'")')
-            eval(macrocode+"("+str(value)+',"'+buttonname+'")')
+            # python function
+            if macrocode.count('.') > 0:
+                print(macrocode+"("+str(value)+',"'+buttonname+'")')
+                eval(macrocode+"("+str(value)+',"'+buttonname+'")')
+
+            # Maxwell function
+            elif macrocode.count('/') > 0:
+                maxwellccs.cc(maxwellccs.FindCC(macrocode), maxwellccs.specificvalues[typevalue][values[init][1]], 'to Maxwell 1')
+
+
 
 # send a CC to a local BCR2000 (pads are on channel 10 with my BCR2000 presets)
 def CCpad(ccnumber, value, dest = mididest, channel = midichannel):
@@ -498,8 +571,8 @@ def UpdatePatch(patchnumber):
         # Code in maxwellccs library : skip "maxwellccs." display only Empty. maxwellccs.Empty will call maxwellccs.Empty() 
         elif macrocode.find('maxwellccs') ==0:
                 #print("BCR 2000",macronumber, macrocode, '/bcr/'+ macroname+'/line1', macrocode[11:])
-                SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/bcr/'+ macros[gstt.BCRLayers[gstt.BCRLayer]][macronumber]["name"]+'/line2', [macrocode[11:]])
-                SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/bcr/'+macros[gstt.BCRLayers[gstt.BCRLayer]][macronumber]["name"]+'/line1', [" "])
+                SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/bcr/'+ macros[gstt.BCRLayers[gstt.BCRLayer]][macronumber]["name"]+'/line2', [" "])
+                SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/bcr/'+macros[gstt.BCRLayers[gstt.BCRLayer]][macronumber]["name"]+'/line1', [macrocode[11:]])
                 SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/bcr/'+macros[gstt.BCRLayers[gstt.BCRLayer]][macronumber]["name"]+'/value', [format(gstt.ccs[macrolaser][macrocc], "03d")])
                 #print( '/bcr/'+macros[gstt.BCRLayers[gstt.BCRLayer]][macronumber]["name"]+'/value', [format(gstt.ccs[macrolaser][macrocc], "03d")])
         else:
@@ -559,7 +632,7 @@ def LoadMacros():
 
 
 # return macroname number for given type 'OS', 'Maxwell'
-def findMacros(macroname,macrotype):
+def findMacros(macroname, macrotype):
 
     #print("searching", macroname,'...')
     position = -1
@@ -598,7 +671,7 @@ def Start(port):
     Startline = [1, 3, 5, 112, 100, 37, 39, 41]
     # if pads are CC 0, 12, 36, 48
     for encoder in Startline:
-        for value in range(0, 127, 10):
+        for value in range(0, 127, 20):
 
             midi3.MidiMsg([CONTROLLER_CHANGE, encoder, value], mididest = 'BCR2000')
             time.sleep(0.01)

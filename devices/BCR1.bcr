@@ -16,6 +16,31 @@ $preset
   .lock off
 ;~disabledbackcolor=00C0C0C0
   .init
+$encoder 1 ;Mixer
+  .easypar CC 1 90 0 127 absolute
+  .showvalue on
+  .mode 1dot
+  .default 0
+$encoder 2 ;Scale
+  .easypar CC 1 98 0 127 absolute
+  .showvalue on
+  .mode 1dot
+  .default 0
+$encoder 3 ;Num Points
+  .easypar CC 2 11 0 127 absolute
+  .showvalue on
+  .mode 1dot
+  .default 0
+$encoder 7 ;Dupl
+  .easypar CC 1 87 0 127 absolute
+  .showvalue on
+  .mode 1dot
+  .default 0
+$encoder 8 ;DuplAng
+  .easypar CC 1 88 0 127 absolute
+  .showvalue on
+  .mode 1dot
+  .default 0
 $encoder 9 ;Electr. X
   .easypar CC 16 103 0 127 absolute
   .showvalue on
@@ -46,21 +71,159 @@ $encoder 14 ;Electr. Atta
   .showvalue on
   .mode 1dot
   .default 0
-$encoder 33 ;LXfr
+$encoder 33 ;L X freq
   .easypar CC 1 1 0 127 absolute
   .showvalue on
   .mode 1dot
   .default 0
-$encoder 34 ;LXam
+$encoder 34 ;L X amp
   .easypar CC 1 3 0 127 absolute
   .showvalue on
   .mode 1dot
   .default 0
-$encoder 35 ;LXpm
+$encoder 35 ;L X pm
   .easypar CC 1 5 0 127 absolute
   .showvalue on
   .mode 1dot
   .default 0
+$encoder 36 ;Tra X Amt
+  .easypar CC 1 114 0 127 absolute
+  .showvalue on
+  .mode 1dot
+  .default 0
+$encoder 37 ;Rot X Direct
+  .easypar CC 1 102 0 127 absolute
+  .showvalue on
+  .mode 1dot
+  .default 0
+$encoder 38 ;R X freq
+  .easypar CC 1 37 0 127 absolute
+  .showvalue on
+  .mode 1dot
+  .default 0
+$encoder 39 ;R X amp
+  .easypar CC 1 39 0 127 absolute
+  .showvalue on
+  .mode 1dot
+  .default 0
+$encoder 40 ;R X pm
+  .easypar CC 1 41 0 127 absolute
+  .showvalue on
+  .mode 1dot
+  .default 0
+$encoder 41 ;L Y freq
+  .easypar CC 1 13 0 127 absolute
+  .showvalue on
+  .mode 1dot
+  .default 0
+$encoder 42 ;L Y amp
+  .easypar CC 1 15 0 127 absolute
+  .showvalue on
+  .mode 1dot
+  .default 0
+$encoder 43 ;L Y pm
+  .easypar CC 1 17 0 127 absolute
+  .showvalue on
+  .mode 1dot
+  .default 0
+$encoder 44 ;Tra Y Amt
+  .easypar CC 1 118 0 127 absolute
+  .showvalue on
+  .mode 1dot
+  .default 0
+$encoder 45 ;Rot Y Direct
+  .easypar CC 1 106 0 127 absolute
+  .showvalue on
+  .mode 1dot
+  .default 0
+$encoder 46 ;R Y freq
+  .easypar CC 1 49 0 127 absolute
+  .showvalue on
+  .mode 1dot
+  .default 0
+$encoder 47 ;R Y amp
+  .easypar CC 1 51 0 127 absolute
+  .showvalue on
+  .mode 1dot
+  .default 0
+$encoder 48 ;R Y pm
+  .easypar CC 1 53 0 127 absolute
+  .showvalue on
+  .mode 1dot
+  .default 0
+$encoder 49 ;L Z freq 
+  .easypar CC 1 25 0 127 absolute
+  .showvalue on
+  .mode 1dot
+  .default 0
+$encoder 50 ;L Z amp
+  .easypar CC 1 27 0 127 absolute
+  .showvalue on
+  .mode 1dot
+  .default 0
+$encoder 51 ;L Z pm
+  .easypar CC 1 29 0 127 absolute
+  .showvalue on
+  .mode 1dot
+  .default 0
+$encoder 52 ;Tra Z Amt
+  .easypar CC 1 122 0 127 absolute
+  .showvalue on
+  .mode 1dot
+  .default 0
+$encoder 53 ;Rot Z Direct
+  .easypar CC 1 110 0 127 absolute
+  .showvalue on
+  .mode 1dot
+  .default 0
+$encoder 54 ;R Z freq
+  .easypar CC 1 61 0 127 absolute
+  .showvalue on
+  .mode 1dot
+  .default 0
+$encoder 55 ;R Z amp
+  .easypar CC 1 63 0 127 absolute
+  .showvalue on
+  .mode 1dot
+  .default 0
+$encoder 56 ;R Z pm
+  .easypar CC 1 65 0 127 absolute
+  .showvalue on
+  .mode 1dot
+  .default 0
+$button 37 ;   
+  .easypar NOTE 1 66 1 toggleon
+  .showvalue on
+  .default 0
+$button 38 ;DrawMode
+  .easypar CC 2 10 127 65 toggleon
+  .showvalue on
+  .default 0
+$button 39 ;ColorType
+  .easypar CC 1 123 0 127 toggleon
+  .showvalue on
+  .default 0
+$button 40 ;Tempo
+  .easypar NOTE 16 127 1 toggleoff
+  .showvalue on
+  .default 3
+$button 47 ;Bang
+  .easypar NOTE 16 125 127 toggleon
+  .showvalue on
+  .default 0
+$button 48 ;resetCC
+  .easypar NOTE 16 126 127 toggleon
+  .showvalue on
+  .default 0
+$store 1
+$preset
+  .name '                        '
+  .snapshot off
+  .request off
+  .egroups 4
+  .fkeys on
+  .lock off
+  .init
 $encoder 36 ;TraXSpeed 112
   .easypar CC 1 112 0 127 absolute
   .showvalue on
@@ -68,36 +231,6 @@ $encoder 36 ;TraXSpeed 112
   .default 0
 $encoder 37 ;RotXSpeed
   .easypar CC 1 100 0 127 absolute
-  .showvalue on
-  .mode 1dot
-  .default 0
-$encoder 38 ;RXfr
-  .easypar CC 1 37 0 127 absolute
-  .showvalue on
-  .mode 1dot
-  .default 0
-$encoder 39 ;RXam
-  .easypar CC 1 39 0 127 absolute
-  .showvalue on
-  .mode 1dot
-  .default 0
-$encoder 40 ;RXpm
-  .easypar CC 1 41 0 127 absolute
-  .showvalue on
-  .mode 1dot
-  .default 0
-$encoder 41 ;LYfr 
-  .easypar CC 1 13 0 127 absolute
-  .showvalue on
-  .mode 1dot
-  .default 0
-$encoder 42 ;LYam
-  .easypar CC 1 15 0 127 absolute
-  .showvalue on
-  .mode 1dot
-  .default 0
-$encoder 43 ;LYpm
-  .easypar CC 1 17 0 127 absolute
   .showvalue on
   .mode 1dot
   .default 0
@@ -111,31 +244,6 @@ $encoder 45 ;RotYSpeed
   .showvalue on
   .mode 1dot
   .default 0
-$encoder 46 ;RYfr
-  .easypar CC 1 49 0 127 absolute
-  .showvalue on
-  .mode 1dot
-  .default 0
-$encoder 47 ;RYam
-  .easypar CC 1 51 0 127 absolute
-  .showvalue on
-  .mode 1dot
-  .default 0
-$encoder 48 ;RYpm
-  .easypar CC 1 53 0 127 absolute
-  .showvalue on
-  .mode 1dot
-  .default 0
-$encoder 49 ;Mixer
-  .easypar CC 1 90 0 127 absolute
-  .showvalue on
-  .mode 1dot
-  .default 0
-$encoder 50 ;Scale
-  .easypar CC 1 98 0 127 absolute
-  .showvalue on
-  .mode 1dot
-  .default 0
 $encoder 52 ;TraZspeed
   .easypar CC 1 120 0 127 absolute
   .showvalue on
@@ -146,33 +254,6 @@ $encoder 53 ;RotZSpeed
   .showvalue on
   .mode 1dot
   .default 0
-$encoder 55 ;Dupl
-  .easypar CC 1 87 0 127 absolute
-  .showvalue on
-  .mode 1dot
-  .default 0
-$encoder 56 ;DuplAng
-  .easypar CC 1 88 0 127 absolute
-  .showvalue on
-  .mode 1dot
-  .default 0
-$button 37
-  .easypar NOTE 1 66 1 toggleon
-  .showvalue on
-  .default 0
-$button 40 ;Tempo
-  .easypar NOTE 16 127 1 toggleon
-  .showvalue on
-  .default 3
-$store 1
-$preset
-  .name '                        '
-  .snapshot off
-  .request off
-  .egroups 4
-  .fkeys on
-  .lock off
-  .init
 $store 2
 $preset
   .name '                        '

@@ -33,9 +33,49 @@
     "name": "autotempo",
     "songname": "song1",
     "chanIN" : 16,
-    "notes" : "all",
+    "notes" : 127,
     "notetype" : "on",
     "code": "maxwellccs.autotempo",
+    "value" : 105,
+    "laser" : 0
+  },
+  {
+    "name": "resetCCON",
+    "songname": "all",
+    "chanIN" : 16,
+    "notes" : 126,
+    "notetype" : "on",
+    "code": "maxwellccs.resetCCON",
+    "value" : 105,
+    "laser" : 0
+  },
+  {
+    "name": "resetCCOFF",
+    "songname": "all",
+    "chanIN" : 16,
+    "notes" : 126,
+    "notetype" : "off",
+    "code": "maxwellccs.resetCCOFF",
+    "value" : 105,
+    "laser" : 0
+  },
+  {
+    "name": "BangON",
+    "songname": "all",
+    "chanIN" : 16,
+    "notes" : 125,
+    "notetype" : "on",
+    "code": "maxwellccs.bangON",
+    "value" : 105,
+    "laser" : 0
+  },
+  {
+    "name": "BangOFF",
+    "songname": "all",
+    "chanIN" : 16,
+    "notes" : 125,
+    "notetype" : "off",
+    "code": "maxwellccs.bangOFF",
     "value" : 105,
     "laser" : 0
   }
@@ -73,49 +113,49 @@
     "name": "m11",
     "laser": 0,
     "type": "encoder",
-    "code": "/osc/left/X/freq"
+    "code": "/mixer/value"
   },
   {
     "name": "m12",
     "laser": 0,
     "type": "encoder",
-    "code": "/osc/left/X/amp"
+    "code": "/scaler/scale"
   },
   {
     "name": "m13",
     "laser": 0,
     "type": "encoder",
-    "code": "/osc/left/X/phasemod"
+    "code": "/points/number"
   },
   {
     "name": "m14",
     "laser": 0,
     "type": "encoder",
-    "code": "/rotator/X/speed"
+    "code": "/color/modtype"
   },
   {
     "name": "m15",
     "laser": 0,
     "type": "encoder",
-    "code": "/translator/X/speed"
+    "code": "/color/modtype"
   },
   {
     "name": "m16",
     "laser": 0,
     "type": "encoder",
-    "code": "/osc/right/X/freq"
+    "code": "/color/modtype"
   },
   {
     "name": "m17",
     "laser": 0,
     "type": "encoder",
-    "code": "/osc/right/X/amp"
+    "code": "/duplicator/num"
   },
   {
     "name": "m18",
     "laser": 0,
     "type": "encoder",
-    "code": "/osc/right/X/phasemod"
+    "code": "/duplicator/offset"
   },
 
 
@@ -142,13 +182,13 @@
     "name": "m24",
     "laser": 0,
     "type": "encoder",
-    "code": "/translator/X/speed"
+    "code": "/translator/X/amt"
   },
   {
     "name": "m25",
     "laser": 0,
     "type": "encoder",
-    "code": "/rotator/X/speed"
+    "code": "/rotator/X/direct"
   },
   {
     "name": "m26",
@@ -193,13 +233,13 @@
     "name": "m34",
     "laser": 0,
     "type": "encoder",
-    "code": "/translator/Y/speed"
+    "code": "/translator/Y/amt"
   },
   {
     "name": "m35",
     "laser": 0,
     "type": "encoder",
-    "code": "/rotator/Y/speed"
+    "code": "/rotator/Y/direct"
   },
   {
     "name": "m36",
@@ -226,49 +266,49 @@
     "name": "m41",
     "laser": 0,
     "type": "encoder",
-    "code": "/mixer/value"
+    "code": "/osc/left/Z/freq"
   },
   {
     "name": "m42",
     "laser": 0,
     "type": "encoder",
-    "code": "/scaler/scale"
+    "code": "/osc/left/Z/amp"
   },
   {
     "name": "m43",
     "laser": 0,
     "type": "encoder",
-    "code": "/osc/left/Y/phasemod"
+    "code": "/osc/left/Z/phasemod"
   },
   {
     "name": "m44",
     "laser": 0,
     "type": "encoder",
-    "code": "/translator/Z/speed"
+    "code": "/translator/Z/amt"
   },
   {
     "name": "m45",
     "laser": 0,
     "type": "encoder",
-    "code": "/rotator/Z/speed"
+    "code": "/rotator/Z/direct"
   },
   {
     "name": "m46",
     "laser": 0,
     "type": "encoder",
-    "code": "/osc/right/Z/amp"
+    "code": "/osc/right/Z/freq"
   },
   {
     "name": "m47",
     "laser": 0,
     "type": "encoder",
-    "code": "/duplicator/num"
+    "code": "/osc/right/Z/amp"
   },
   {
     "name": "m48",
     "laser": 0,
     "type": "encoder",
-    "code": "/duplicator/offset"
+    "code": "/osc/right/Z/phasemod"
   },
 
 
@@ -315,43 +355,35 @@
   },
   {
     "name": "m55",
-    "init":  0,
-    "choices": "m55,m56,m57,m58",
-    "cc": 36,
-    "value": 1,
     "laser": 0,
-    "type": "buttonmulti",
-    "code": "/osc/right/X/curvetype"
+    "init":  0,
+    "type": "buttontoggle",
+    "code": "maxwellccs.resetCC"
   },
   {
     "name": "m56",
-    "init":  1,
-    "choices": "m55,m56,m57,m58",
-    "cc": 36,
-    "value": 33,
     "laser": 0,
-    "type": "buttonmulti",
-    "code": "/osc/right/X/curvetype"
+    "cc": 137,
+    "init": 0,
+    "value": 127,
+    "type": "buttontoggle",
+    "code": "/draw/mode"
   },
   {
     "name": "m57",
-    "init":  2,
-    "choices": "m55,m56,m57,m58",
-    "cc": 36,
-    "value": 95,
     "laser": 0,
-    "type": "buttonmulti",
-    "code": "/osc/right/X/curvetype"
+    "cc": 123,
+    "value": 127,
+    "init":  0,
+    "type": "buttontoggle",
+    "code": "/color/colortype"
   },
   {
     "name": "m58",
-    "init":  3,
-    "choices": "m55,m56,m57,m58",
-    "cc": 36,
-    "value": 127,
     "laser": 0,
-    "type": "buttonmulti",
-    "code": "/osc/right/X/curvetype"
+    "init":  0,
+    "type": "button",
+    "code": "maxwellccs.autotempo"
   },
 
 
@@ -399,43 +431,31 @@
   },
   {
     "name": "m65",
-    "init":  0,
-    "choices":  "m65,m66,m67,m68",
-    "cc": 36,
-    "value": 1,
     "laser": 0,
-    "type": "buttonmulti",
-    "code": "/osc/right/X/curvetype"
+    "init":  0,
+    "type": "buttontoggle",
+    "code": "maxwellccs.resetCC"
   },
   {
     "name": "m66",
-    "init":  1,
-    "choices": "m65,m66,m67,m68",
-    "cc": 36,
-    "value": 33,
     "laser": 0,
-    "type": "buttonmulti",
-    "code": "/osc/right/X/curvetype"
+    "init":  0,
+    "type": "buttontoggle",
+    "code": "maxwellccs.resetCC"
   },
   {
     "name": "m67",
-    "init":  2,
-    "choices": "m65,m66,m67,m68",
-    "cc": 36,
-    "value": 95,
     "laser": 0,
-    "type": "buttonmulti",
-    "code": "/osc/right/X/curvetype"
+    "init":  0,
+    "type": "buttontoggle",
+    "code": "maxwellccs.bangON"
   },
   {
     "name": "m68",
-    "init":  3,
-    "choices": "m65,m66,m67,m68",
-    "cc": 36,
-    "value": 127,
     "laser": 0,
-    "type": "buttonmulti",
-    "code": "/osc/right/X/curvetype"
+    "init":  0,
+    "type": "buttontoggle",
+    "code": "maxwellccs.resetCC"
   }
 
 

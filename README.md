@@ -1,5 +1,5 @@
 
-Maxwellator v0.2.3b (python3)
+Maxwellator v0.2.4b (python3)
 By Sam Neurohack, AC
 
 LICENCE : CC NC
@@ -39,6 +39,9 @@ Yes you can do all that with midi learn and rtpmidi. Problems starts with severa
 # What's new ?
 
 - v0.2.3b : BCR 2000 module, BPM tap tempo, Songs
+- v0.2.4b : support Link, reset CCs to default value button
+
+
 
 # Modes 
 
@@ -86,7 +89,7 @@ if note < E3 set Maxwell right part
 
 # Midi Mapping
 
-2 maxwellator "modules" have advanced midi mapping to laser <-> "music" only midi instrument : sequencer, BCR 2000 and beatstep. Sequencer is a generic name, you need to edit gstt to your device Midi names, i.e for an Electribe 2 : SequencerNameIN = 'electribe2 SOUND' and SequencerNameOUT = 'electribe2 PAD/KNOB'
+2 maxwellator "modules" have advanced midi mapping to laser <-> "music" : sequencer, BCR 2000 and beatstep. Sequencer is a generic name, you need to edit gstt to your device Midi names, i.e for an Electribe 2 : SequencerNameIN = 'electribe2 SOUND' and SequencerNameOUT = 'electribe2 PAD/KNOB'
 
 - Each mapped function can be valid for all or given : song, midi channel,... 
 - CC output maybe translated on linear or squareroot curve (0-127)
@@ -110,7 +113,7 @@ You can of course use Maxwell built in midi learn capabilities but it will liste
 
 # "Devices" configuration files
 
-Are in devices directory :
+Are obviously in devices directory :
 
 - beatstep.beatstep, for manufacturer's Midi control center
 - BCR1.bcr, for BC Manager
@@ -170,6 +173,7 @@ sudo apt-get install python3-pip
 sudo easy_install pip
 
 pip3 install pysimpledmx
+pip3 install DMXEnttecPro
 
 pip3 install redis
 
@@ -193,9 +197,9 @@ Global OSC commands :
 
 /song/status  	Display current song name
 
-/song/prev		Switch to next song if available
+/song/prev/button		Switch to next song if available
 
-/song/next		Switch to previous song if available
+/song/next/button		Switch to previous song if available
 
 
 /notes 			Send note to Maxwell (Maxwell preset change)
@@ -220,9 +224,15 @@ Global OSC commands :
 
 /blackout		Self explanatory
 
-/states			Prefix for Maxwellator parameters
+/aurora			Prefix for Aurora parameters
+/bpm
+/patch 	Display next patch number
+/patch/prev/button
+/patch/next/button
+/go
+/morph
 
-Each module has it's own OSC commands and common ones :
+Each module has it's own OSC commands and common ones like :
 /modulename/status
 
 
@@ -571,5 +581,11 @@ Draw Functions
 
 /draw/mode is Artnet 137 MIDI Channel 2 CC 10
 
+Point Mode
 
-137 functions
+/points/number is Artnet 138 MIDI Channel 2 CC 11
+/points/x10 is Artnet 139 MIDI Channel 2 CC 12
+
+
+
+141 functions

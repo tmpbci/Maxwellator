@@ -129,7 +129,6 @@ def NoteOff(note):
     midi3.send(msg,"Bhoreal")
     gstt.BhorLeds[note]=0
 
-
 def NoteOnXY(x,y,color):
     #print x,y
     msg = [NOTE_ON, NoteXY(x,y), color]
@@ -140,7 +139,6 @@ def NoteOffXY(x,y):
     msg = [NOTE_OFF, NoteXY(x,y), 0]
     midi3.send(msg,"Bhoreal")
     gstt.BhorLeds[NoteXY(x,y)]=0
-
 
 # Leds position are humans numbers 1-8. So -1 for pythonic array position 0-7
 def NoteXY(x,y):

@@ -246,33 +246,42 @@ def msg(note, mididest):
 # mididest : all or specifiname, won't be sent to launchpad or Bhoreal.
 def MidiMsg(midimsg, mididest, laser = gstt.lasernumber):
     
-    #print("midi3 got MidiMsg :", midimsg, "  Dest :", mididest, "  laser :", laser)
-    desterror = -1
-
-    #for port in range(MidInsNumber):
-    for port in range(len(OutDevice)):
-
-        #print("port",port,"midiname", midiname[port])
+    # not in bang mode or in bang mode and a bang has arrived.
+    if gstt.bang == -1 or (gstt.bang == 0 and gstt.bangbang == 0 and mididest =="to Maxwell 1"):
+        #print("midi3 post bang check, got MidiMsg :", midimsg, "  Dest :", mididest, "  laser :", laser, "bang", gstt.bang, "bangbang", gstt.bangbang)
+        desterror = -1
+    
+        #for port in range(MidInsNumber):
+        for port in range(len(OutDevice)):
+    
+            #print("port",port,"midiname", midiname[port])
+            # To mididest
+            if midiname[port].find(mididest) != -1:
+                #print("midi 3 sending to name", midiname[port], "port", port, ":", midimsg)
+                midiport[port].send_message(midimsg)
+                desterror = 0
+    
+            # To All 
+            elif mididest == "all" and midiname[port].find(mididest) == -1 and  midiname[port].find(BhorealMidiName) == -1 and midiname[port].find(LaunchMidiName) == -1 and midiname[port].find(DJName) == -1 and midiname[port].find(BeatstepName) == -1 and midiname[port].find(gstt.SequencerNameIN) == -1 and midiname[port].find(gstt.BCRName) == -1:
+                print("all sending to port",port,"name", midiname[port])
+                midiport[port].send_message(midimsg)
+                desterror = 0
+    
+        for OSCtarget in midi2OSC:
+            if (OSCtarget == mididest or mididest == 'all') and midi2OSC[OSCtarget]["msgs"]:
+                 OSCsend(OSCtarget, "/cc", [midimsg[1], midimsg[2]])
+                 desterror = 0
         
-        # To mididest
-        if midiname[port].find(mididest) != -1:
-            #print("midi 3 sending to name", midiname[port], "port", port, ":", midimsg)
-            midiport[port].send_message(midimsg)
-            desterror = 0
+        if gstt.bangbang ==0:
+            print()
+            print("BANG RESET")
+            print()
+            gstt.bangbang = -1
 
-        # To All 
-        elif mididest == "all" and midiname[port].find(mididest) == -1 and  midiname[port].find(BhorealMidiName) == -1 and midiname[port].find(LaunchMidiName) == -1 and midiname[port].find(DJName) == -1 and midiname[port].find(BeatstepName) == -1 and midiname[port].find(gstt.SequencerNameIN) == -1 and midiname[port].find(gstt.BCRName) == -1:
-            #print("all sending to port",port,"name", midiname[port])
-            midiport[port].send_message(midimsg)
-            desterror = 0
-
-    for OSCtarget in midi2OSC:
-        if (OSCtarget == mididest or mididest == 'all') and midi2OSC[OSCtarget]["msgs"]:
-             OSCsend(OSCtarget, "/cc", [midimsg[1], midimsg[2]])
-             desterror = 0
-
-    if desterror == -1:
-        print ("** This midi or OSC destination doesn't exists **")
+        if desterror == -1:
+            print ("** This midi or OSC destination doesn't exists **")
+    else: 
+        print("bang mode : midi3 didnnot sent", midimsg, mididest, "bang", gstt.bang, "bangbang", gstt.bangbang)
 
 def OSCsend(name, oscaddress, oscargs =''):
 
@@ -360,6 +369,7 @@ def MidinProcess(inqueue, portname):
         print("Generic from", portname,"msg : ", msg)
         
         # Note On
+        #if NOTE_ON -1 < msg[0] < 160:
         if msg[0]==NOTE_ON:
             print ("Generic midi Note : from", portname, "noteon", msg[1])
             #print(type(portname), portname, gstt.Midikeyboards, portname in gstt.Midikeyboards)
@@ -418,6 +428,15 @@ def MidinProcess(inqueue, portname):
                 
         # Note Off
         if msg[0]==NOTE_OFF:
+            
+            '''
+            if NOTE_OFF -1 < msg[0] < 144 or (NOTE_ON -1 < msg[0] < 160 and msg[2]==0):
+
+               if msg[0] > 144:
+                   MidiChannel = msg[0]-144
+               else:
+                   MidiChannel = msg[0]-128
+            '''
             print ("NOTE OFF :", MidiNote, 'velocity :', MidiVel, "Channel", MidiChannel)
             #print("from", portname,"noteoff", msg[0], msg[1],msg[2])
             #NoteOff(msg[1],msg[2], mididest)

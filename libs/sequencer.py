@@ -175,79 +175,41 @@ def MidinProcess(SEQUENCERqueue):
         print ("Sequencer got msg ;", msg[0], msg[1], msg[2])
 
 
-        # NOTE ON message (will trigger even if midivel = 0)
+        # NOTE ON message on all midi channel (will trigger even if midivel = 0)
         if NOTE_ON -1 < msg[0] < 160:
-  
-            # note mode
-            #ModeNote(msg[1], msg[2], mididest)
-            #print(type(portname), portname, gstt.Midikeyboards, portname in gstt.Midikeyboards)
 
-            #if portname in gstt.Midikeyboards:
-
-            MidiChannel = msg[0]-144
+            MidiChannel = msg[0]-143
             MidiNote = msg[1]
             MidiVel = msg[2]
             print ("NOTE ON :", MidiNote, 'velocity :', MidiVel, "Channel", MidiChannel)
-            
-            '''
-            NoteOn(msg[1], msg[2], "Bus 1")
-            
-            
-            # Lead : RIGHT part, for richter midi file : lead minimal note is E3 (64)
-            if MidiNote > gstt.MidiSplitNote:
 
-                # right curvetype is sin
-                #SendCC('/osc/right/X/curvetype',0)
-                #MidiMsg((CONTROLLER_CHANGE,36,0),mididest)
-
-                # octave is frequency. 25.6 is CC range (128)/5 low octave
-                #SendCC('/lfo/2/freq',round(MidiNote/12)*25.6)
-                midi3.MidiMsg((CONTROLLER_CHANGE, 80, round(MidiNote/12)*25.6), mididest)
-                
-                # note is phase : decimal part of midinote number = CC range percentage 
-                #SendCC('/lfo/2/phase',(MidiNote/12)%1*128)
-                midi3.MidiMsg((CONTROLLER_CHANGE, 78, (MidiNote/12)%1*128), mididest)
-
-                # velocity is scale
-                midi3.MidiMsg((CONTROLLER_CHANGE, 98, MidiVel), mididest)
-
-            # if note < 64 (E3) set LEFT part
-            else:
-
-                # If lead note set a preset :
-                # midi3.NoteOn(MidiFileNote-63, MidiFileVel,'to Maxwell 1')
-                
-                # left curvetype is sin
-                #SendCC('/osc/left/X/curvetype',0)
-                #MidiMsg((CONTROLLER_CHANGE,0,0),mididest)
-
-                # octave is frequency. 25.6 is CC range (128)/5 low "pentatonic octave"
-                #SendCC('/lfo/1/freq',round(MidiNote/12)*25.6)
-                midi3.MidiMsg((CONTROLLER_CHANGE,75,round(MidiNote/12)*25.6),mididest)
-
-                # note is phase : decimal part of midinote number = CC range percentage 
-                #SendCC('/lfo/1/phase',(MidiNote/12)%1*128)
-                midi3.MidiMsg((CONTROLLER_CHANGE,73,(MidiNote/12)%1*128),mididest)
-
-                # velocity is scale
-                midi3.MidiMsg((CONTROLLER_CHANGE,98,MidiVel),mididest)
-            '''
             # ZnotesLcc
             if len(macros["ZnotesLcc"]) > 0:
                 
                 for counter in range(len(macros["ZnotesLcc"])):
 
+                    '''
                     print()
                     print("Name", macros["ZnotesLcc"][counter]["name"])
                     print("Song", macros["ZnotesLcc"][counter]["songname"], gstt.songs[gstt.song])    # name, "all"
                     print("Channel", macros["ZnotesLcc"][counter]["chanIN"], MidiChannel)             # number, "all"
                     print("Note", macros["ZnotesLcc"][counter]["notes"], MidiNote)                    # number, "all"
                     print("Notetype", macros["ZnotesLcc"][counter]["notetype"], "on")                 # "on", "off", "all"
+                    '''
 
                     if (macros["ZnotesLcc"][counter]["songname"] == gstt.songs[gstt.song] or macros["ZnotesLcc"][counter]["songname"] == "all") and (macros["ZnotesLcc"][counter]["chanIN"] == MidiChannel or macros["ZnotesLcc"][counter]["chanIN"] == "all") and  (macros["ZnotesLcc"][counter]["notes"] == MidiNote or macros["ZnotesLcc"][counter]["notes"] == "all")  and  (macros["ZnotesLcc"][counter]["notetype"] == "on" or macros["ZnotesLcc"][counter]["notetype"] == "all") :
-                        print("selection of ",macros["ZnotesLcc"][counter]["songname"], ":", macros["ZnotesLcc"][counter]["name"])
+                        macrocode = macros["ZnotesLcc"][counter]["code"]
+                        #print("ZnotesLcc Note ON",macros["ZnotesLcc"][counter]["songname"], ":", macros["ZnotesLcc"][counter]["name"])
                         #print("ZnotesLcc NoteON got Song :", macros["ZnotesLcc"][counter]["songname"],"  IN Channel :", macros["ZnotesLcc"][counter]["chanIN"],"  Code :", macros["ZnotesLcc"][counter]["code"], "  CC", maxwellccs.FindCC(macros["ZnotesLcc"][counter]["code"]), "  value :",macros["ZnotesLcc"][counter]["value"], "  laser :", macros["ZccLcc"][counter]["laser"] )
-                        midi3.MidiMsg((CONTROLLER_CHANGE, maxwellccs.FindCC(macros["ZnotesLcc"][counter]["code"]), macros["ZnotesLcc"][counter]["value"]), mididest, laser = macros["ZccLcc"][counter]["laser"])
+                        
+                        # python function
+                        if macrocode.count('.') > 0 and MidiVel > 0:
+                            #print(macrocode+"("+str(MidiNote)+')')
+                            eval(macrocode+"("+str(MidiNote)+')')
+
+                        # Maxwell function
+                        elif macrocode.count('/') > 0 and MidiVel > 0:
+                            midi3.MidiMsg((CONTROLLER_CHANGE, maxwellccs.FindCC(macros["ZnotesLcc"][counter]["code"]), macros["ZnotesLcc"][counter]["value"]), mididest, laser = macros["ZccLcc"][counter]["laser"])
 
             # Note ON Specials features
             if len(macros["Specials"]) > 0:
@@ -269,34 +231,58 @@ def MidinProcess(SEQUENCERqueue):
                         
                         # python function
                         if macrocode.count('.') > 0 and MidiVel > 0:
-                            print(macrocode+"("+str(MidiNote)+')')
+                            #print(macrocode+"("+str(MidiNote)+')')
                             eval(macrocode+"("+str(MidiNote)+')')
 
                         # Maxwell function
                         elif macrocode.count('/') > 0 and MidiVel > 0:
-                            print("Specials NoteON got Song :", macros["Specials"][counter]["songname"],"  IN Channel :", macros["Specials"][counter]["chanIN"],"  Code :", macrocode, "  CC", maxwellccs.FindCC(macros["Specials"][counter]["code"]), "  value :",macros["Specials"][counter]["value"], "  laser :", macros["ZccLcc"][counter]["laser"] )
+                            #print("Specials NoteON got Song :", macros["Specials"][counter]["songname"],"  IN Channel :", macros["Specials"][counter]["chanIN"],"  Code :", macrocode, "  CC", maxwellccs.FindCC(macros["Specials"][counter]["code"]), "  value :",macros["Specials"][counter]["value"], "  laser :", macros["ZccLcc"][counter]["laser"] )
                             midi3.MidiMsg((CONTROLLER_CHANGE, maxwellccs.FindCC(macros["Specials"][counter]["code"]), macros["Specials"][counter]["value"]), mididest, laser = macros["Specials"][counter]["laser"])
 
 
-        # Note Off
-        if msg[0]==NOTE_OFF:
+        # Note Off or Note with 0 velocity on all midi channels
+        if NOTE_OFF -1 < msg[0] < 144 or (NOTE_ON -1 < msg[0] < 160 and msg[2]==0):
 
-            MidiChannel = msg[0]-128
+            if msg[0] > 144:
+                MidiChannel = msg[0]-143
+            else:
+                MidiChannel = msg[0]-128
+            
             MidiNote = msg[1]
 
             print ("NOTE OFF :", MidiNote, "Channel", MidiChannel)
-            #NoteOff(msg[1],msg[2], mididest)
-            # NoteOff(msg[2], mididest)
-            # Webstatus(''.join(("note ",msg[1]," to ",msg[2])))
             
             # ZnotesLcc
             if len(macros["ZnotesLcc"]) > 0:
 
                 for counter in range(len(macros["ZnotesLcc"])):
+
+                    '''
+                    print()
+                    print("Name", macros["ZnotesLcc"][counter]["name"])
+                    print("Song", macros["ZnotesLcc"][counter]["songname"], gstt.songs[gstt.song])    # name, "all"
+                    print("Channel", macros["ZnotesLcc"][counter]["chanIN"], MidiChannel)             # number, "all"
+                    print("Note", macros["ZnotesLcc"][counter]["notes"], MidiNote)                    # number, "all"
+                    print("Notetype", macros["ZnotesLcc"][counter]["notetype"], "on")                 # "on", "off", "all"
+                    '''
+
                     if  (macros["ZnotesLcc"][counter]["songname"] == gstt.songs[gstt.song] or macros["ZnotesLcc"][counter]["songname"] == "all") and (macros["ZnotesLcc"][counter]["chanIN"] == MidiChannel or macros["ZnotesLcc"][counter]["chanIN"] == "all") and  (macros["ZnotesLcc"][counter]["notes"] == MidiNote or macros["ZnotesLcc"][counter]["notes"] == "all")  and  (macros["ZnotesLcc"][counter]["notetype"] == "off" or macros["ZnotesLcc"][counter]["notetype"] == "all") :
-                        print(macros["ZnotesLcc"][counter]["songname"], ":", macros["ZnotesLcc"][counter]["name"])
+                        #print("ZnotesLcc Note OFF",macros["ZnotesLcc"][counter]["songname"], ":", macros["ZnotesLcc"][counter]["name"])
                         #print("ZnotesLcc Note OFF got Song :", macros["ZnotesLcc"][counter]["songname"],"  IN Channel :", macros["ZnotesLcc"][counter]["chanIN"],"  Code :", macros["ZnotesLcc"][counter]["code"], "  CC", maxwellccs.FindCC(macros["ZnotesLcc"][counter]["code"]), "  value :",macros["ZnotesLcc"][counter]["value"], "  laser :", macros["ZccLcc"][counter]["laser"])
-                        midi3.MidiMsg((CONTROLLER_CHANGE,maxwellccs.FindCC(macros["ZnotesLcc"][counter]["code"]), macros["ZnotesLcc"][counter]["value"]), mididest, laser = macros["ZccLcc"][counter]["laser"])
+
+                        macrocode = macros["ZnotesLcc"][counter]["code"]
+                        #print("ZnotesLcc Note ON",macros["ZnotesLcc"][counter]["songname"], ":", macros["ZnotesLcc"][counter]["name"])
+                        #print("ZnotesLcc NoteON got Song :", macros["ZnotesLcc"][counter]["songname"],"  IN Channel :", macros["ZnotesLcc"][counter]["chanIN"],"  Code :", macros["ZnotesLcc"][counter]["code"], "  CC", maxwellccs.FindCC(macros["ZnotesLcc"][counter]["code"]), "  value :",macros["ZnotesLcc"][counter]["value"], "  laser :", macros["ZccLcc"][counter]["laser"] )
+                        
+                        # python function
+                        if macrocode.count('.') > 0 and MidiVel > 0:
+                            #print(macrocode+"("+str(MidiNote)+')')
+                            eval(macrocode+"("+str(MidiNote)+')')
+
+                        # Maxwell function
+                        elif macrocode.count('/') > 0 and MidiVel > 0:
+
+                            midi3.MidiMsg((CONTROLLER_CHANGE,maxwellccs.FindCC(macros["ZnotesLcc"][counter]["code"]), macros["ZnotesLcc"][counter]["value"]), mididest, laser = macros["ZccLcc"][counter]["laser"])
 
 
 
@@ -309,8 +295,9 @@ def MidinProcess(SEQUENCERqueue):
             computer = int(msg[1])
 
 
-        # CONTROLLER CHANGE Encoders are on Midi Channel 1 : CCnumber is matrix name -> midi CC          
-        if msg[0] == CONTROLLER_CHANGE:
+
+        # CC on all Midi Channels         
+        if CONTROLLER_CHANGE -1 < msg[0] < 192:
 
             MidiChannel = msg[0]-176
             MidiCC = msg[1]
@@ -332,12 +319,12 @@ def MidinProcess(SEQUENCERqueue):
                 for counter in range(len(macros["ZccLcc"])):
 
                     if (macros["ZccLcc"][counter]["songname"] == gstt.songs[gstt.song] or macros["ZccLcc"][counter]["songname"] == "all") and  (macros["ZccLcc"][counter]["chanIN"] == MidiChannel or macros["ZccLcc"][counter]["chanIN"] == "all") and (macros["ZccLcc"][counter]["ccs"] == MidiCC or macros["ZccLcc"][counter]["ccs"] == "all"):
-                        print(macros["ZccLcc"][counter]["songname"], ":", macros["ZccLcc"][counter]["name"])
+                        #print(macros["ZccLcc"][counter]["songname"], ":", macros["ZccLcc"][counter]["name"])
                         macrocode = macros["ZccLcc"][counter]["code"]
 
                         # python function
                         if macrocode.count('.') > 0:
-                            print(macrocode+"("+str(MidiCC)+","+str(MidiVal)+')')
+                            #print(macrocode+"("+str(MidiCC)+","+str(MidiVal)+')')
                             eval(macrocode+"("+str(MidiCC)+',"'+str(MidiVal)+'")')
 
                         # Maxwell function
@@ -358,12 +345,12 @@ def MidinProcess(SEQUENCERqueue):
                         
                         # python function
                         if macrocode.count('.') > 0:
-                            print(macrocode+"("+str(MidiCC)+","+str(MidiVal)+')')
+                            #print(macrocode+"("+str(MidiCC)+","+str(MidiVal)+')')
                             eval(macrocode+"("+str(MidiCC)+',"'+str(MidiVal)+'")')
 
                         # Maxwell function
                         elif macrocode.count('/') > 0:
-                            print("Specials NoteON got Song :", macros["Specials"][counter]["songname"],"  IN Channel :", macros["Specials"][counter]["chanIN"],"  Code :", macrocode, "  CC", maxwellccs.FindCC(macros["Specials"][counter]["code"]), "  value :",macros["Specials"][counter]["value"], "  laser :", macros["ZccLcc"][counter]["laser"] )
+                            #print("Specials NoteON got Song :", macros["Specials"][counter]["songname"],"  IN Channel :", macros["Specials"][counter]["chanIN"],"  Code :", macrocode, "  CC", maxwellccs.FindCC(macros["Specials"][counter]["code"]), "  value :",macros["Specials"][counter]["value"], "  laser :", macros["ZccLcc"][counter]["laser"] )
                             midi3.MidiMsg((CONTROLLER_CHANGE, maxwellccs.FindCC(macros["Specials"][counter]["code"]), macros["Specials"][counter]["value"]), mididest, laser = macros["Specials"][counter]["laser"])
 
 
@@ -678,40 +665,6 @@ def findCCMacros(ccnumber, value, macrotype):
 def Start(port):
 
     SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/sequencer/on', [1])
-
-    # if pads are CC 0, 12, 36, 48
-    CCpad(0, 1, dest = 'Sequencer',channel = 10)
-    CCpad(0, 33, dest = 'Sequencer',channel = 10)
-    CCpad(0, 95, dest = 'Arturia',channel = 10)
-    CCpad(0, 127, dest = 'Arturia',channel = 10)
-    time.sleep(0.3)
-    CCpad(0, 0, dest = 'Arturia',channel = 10)
-    CCpad(12, 0, dest = 'Arturia',channel = 10)
-    CCpad(36, 0, dest = 'Arturia',channel = 10)
-    CCpad(48, 0, dest = 'Arturia',channel = 10)
-
-
-    '''
-    # Circle effect
-    # if Pads are matrix CCs 31-48
-    for pad1 in range(31,39):
-        CCpad(pad1, 0, dest = 'Arturia')
-    for pad2 in range(41,49):
-        CCpad(pad2, 0, dest = 'Arturia')
-
-    for pad1 in range(31,39):
-        CCpad(pad1, 127, dest = 'Arturia')
-        time.sleep(0.01)
-        CCpad(pad1, 0, dest = 'Arturia')
-    for pad2 in range(49,41,-1):
-        CCpad(pad2, 127, dest = 'Arturia')
-        time.sleep(0.01)
-        maxwellccs.cc(pad2, 0, dest = 'Arturia')
-    CCpad(31, 127, dest = 'Arturia')
-    time.sleep(0.01)
-    CCpad(31, 0, dest = 'Arturia')
-    '''
-
 
 
 def Encoder(macroname, value):

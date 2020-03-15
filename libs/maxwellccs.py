@@ -36,6 +36,7 @@ mididest = 'Session 1'
 djdest = 'Port'
 
 midichannel = 1
+lastcc = 0
 
 computer = 0
 
@@ -66,7 +67,8 @@ specificvalues = {
     "colortype": {"solid": 0, "lfo": 127},
     "modtype": {"sin": 0,"linear": 127},
     "switch": {"off": 0,"on": 127},
-    "operation": {"+": 0, "-": 50, "*": 127}
+    "operation": {"+": 0, "-": 50, "*": 127},
+    "mode": {"solid": 0,"lfo": 127}
     }
 
 shortnames = {
@@ -147,20 +149,20 @@ def LoadCC():
     #print("Loaded.")
 
 # /cc cc number value
-def cc(ccnumber, value, dest=mididest, midichannel = 1):
+def cc(ccnumber, value, dest=mididest, midichannel =  gstt.basemidichannel):
+    global lastcc
 
     if ccnumber > 127:
         midichannel = gstt.basemidichannel + 1
         ccnumber -= 127
-    else:
-        midichannel = gstt.basemidichannel
 
     # mixer change display in OSC UI 
     if ccnumber ==90:
         SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/mixer/value', [value])
     
     gstt.ccs[gstt.lasernumber][ccnumber]= value
-    #print('Maxwellccs sending CC',[CONTROLLER_CHANGE+midichannel-1, ccnumber, value], dest)
+    lastcc = ccnumber
+    print('Maxwellccs sending CC',[CONTROLLER_CHANGE+midichannel-1, ccnumber, value], dest)
     if gstt.lasernumber == 0:
         midi3.MidiMsg([CONTROLLER_CHANGE+midichannel-1, ccnumber, value], dest)
         UpdateCCs(ccnumber, value, laser = 0)
@@ -180,6 +182,58 @@ def UpdateCCs(ccnumber, value, laser = 0):
     launchpad.UpdateCC(ccnumber, value, laser)
     C4.UpdateCC(ccnumber, value, laser)
     bcr.UpdateCC(ccnumber, value, laser)
+
+
+# Reset CC Mode
+
+# Reset current CC to 64 meaning no speed,... 
+def resetCCON(value):
+
+    print("CC Reseting mode ON")
+    SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/status', ["CC resets ON"])
+    SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/bcr/status', ["CC resets ON"])
+    gstt.resetCC = 0
+
+
+
+# Reset current CC to 64 meaning no speed,... 
+def resetCCOFF(value):
+
+    print("CC Reseting mode OFF")
+    SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/status', ["CC resets OFF"])
+    SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/bcr/status', ["CC resets OFF"])
+    gstt.resetCC = -1
+
+
+# Bang Mode
+
+# Output to Maxwell on the bang 
+def bangON(value):
+
+    print("Bang mode ON")
+    SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/status', ["Bang ON"])
+    SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/bcr/status', ["Bang ON"])
+    gstt.bang = 0
+
+# Stop bang mode
+def bangOFF(value):
+
+    print("Bang OFF")
+    SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/status', ["Bang OFF"])
+    SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/bcr/status', ["Bang OFF"])
+    gstt.bang = -1
+
+# bang is trigged by something !
+def bangbang(value):
+
+    print()
+    print("Bang !!")
+    print()
+    SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/status', ["Bang !!"])
+    SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/bcr/status', ["Bang !!"])
+    gstt.bangbang = 0
+
+
 
 
 def NoteOn(note,velocity, dest=mididest, laser = gstt.lasernumber):
@@ -211,6 +265,7 @@ def Send(oscaddress,oscargs=''):
 
 def ssawtooth(samples,freq,phase):
 
+    samparray = [0] * samples
     t = np.linspace(0+phase, 1+phase, samples)
     for ww in range(samples):
         samparray[ww] = signal.sawtooth(2 * np.pi * freq * t[ww])
@@ -218,6 +273,7 @@ def ssawtooth(samples,freq,phase):
 
 def ssquare(samples,freq,phase):
 
+    samparray = [0] * samples
     t = np.linspace(0+phase, 1+phase, samples)
     for ww in range(samples):
         samparray[ww] = signal.square(2 * np.pi * freq * t[ww])
@@ -229,6 +285,34 @@ def ssine(samples,freq,phase):
     for ww in range(samples):
         samparray[ww] = np.sin(2 * np.pi * freq  * t[ww])
     return samparray
+
+
+def slinear(samples, min, max):
+
+    samparray = [0] * samples
+    linearinc = (max-min)/samples
+    for ww in range(samples):
+        if ww == 0:
+            samparray[ww] = min
+        else:
+            samparray[ww] = samparray[ww-1] + linearinc
+    #print('linear min max', min, max)
+    #print ('linear',samparray)
+    return samparray
+
+def slinearound(samples, min, max):
+
+    samparray = [0] * samples
+    linearinc = (max-min)/samples
+    for ww in range(samples):
+        if ww == 0:
+            samparray[ww] = round(min)
+        else:
+            samparray[ww] = round(samparray[ww-1] + linearinc)
+    #print('linear min max', min, max)
+    #print ('linear',samparray)
+    return samparray
+
 
 # * 11.27 : to get value from 0 to 127
 def lin2squrt(value):
@@ -378,7 +462,7 @@ def ButtonSpecifics127( MaxwellCC, specificsname, value):
 def LoadPatchFile(filename, laser = 0):
     global patchs
 
-    print("Maxwell patchs file...")
+    print("Load Maxwell patchs file :", filename)
     f=open("patchs/"+filename,"r")
     s = f.read()
     gstt.patchs = json.loads(s)
@@ -399,7 +483,7 @@ def getPatchValue(patchnumber, ccnumber):
 def runPatch(number, laser = 0):
 
     print()
-    print("Current patch : number", number, "laser", laser,"...")
+    print("Run patch :", number, "on laser", laser,"...")
     
     # Patch exist ?
     if (str(number + 1) in gstt.patchs['pattrstorage']['slots']) != False:
@@ -410,12 +494,15 @@ def runPatch(number, laser = 0):
 
             # Update cc variable content and OSC UI for given laser
             gstt.ccs[laser][ccnumber] = getPatchValue(gstt.patchnumber[laser], ccnumber)
+
             SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/cc/'+str(ccnumber), [getPatchValue(gstt.patchnumber[laser], ccnumber)])
             
             # Update BCR 2000 CC if exists
             if bcr.Here != -1:
                 midi3.MidiMsg([CONTROLLER_CHANGE, ccnumber, getPatchValue(gstt.patchnumber[laser], ccnumber)], "BCR2000")
-        
+        for ccnumber in range(len(maxwell['ccs'])):
+            print(ccnumber," ",gstt.ccs[laser][ccnumber])
+
         # Update OSC UI patch number and send to Maxwell via midi
         SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/laser/patch/'+str(laser), [gstt.patchnumber[laser]])
         midi3.NoteOn(gstt.patchnumber[laser], 127, 'to Maxwell 1')
@@ -424,6 +511,30 @@ def runPatch(number, laser = 0):
         #print("Laser", laser, ": current patch is now :", gstt.patchnumber[laser], 'ccs', gstt.ccs[laser])
     else:
         print("Patch doesnt exists")
+
+def morphPatch(number, laser = 0):
+
+    print()
+    print("Morphing to patch number", number, "laser", laser,"in", gstt.morphsteps, "steps...")
+    
+
+    # Patch exist ?
+    if (str(number + 1) in gstt.patchs['pattrstorage']['slots']) != False:
+
+        # Yes
+        gstt.patchnumber[laser] = number
+        for ccnumber in range(len(maxwell['ccs'])):
+
+            gstt.morphCCinc[ccnumber] = (getPatchValue(gstt.patchnumber[laser], ccnumber) - gstt.ccs[laser][ccnumber]) / gstt.morphsteps
+            gstt.morphCC[ccnumber] = gstt.ccs[laser][ccnumber]
+            print("CC", ccnumber, "was", gstt.ccs[laser][ccnumber],"will be", getPatchValue(gstt.patchnumber[laser], ccnumber), "so inced is", gstt.morphCCinc[ccnumber])
+
+        gstt.morphing = 0
+        
+    else:
+        print("Patch doesnt exists")
+        gstt.morphing = -1
+
 
 # Left cue button 127 = on  0 = off
 def PrevPatch(value):
@@ -445,6 +556,10 @@ def NextPatch(value):
         runPatch(gstt.patchnumber[0] + 1)
         time.sleep(0.1)
         cc(3, 0, dest = djdest)
+
+#
+# CCs
+#
 
 
 # increase/decrease a CC. Value can be positive or negative
@@ -704,6 +819,13 @@ def Maxwell():
 def c4():
     SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/C4', [1])
 
+def Bcr():
+    SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/bcr', [1])
+
+def Aurora():
+    SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/aurora', [1])
+
+
 def PPatch():
 
     PrevPatch(127)
@@ -797,8 +919,6 @@ def ELCC(ccnumber,value):
     midi3.MidiMsg((CONTROLLER_CHANGE+15, ccnumber, int(value)), mididest = "BCR2000")
 
 
-
-
 # Get BPM from tap tempo or note from a sequencer 
 # BPM channel 16 CC 127 
 def autotempo(note):
@@ -810,7 +930,7 @@ def autotempo(note):
     gstt.currentbpm = round(60/delta.total_seconds())
     print("length between notes :", delta.total_seconds(),"seconds -> bpm :", gstt.currentbpm)
 
-    SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/states/bpm', [gstt.currentbpm])
+    SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/bpm', [gstt.currentbpm])
 
     # STUPID : need to find a way to display bpm > 127
     # tell BCR 2000 the new bpm on channel 16 

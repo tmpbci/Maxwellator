@@ -429,17 +429,19 @@ def LoadMacros():
     if os.path.exists('LPD8.json'):
         #print('File is LPD8.json')
         f=open("LPD8.json","r")
-    elif os.path.exists('../lpd8.json'):
+    elif os.path.exists('../LPD8.json'):
             #print('File is ../lpd8.json')
-            f=open("../lpd8.json","r")
+            f=open("../LPD8.json","r")
 
-    elif os.path.exists('libs/lpd8.json'):
+    elif os.path.exists('libs/LPD8.json'):
         #print('File is libs/lpd8.json')
-        f=open("libs/lpd8.json","r")
+        f=open("libs/LPD8.json","r")
 
-    elif os.path.exists(ljpath+'/../../libs/lpd8.json'):
+    elif os.path.exists(ljpath+'/../../libs/LPD8.json'):
         #print('File is '+ljpath+'/../../libs/lpd8.json')
-        f=open(ljpath+"/../../libs/lpd8.json","r")
+        f=open(ljpath+"/../../libs/LPD8.json","r")
+
+
 
 
 

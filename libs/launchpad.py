@@ -408,7 +408,7 @@ def Start(port):
     #Cls()
     #time.sleep(0.3)
     #UpdateDisplay()
-    #PadRightOn(gstt.lasernumber, 127)
+    PadRightOn(gstt.lasernumber+1, 127)
     #RightUpdate()
     TopUpdate(gstt.LaunchpadLayer, 127)
 
@@ -632,7 +632,7 @@ def MidinProcess(launchqueue):
                     ClsRight()
                     PadRightOn(y, 127)
                     print("Destination laser :",y)
-                    gstt.lasernumber = y
+                    gstt.lasernumber = y -1
                     gstt.computer = y
                     #time.sleep(0.1)
                     #PadRightOff(y)
