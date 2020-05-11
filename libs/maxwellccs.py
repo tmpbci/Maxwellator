@@ -22,9 +22,10 @@ from threading import Thread
 from rtmidi.midiconstants import (CHANNEL_PRESSURE, CONTROLLER_CHANGE, NOTE_ON, NOTE_OFF,
                                   PITCH_BEND, POLY_PRESSURE, PROGRAM_CHANGE)
 
-import os, json
+import os, json, sys, random
 from datetime import datetime, timedelta
-import midi3, gstt, beatstep, launchpad, bhoreal, LPD8, C4, bcr
+import midi3, gstt, beatstep, launchpad, bhoreal, LPD8, C4, bcr, link
+
 #import tkinter.filedialog
 import easygui
 
@@ -68,7 +69,7 @@ specificvalues = {
     "modtype": {"sin": 0,"linear": 127},
     "switch": {"off": 0,"on": 127},
     "operation": {"+": 0, "-": 50, "*": 127},
-    "mode": {"solid": 0,"lfo": 127}
+    "mode": {"solid": 0,"blank": 64,"lfo": 127}
     }
 
 shortnames = {
@@ -91,8 +92,8 @@ shortnames = {
     "/translator/X/lfo" : "Tr X",
     "/translator/Y/lfo" : "Tr Y",
     "/translator/Z/lfo" : "Tr Z",
-    "/color" : "",
-    "/scaler" : "scale"
+    "/color" : "color",
+    "/scaler" : ""
     }
 
 
@@ -106,7 +107,8 @@ def SendOSC(ip, port, oscaddress, oscargs=''):
     osclient = OSCClient()
     osclient.connect((ip, port)) 
 
-    print("maxwellccs sending OSC message : ", oscmsg, "to", ip, ":", port)
+    if gstt.debug == True:
+        print("maxwellccs sending OSC message : ", oscmsg, "to", ip, ":", port)
 
     try:
         osclient.sendto(oscmsg, (ip, port))
@@ -116,7 +118,19 @@ def SendOSC(ip, port, oscaddress, oscargs=''):
         print ('Connection to', ip, 'refused : died ?')
         return False
 
+def AllStatus(message):
+    SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/pad/status', [message])
+    SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/bhoreal/status', [message])
+    SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/c4/status', [message])
+    SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/lpd8/status', [message])
+    SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/bcr/status', [message])
+    SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/beatstep/status', [message])
+    SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/status', [message])
 
+def SendOSCUI(address, args):
+    if gstt.debug >0:
+        print("SendOSCUI is sending", address, args)
+    SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, address, [args])
 
 #
 # Maxwell CCs 
@@ -125,8 +139,10 @@ def SendOSC(ip, port, oscaddress, oscargs=''):
 def FindCC(FunctionName):
 
     for Maxfunction in range(len(maxwell['ccs'])):
+        #print("testing", FunctionName, "vs", Maxfunction,":",maxwell['ccs'][Maxfunction]['Function'])
         if FunctionName == maxwell['ccs'][Maxfunction]['Function']:
-            #print(FunctionName, "is CC", Maxfunction)
+            if gstt.debug == True:
+                print(FunctionName, "is CC", Maxfunction)
             return Maxfunction
 
 def LoadCC():
@@ -155,37 +171,122 @@ def cc(ccnumber, value, dest=mididest, midichannel =  gstt.basemidichannel):
     if ccnumber > 127:
         midichannel = gstt.basemidichannel + 1
         ccnumber -= 127
+    #else: 
+    #    UpdateCCs(ccnumber, value, laser = gstt.lasernumber)
 
     # mixer change display in OSC UI 
     if ccnumber ==90:
         SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/mixer/value', [value])
     
-    gstt.ccs[gstt.lasernumber][ccnumber]= value
+    gstt.ccs[gstt.lasernumber][ccnumber + 127*(midichannel-1)] = value
     lastcc = ccnumber
-    print('Maxwellccs sending CC',[CONTROLLER_CHANGE+midichannel-1, ccnumber, value], dest)
+
+    if gstt.debug == True:
+        print('Maxwellccs sending CC',[CONTROLLER_CHANGE+midichannel-1, ccnumber, value], dest)
+
+    UpdateCCs(midichannel, ccnumber, value, laser = gstt.lasernumber)
+
+    # Local Laser
     if gstt.lasernumber == 0:
-        midi3.MidiMsg([CONTROLLER_CHANGE+midichannel-1, ccnumber, value], dest)
-        UpdateCCs(ccnumber, value, laser = 0)
+        midi3.MidiMsg([CONTROLLER_CHANGE+midichannel-1, ccnumber, value], dest)     
         # update CCs TouchOSC screen
         SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/cc/'+str(ccnumber),[value])
+    
     else:
         SendOSC(gstt.computerIP[gstt.lasernumber], gstt.MaxwellatorPort, '/cc/'+str(ccnumber),[value])
 
     #SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/cc/'+str(ccnumber), [value])
 
 
-def UpdateCCs(ccnumber, value, laser = 0):
+def UpdateCCs(midichannel, ccnumber, value, laser = 0):
 
+
+    print("updateCCs", ccnumber,"value", value, "laser", laser)
     bhoreal.UpdateCC(ccnumber, value, laser)
-    beatstep.UpdateCC(ccnumber, value, laser)
+    beatstep.UpdateCC(midichannel, ccnumber, value, laser)
     LPD8.UpdateCC(ccnumber, value, laser)
     launchpad.UpdateCC(ccnumber, value, laser)
     C4.UpdateCC(ccnumber, value, laser)
     bcr.UpdateCC(ccnumber, value, laser)
 
 
-# Reset CC Mode
+# increase/decrease a CC. Value can be positive or negative
+def changeCC(value, path):
 
+    MaxwellCC = FindCC(path)
+
+    print(MaxwellCC, "CC :", FindCC(path),"was", gstt.ccs[gstt.lasernumber][MaxwellCC])
+    if gstt.ccs[gstt.lasernumber][MaxwellCC] + value > 127:
+        gstt.ccs[gstt.lasernumber][MaxwellCC] = 127
+    if gstt.ccs[gstt.lasernumber][MaxwellCC] + value < 0:
+        gstt.ccs[gstt.lasernumber][MaxwellCC] = 0
+    if gstt.ccs[gstt.lasernumber][MaxwellCC] + value < 127 and gstt.ccs[gstt.lasernumber][MaxwellCC] + value >0:
+        gstt.ccs[gstt.lasernumber][MaxwellCC] += value
+
+    print("maxwellccs changeCC in maxwellccs : path =", path, "CC :", FindCC(path), "is now ", gstt.ccs[gstt.lasernumber][MaxwellCC], "for laser", gstt.lasernumber)
+    cc(MaxwellCC, gstt.ccs[gstt.lasernumber][MaxwellCC] , dest ='to Maxwell 1')
+    
+
+def ResetCCs():
+
+    print("Reset all requested : sending default CCs...")
+    for Maxfunction in range(len(maxwell['ccs'])):
+
+        print()
+
+        path = maxwell['ccs'][Maxfunction]['Function']
+        init = maxwell['ccs'][Maxfunction]['init']
+        
+        #print()
+        funcpath = path.split("/")
+        func = funcpath[len(funcpath)-1]
+        #print(" funcpath :",  funcpath, "func :",func, "init", init)
+        if func in specificvalues:
+            value = specificvalues[func][init]
+        else:
+            value  = int(init)
+
+        if gstt.debug == True:
+            print ("RESETING", path, ": Maxfunction", Maxfunction, "with", value)
+
+        cc(Maxfunction, value, dest="to Maxwell 1")
+        time.sleep(0.01)
+        #  
+
+def SendCC(path, init):
+
+    funcpath = path.split("/")
+    func = funcpath[len(funcpath)-1]
+    #Òprint(" funcpath :",  funcpath, "func :",func, "init", init)
+    if func in specificvalues:
+        value = specificvalues[func][init]
+    else:
+        value  = int(init)
+    if gstt.debug == True:
+        print("sending CC", FindCC(path), "with value", value)
+    cc(FindCC(path),value, dest="to Maxwell 1")
+    time.sleep(0.005)
+
+
+
+# Reset one CC Mode
+
+def resetCC():
+
+    gstt.resetCC = (not gstt.resetCC)
+
+
+    if gstt.resetCC == True:
+        print("CC Reseting mode ON")
+        SendOSCUI('/beatstep/' + beatstep.findMatrix("maxwellccs.resetCC", 'HueInt') + '/led', 1.0)
+        AllStatus("CC resets ON")
+
+    else:
+        print("CC Reseting mode OFF")
+        SendOSCUI('/beatstep/' + beatstep.findMatrix("maxwellccs.resetCC", 'HueInt') + '/led', 0.0)
+        AllStatus("CC resets OFF")
+
+'''
 # Reset current CC to 64 meaning no speed,... 
 def resetCCON(value):
 
@@ -203,25 +304,62 @@ def resetCCOFF(value):
     SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/status', ["CC resets OFF"])
     SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/bcr/status', ["CC resets OFF"])
     gstt.resetCC = -1
+'''
 
 
-# Bang Mode
 
-# Output to Maxwell on the bang 
-def bangON(value):
+#
+# Bangs Modes
+#
 
-    print("Bang mode ON")
-    SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/status', ["Bang ON"])
-    SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/bcr/status', ["Bang ON"])
-    gstt.bang = 0
+# Bang 0
+def bang0(value):
 
-# Stop bang mode
-def bangOFF(value):
+    gstt.bang0 = (not gstt.bang0)
 
-    print("Bang OFF")
-    SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/status', ["Bang OFF"])
-    SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/bcr/status', ["Bang OFF"])
-    gstt.bang = -1
+    if gstt.strobe == True:
+        print("Bang 0 ON")
+        AllStatus("Bang 0 ON")
+    else:
+        print("Bang 0 OFF")
+        AllStatus("Bang 0 OFF")
+
+# Bang 1
+def bang1(value):
+
+    gstt.bang1 = (not gstt.bang1)
+
+    if gstt.strobe == True:
+        print("Bang 1 ON")
+        AllStatus("Bang 1 ON")
+    else:
+        print("Bang 1 OFF")
+        AllStatus("Bang 1 OFF")
+
+# Bang 2
+def bang2(value):
+
+    gstt.bang2 = (not gstt.bang2)
+
+    if gstt.strobe == True:
+        print("Bang 2 ON")
+        AllStatus("Bang 2 ON")
+    else:
+        print("Bang 2 OFF")
+        AllStatus("Bang 2 OFF")
+
+# Bang 3
+def bang3(value):
+
+    gstt.bang3 = (not gstt.bang3)
+
+    if gstt.strobe == True:
+        print("Bang 3 ON")
+        AllStatus("Bang 3 ON")
+    else:
+        print("Bang 3 OFF")
+        AllStatus("Bang 3 OFF")
+
 
 # bang is trigged by something !
 def bangbang(value):
@@ -231,8 +369,45 @@ def bangbang(value):
     print()
     SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/status', ["Bang !!"])
     SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/bcr/status', ["Bang !!"])
-    gstt.bangbang = 0
+    gstt.bangbang = True
 
+
+# Strobe Mode : switch to white in LFO color mode
+
+def strobe(value):
+
+    gstt.strobe = (not gstt.strobe)
+
+    if gstt.strobe == True:
+        print("Strobe ON")
+        gstt.intoff = gstt.ccs[gstt.lasernumber][129]
+        AllStatus("Strobe ON")
+        cc(129, 127 , dest ='to Maxwell 1')
+    
+    else:
+        print("Strobe OFF")
+        gstt.ccs[gstt.lasernumber][129] = gstt.intoff
+        AllStatus("Strobe OFF")
+        cc(129, gstt.ccs[gstt.lasernumber][129] , dest ='to Maxwell 1')
+
+'''
+def strobeON(value):
+
+    print("Strobe ON")
+    gstt.intoff = gstt.ccs[gstt.lasernumber][129]
+    SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/status', ["Strobe ON"])
+    SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/bcr/status', ["Strobe ON"])
+    cc(129, 127 , dest ='to Maxwell 1')
+
+# Stop strobe mode
+def strobeOFF(value):
+
+    print("Strobe OFF")
+    gstt.ccs[gstt.lasernumber][129] = gstt.intoff
+    SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/status', ["Strobe OFF"])
+    SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/bcr/status', ["Strobe OFF"])
+    cc(129, gstt.ccs[gstt.lasernumber][129] , dest ='to Maxwell 1')
+'''
 
 
 
@@ -562,21 +737,7 @@ def NextPatch(value):
 #
 
 
-# increase/decrease a CC. Value can be positive or negative
-def changeCC(value, path):
 
-    MaxwellCC = FindCC(path)
-
-    if gstt.ccs[0][MaxwellCC] + value > 127:
-        gstt.ccs[0][MaxwellCC] = 127
-    if gstt.ccs[0][MaxwellCC] + value < 0:
-        gstt.ccs[0][MaxwellCC] = 0
-    if gstt.ccs[0][MaxwellCC] + value < 127 and gstt.ccs[0][MaxwellCC] + value >0:
-        gstt.ccs[0][MaxwellCC] += value
-
-    print("Change CC in maxwellccs : path =", path, "CC :", FindCC(path), "is now ", gstt.ccs[0][MaxwellCC])
-    cc(MaxwellCC, gstt.ccs[0][MaxwellCC] , dest ='to Maxwell 1')
-    
 
 
 def gsteps(value, macroname):
@@ -919,9 +1080,155 @@ def ELCC(ccnumber,value):
     midi3.MidiMsg((CONTROLLER_CHANGE+15, ccnumber, int(value)), mididest = "BCR2000")
 
 
+#
+# BPM/Tempo network style with Ableton Link 
+# 
+
+prevphase = 0
+effectosc =  { 0: "X", 1: "Y" , 2: "Z"}
+effectside =  { 0: "left", 1: "right"}
+
+def StartLink():
+
+    global lnk
+    import link
+
+    print("Link ENABLED")
+    lnk = link.Link(120)
+    lnk.enabled = True
+    lnk.startStopSyncEnabled = True
+    SendOSCUI('/bpm', "120")
+
+def RandomEvent():
+
+    
+    autoeffect = random.randint(0,4)
+    autovalue = random.randint(0, gstt.autoval)
+    automin = random.randint(25,gstt.autoval)
+
+    # random Mixer Left/Right
+    if autoeffect == 0:
+        print("/mixer/value", random.randint(0, 127))
+        SendCC("/mixer/value", random.randint(0, 127))
+
+    # random blanking/points draw mode
+    elif autoeffect == 1:
+        print("points")
+        cc(137, random.randint(43,127), dest="to Maxwell 1")
+
+    # random oscillator frequency
+    elif autoeffect == 2:
+        print("/osc/"+effectside[random.randint(0,1)]+"/"+effectosc[random.randint(0,2)]+"/freq", autovalue)
+        SendCC("/osc/"+effectside[random.randint(0,1)]+"/"+effectosc[random.randint(0,2)]+"/freq", autovalue)
+
+    # random oscillator phasemod
+    elif autoeffect == 3:
+        print("/osc/"+effectside[random.randint(0,1)]+"/"+effectosc[random.randint(0,2)]+"/phasemod", autovalue)
+        SendCC("/osc/"+effectside[random.randint(0,1)]+"/"+effectosc[random.randint(0,2)]+"/phasemod", autovalue)
+
+    # random number of points
+    elif autoeffect == 4:
+        print("/points/number", automin)
+        SendCC("/points/number", automin)
+
+
+def BeatEvent():
+    global lnk, prevphase
+
+    if gstt.link == True:
+        lnkstr = lnk.captureSessionState()
+        link_time = lnk.clock().micros();
+        tempo_str = '{0:.2f}'.format(lnkstr.tempo())
+        beats_str = '{0:.2f}'.format(lnkstr.beatAtTime(link_time, 0))
+        playing_str = str(lnkstr.isPlaying()) # always False ???
+        phase = lnkstr.phaseAtTime(link_time, 4)
+
+        '''
+        phase_str = ''
+        for x in range(0, 4):
+          if x < phase:
+            phase_str += 'X'
+          else:
+            phase_str += '0'
+        sys.stdout.write(
+          'tempo ' + tempo_str + ' | playing: ' + playing_str + ' | beats ' + beats_str
+          + ' | ' + phase_str + '  \r')
+        sys.stdout.flush()
+
+        #print("Link time", link_time, "values", lnkstr.tempo(), lnkstr.beatAtTime(link_time, 0), lnkstr.isPlaying(), lnkstr.phaseAtTime(link_time, 4))
+        #print("Link time", link_time, "strings", link_time, tempo_str, beats_str, playing_str, phase)
+
+
+        '''
+
+        # new beat ?
+        if int(phase) != prevphase:
+            prevphase = int(phase)
+            '''
+            sys.stdout.write("Beat "+str(beats_str) + '  \r')
+            sys.stdout.flush()
+            '''
+            #SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/states/cc/'+str(ccnumber), [value])
+            SendOSCUI('/beats', beats_str)
+            #AllStatus("Beat "+str(beats_str))
+
+
+            # one CC change if Autoanimation autolink ON 
+            if gstt.autolink == True:
+
+                RandomEvent()
+                RandomEvent()
+                RandomEvent()
+
+                '''
+                # Really no switch in python ?
+
+                doit = jumptable.get(autoeffect)
+                doit(autovalue)
+
+                jumptable =  { 
+                    0: Mapping,
+                    1: PLS,
+                    2: Orbits,
+                    3: Dot,
+                    4: Sine,
+                    5: Astro,
+                    6: LaserID,
+                    7: Pose
+                    }
+                '''
+# Change autoval               
+def autoval(val1, keyname):
+
+    print("Autoval was :", gstt.autoval)
+    # + 1
+    if val1 == 1 and gstt.autoval < 125:
+        gstt.autoval += 2
+
+    # -1
+    if val1 == 127 and gstt.autoval > 2:
+        gstt.autoval -= 2
+
+    print("Autoval :", gstt.autoval)
+    AllStatus("Autoval : "+ str(gstt.autoval))
+
+
+# Change autolink flag for auto animation on beat.               
+def autolink(value):
+
+    gstt.autolink = (not gstt.autolink)
+    print("AUTOLINK :", gstt.autolink)
+    if gstt.autolink == True:
+        AllStatus("Auto Link ON")
+        SendOSCUI('/beatstep/' + beatstep.findMatrix("maxwellccs.autolink", 'HueInt') + '/led', 1.0)
+    else: 
+        AllStatus("Auto Link OFF")
+        SendOSCUI('/beatstep/' + beatstep.findMatrix("maxwellccs.autolink", 'HueInt') +'/led', 0.0)
+
+
 # Get BPM from tap tempo or note from a sequencer 
 # BPM channel 16 CC 127 
-def autotempo(note):
+def autotempo():
     global lastime
 
     currentime = datetime.now()
@@ -930,7 +1237,6 @@ def autotempo(note):
     gstt.currentbpm = round(60/delta.total_seconds())
     print("length between notes :", delta.total_seconds(),"seconds -> bpm :", gstt.currentbpm)
 
-    SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/bpm', [gstt.currentbpm])
 
     # STUPID : need to find a way to display bpm > 127
     # tell BCR 2000 the new bpm on channel 16 
@@ -938,11 +1244,46 @@ def autotempo(note):
         midi3.MidiMsg((CONTROLLER_CHANGE+15, 127, 127), mididest = "BCR2000")
     else:
         midi3.MidiMsg((CONTROLLER_CHANGE+15, 127, gstt.currentbpm), mididest = "BCR2000")
+    SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/bpm', [gstt.currentbpm])
+    newtempo(gstt.currentbpm)
 
+# Change current Link Tempo.
+def newtempo(tempo):
+    global lnk
+
+    #print("val2", val2, "tempo", tempo)
+
+    if gstt.link == True:
+        lnk.enabled = False
+        lnk.startStopSyncEnabled = False
+        lnk = link.Link(tempo)
+        lnk.enabled = True
+        lnk.startStopSyncEnabled = True
+        gstt.currentbpm = tempo
+        print("New BPM", tempo)
+        SendOSCUI('/bpm', tempo)
+        #SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/bpm', [gstt.currentbpm])
+        #AllStatus("New BPM : "+ str(tempo))
+    else:
+        print("Link is disabled")
+
+
+# 
+def BPMAdj(val1, keyname):
+
+    print(gstt.currentbpm)
+
+    # + 1
+    if val1 == 1:
+        newtempo(gstt.currentbpm+1)
+
+    # -1
+    if val1 == 127 and gstt.currentbpm > 0:
+        newtempo(gstt.currentbpm-1)
 
 lastime  = datetime.now()
 tempotime = lastime
-print("Sequencer time", lastime)
+
 
 
 LoadPatchFile(gstt.PatchFiles[gstt.lasernumber])

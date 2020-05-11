@@ -78,7 +78,38 @@
     "code": "maxwellccs.bangOFF",
     "value" : 105,
     "laser" : 0
+  },
+  {
+    "name": "StrobeON",
+    "songname": "all",
+    "chanIN" : 16,
+    "notes" : 124,
+    "notetype" : "on",
+    "code": "maxwellccs.strobeON",
+    "value" : 105,
+    "laser" : 0
+  },
+  {
+    "name": "StrobeOFF",
+    "songname": "all",
+    "chanIN" : 16,
+    "notes" : 124,
+    "notetype" : "off",
+    "code": "maxwellccs.strobeOFF",
+    "value" : 105,
+    "laser" : 0
+  },
+  {
+    "name": "Redefault",
+    "songname": "all",
+    "chanIN" : 16,
+    "notes" : 120,
+    "notetype" : "off",
+    "code": "maxwellccs.ResetCCs",
+    "value" : 105,
+    "laser" : 0
   }
+
 ],
 
 
@@ -113,49 +144,49 @@
     "name": "m11",
     "laser": 0,
     "type": "encoder",
-    "code": "/mixer/value"
+    "code": "/translator/X/speed"
   },
   {
     "name": "m12",
     "laser": 0,
     "type": "encoder",
-    "code": "/scaler/scale"
+    "code": "/translator/Y/speed"
   },
   {
     "name": "m13",
     "laser": 0,
     "type": "encoder",
-    "code": "/points/number"
+    "code": "/translator/Z/speed"
   },
   {
     "name": "m14",
     "laser": 0,
     "type": "encoder",
-    "code": "/color/modtype"
+    "code": "/duplicator/num"
   },
   {
     "name": "m15",
     "laser": 0,
     "type": "encoder",
-    "code": "/color/modtype"
+    "code": "/duplicator/offset"
   },
   {
     "name": "m16",
     "laser": 0,
     "type": "encoder",
-    "code": "/color/modtype"
+    "code": "/rotator/X/speed"
   },
   {
     "name": "m17",
     "laser": 0,
     "type": "encoder",
-    "code": "/duplicator/num"
+    "code": "/rotator/Y/speed"
   },
   {
     "name": "m18",
     "laser": 0,
     "type": "encoder",
-    "code": "/duplicator/offset"
+    "code": "/rotator/Z/speed"
   },
 
 
@@ -315,75 +346,71 @@
   {
     "_comment": "Main Layer first button line ",
     "name": "m51",
-    "init":  0,
-    "choices": "m51,m52,m53,m54",
-    "cc": 0,
-    "value": 1,
     "laser": 0,
-    "type": "buttonmulti",
-    "code": "/osc/left/X/curvetype"
+    "cc": 137,
+    "init": -2,
+    "value": 127,
+    "on": 127,
+    "off": 0,
+    "type": "buttontoggle",
+    "code": "/color/colortype"
   },
   {
     "name": "m52",
-    "init":  1,
-    "choices": "m51,m52,m53,m54",
-    "cc": 0,
-    "value": 33,
     "laser": 0,
-    "type": "buttonmulti",
-    "code": "/osc/left/X/curvetype"
+    "cc": 123,
+    "value": 127,
+    "init":  -2,
+    "on": 127,
+    "off": 64,
+    "type": "buttontoggle",
+    "code": "/draw/mode"
   },
   {
     "name": "m53",
-    "init":  2,
-    "choices": "m51,m52,m53,m54",
-    "cc": 0,
-    "value": 95,
     "laser": 0,
-    "type": "buttonmulti",
-    "code": "/osc/left/X/curvetype"
+    "cc": 137,
+    "init": -2,
+    "value": 127,
+    "on": 127,
+    "off": 0,
+    "type": "buttontoggle",
+    "code": "maxwellccs.autolink"
   },
   {
     "name": "m54",
-    "init":  3,
-    "choices": "m51,m52,m53,m54",
-    "cc": 0,
-    "value": 127,
     "laser": 0,
-    "type": "buttonmulti",
-    "code": "/osc/left/X/curvetype"
+    "init":  0,
+    "type": "button",
+    "code": "maxwellccs.autotempo"
   },
   {
     "name": "m55",
     "laser": 0,
     "init":  0,
-    "type": "buttontoggle",
-    "code": "maxwellccs.resetCC"
+    "type": "button",
+    "code": "maxwellccs.bang0"
   },
   {
     "name": "m56",
     "laser": 0,
-    "cc": 137,
-    "init": 0,
-    "value": 127,
-    "type": "buttontoggle",
-    "code": "/draw/mode"
+    "init":  0,
+    "type": "button",
+    "code": "maxwellccs.strobe"
   },
   {
     "name": "m57",
     "laser": 0,
-    "cc": 123,
-    "value": 127,
     "init":  0,
-    "type": "buttontoggle",
-    "code": "/color/colortype"
+    "type": "button",
+    "code": "maxwellccs.resetCC"
   },
   {
     "name": "m58",
     "laser": 0,
     "init":  0,
     "type": "button",
-    "code": "maxwellccs.autotempo"
+    "code": "maxwellccs.ResetCCs"
   },
 
 
@@ -391,71 +418,75 @@
   {
     "_comment": "Main Layer second button line ",
     "name": "m61",
-    "init":  0,
-    "choices": "m61,m62,m63,m64",
-    "cc": 0,
-    "value": 1,
     "laser": 0,
-    "type": "buttonmulti",
-    "code": "/osc/left/X/curvetype"
+    "cc": 4,
+    "init": -2,
+    "value": 0,
+    "on": 33,
+    "off": 0,
+    "type": "buttontoggle",
+    "code": "/osc/left/X/amptype"
   },
   {
     "name": "m62",
-    "init":  1,
-    "choices": "m61,m62,m63,m64",
-    "cc": 0,
-    "value": 33,
     "laser": 0,
-    "type": "buttonmulti",
-    "code": "/osc/left/X/curvetype"
+    "cc": 16,
+    "init": -2,
+    "value": 0,
+    "on": 33,
+    "off": 0,
+    "type": "buttontoggle",
+    "code": "/osc/left/Y/amptype"
   },
   {
     "name": "m63",
-    "init":  2,
-    "choices": "m61,m62,m63,m64",
-    "cc": 0,
-    "value": 95,
     "laser": 0,
-    "type": "buttonmulti",
-    "code": "/osc/left/X/curvetype"
+    "cc": 40,
+    "init": -2,
+    "value": 0,
+    "on": 33,
+    "off": 0,
+    "type": "buttontoggle",
+    "code": "/osc/right/X/amptype"
   },
   {
     "name": "m64",
-    "init":  3,
-    "choices": "m61,m62,m63,m64",
-    "cc": 0,
-    "value": 127,
     "laser": 0,
-    "type": "buttonmulti",
-    "code": "/osc/left/X/curvetype"
+    "cc": 137,
+    "init": -2,
+    "value": 0,
+    "on": 42,
+    "off": 0,
+    "type": "buttontoggle",
+    "code": "/osc/right/Y/amptype"
   },
   {
     "name": "m65",
     "laser": 0,
     "init":  0,
-    "type": "buttontoggle",
-    "code": "maxwellccs.resetCC"
+    "type": "button",
+    "code": "maxwellccs.Empty"
   },
   {
     "name": "m66",
     "laser": 0,
     "init":  0,
-    "type": "buttontoggle",
-    "code": "maxwellccs.resetCC"
+    "type": "button",
+    "code": "maxwellccs.Empty"
   },
   {
     "name": "m67",
     "laser": 0,
     "init":  0,
-    "type": "buttontoggle",
-    "code": "maxwellccs.bangON"
+    "type": "button",
+    "code": "maxwellccs.Empty"
   },
   {
     "name": "m68",
     "laser": 0,
     "init":  0,
-    "type": "buttontoggle",
-    "code": "maxwellccs.resetCC"
+    "type": "button",
+    "code": "maxwellccs.Empty"
   }
 
 
@@ -473,49 +504,49 @@
     "name": "m11",
     "laser": 0,
     "type": "encoder",
-    "code": "/osc/left/X/freq"
+    "code": "/mixer/value"
   },
   {
     "name": "m12",
     "laser": 0,
     "type": "encoder",
-    "code": "/osc/left/X/amp"
+    "code": "/scaler/scale"
   },
   {
     "name": "m13",
     "laser": 0,
     "type": "encoder",
-    "code": "/osc/left/X/phasemod"
+    "code": "/points/number"
   },
   {
     "name": "m14",
     "laser": 0,
     "type": "encoder",
-    "code": "/lfo/1/freq"
+    "code": "/color/modtype"
   },
   {
     "name": "m15",
     "laser": 0,
     "type": "encoder",
-    "code": "/osc/right/X/freq"
+    "code": "/color/modtype"
   },
   {
     "name": "m16",
     "laser": 0,
     "type": "encoder",
-    "code": "/osc/right/X/amp"
+    "code": "/color/modtype"
   },
   {
     "name": "m17",
     "laser": 0,
     "type": "encoder",
-    "code": "/osc/right/X/phasemod"
+    "code": "/duplicator/num"
   },
   {
     "name": "m18",
     "laser": 0,
     "type": "encoder",
-    "code": "/duplicator/num"
+    "code": "/duplicator/offset"
   },
 
 

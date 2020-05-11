@@ -63,13 +63,17 @@ def FromOSC(path, args):
     if path.find('/button') > -1:
 
         if args[0] == 1.0:
+
             # New laser choice
-            print('bhoreal laser led on', path[1:2])
             SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/laser/led/'+str(gstt.lasernumber), [0])
             bhoreal.NoteOnXY(5+gstt.lasernumber, 8, 1)
-            gstt.lasernumber= int(path[1:2])
+            gstt.lasernumber = int(path[1:2])
+            print("New lasernumber", gstt.lasernumber)
             SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/laser/led/'+str(gstt.lasernumber), [1])
             bhoreal.NoteOnXY(5+gstt.lasernumber, 8, 127)
+
+            for ccnumber in range(0,len(maxwellccs.maxwell['ccs'])):
+                maxwellccs.UpdateCCs(ccnumber, gstt.ccs[gstt.lasernumber][ccnumber], laser = gstt.lasernumber)
         else:
             print('laser led off')
 

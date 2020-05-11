@@ -1,4 +1,3 @@
- 
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
 # -*- mode: Python -*-
@@ -32,7 +31,7 @@ rand        : Send random value to Maxwell. Think of it as genetic selection.
 
 #import os
 import traceback
-import pysimpledmx
+
 from serial.tools import list_ports
 import serial,time
 #from threading import Thread
@@ -44,6 +43,7 @@ import sys
 
 
 sys.path.append('libs/')
+import pysimpledmx
 import gstt, random
 from OSC3 import OSCServer, OSCClient, OSCMessage
 
@@ -57,6 +57,8 @@ print ("Loading modules and auto configuring...")
 #myHostName = socket.gethostbyaddr(socket.gethostname())[0]
 #print("Name of the localhost is {}".format(myHostName))
 #myIP = socket.gethostbyname(myHostName)
+
+# Will probably get 0.0.0.0
 gstt.myIP = socket.gethostbyname('')
 
 
@@ -76,13 +78,14 @@ import json
 
 import threading
 #from libs import launchpad, bhoreal, dj
-import maxwellccs, launchpad, bhoreal, dj
+import maxwellccs, launchpad, bhoreal, dj, livecode
 #from multiprocessing import Process
+from datetime import datetime, timedelta
 
 
 print ("")
 print ("Arguments parsing if needed...")
-argsparser = argparse.ArgumentParser(description="Maxwellator v0.2.4b commands help mode")
+argsparser = argparse.ArgumentParser(description="Maxwellator v0.2.4b commands. Defaults : Live Mode / Ableton Link Disabled / Reset")
 argsparser.add_argument("-m","--mode",help="MODE : startup, program, programall, list, listto, command, osc, live, rand, mitraille, keyboard (live by default)", type=str)
 argsparser.add_argument("-d","--destination",help="Midi destination name like Bus 1, to Maxwell 1,.. (to Maxwell 1 by default)", type=str)
 argsparser.add_argument("-o","--oscip",help="iPad IP for TouchOSC UI", type=str)
@@ -90,8 +93,14 @@ argsparser.add_argument("-p","--oscport",help="iPad OSC port for TouchOSC UI", t
 argsparser.add_argument("-c","--channel",help="Start Midi channel (1 by default)", type=int)
 argsparser.add_argument("-u","--universe",help="Universe, not implemented (0 by default)", type=int)
 argsparser.add_argument("-s","--subuniverse",help="Subniverse, not implemented (0 by default)", type=int)
-argsparser.add_argument("-l","--link",help="Listen to Ableton Link", action="store_true", default=False)
-argsparser.add_argument("-i","--IP",help="Local IP (in the code by default) ", type=str)
+#argsparser.add_argument("-l","--link",help="Listen to Ableton Link", action="store_true", default=False)
+argsparser.add_argument("-i","--IP",help="Local IP (0.0.0.0 by default) ", type=str)
+argsparser.add_argument('-nolink',help="Disable Ableton Link (enabled by default)", dest='link', action='store_false')
+argsparser.set_defaults(link=True)
+argsparser.add_argument('-reset',help="Enable 'default' values sent to Maxwell at startup (disabled by default)", dest='reset', action='store_true')
+argsparser.set_defaults(reset=False)
+argsparser.add_argument('-debug',help="Enable debug display (disabled by default)", dest='debug', action='store_true')
+argsparser.set_defaults(debug=False)
 #argsparser.add_argument("-v","--verbose",help="Verbosity level (0 by default)",type=int)
 
 
@@ -119,7 +128,7 @@ if args.universe:
 else:
     universenb = 0
 
-# Universe
+# Subuniverse
 if args.subuniverse:
     subuniversenb = args.subuniverse
 else:
@@ -137,6 +146,19 @@ if args.IP  != None:
 #else:
 #    gstt.myIP = '127.0.0.1'
 
+
+myHostName = socket.gethostname()
+gstt.myNetIP = socket.gethostbyname(myHostName)
+print("My net IP is", gstt.myNetIP)
+
+if gstt.myNetIP == gstt.computerIP[0]:
+    print("running in MasterMode")
+    gstt.MasterMode = True
+else:
+    print("running in non MasterMode")
+    gstt.MasterMode = False
+
+
 # gstt.myIP = computerIP[0]
 #print()
 #print("IP address of the localhost is {}".format(gstt.myIP))
@@ -145,13 +167,29 @@ if args.IP  != None:
 
 # with Ableton Link
 if args.link  == True:
-    import link
-    print("Link enabled")
-    lnk = link.Link(120)
-    lnk.enabled = True
-    lnk.startStopSyncEnabled = True
+    lnk = maxwellccs.StartLink()
 else:
-    print("Link disabled")
+    print("Link DISABLED")
+
+
+# Default values sent at statup to Maxwell.
+if args.reset  == True:
+    print("Reset Maxwell values at startup ENABLED")
+    gstt.reset = True
+else:
+    print("Reset Maxwell values at startup DISABLED")
+    gstt.reset = False
+
+
+# Debug ùode ?
+if args.debug  == True:
+    print("Debug ENABLED")
+    gstt.debug = True
+else:
+    print("Debug DISABLED")
+    gstt.debug = False
+
+
 
 # iPad TouchOSC IP
 if args.oscip  != None:
@@ -233,7 +271,8 @@ def SendOSC(ip,port,oscaddress,oscargs=''):
     osclient = OSCClient()
     osclient.connect((ip, port)) 
 
-    print("sending OSC message : ", oscmsg, "to", ip, ":", port)
+    if gstt.debug == True :
+        print("sending OSC message : ", oscmsg, "to", ip, ":", port)
 
     try:
         osclient.sendto(oscmsg, (ip, port))
@@ -296,9 +335,12 @@ def OSChandler(path, tags, args, source):
     if path.find('/laser') == 0:
         #print('Incoming OSC laser with path', path[6:], "args", args)
         laser.FromOSC(path[6:], [1.0])
+        launchpad.ClsRight()
+        launchpad.PadRightOn(gstt.lasernumber + 1, 127)
+        print("Destination laser :", gstt.lasernumber + 1)
 
     if path[:4] =='/cc/':
-        #print("Incoming CC", int(path[4:]), "with value", args[0], "function", maxwellccs.maxwell['ccs'][int(path[4:])]['Function'])
+        print("Incoming OSC CC", int(path[4:]), "with value", args[0], "function", maxwellccs.maxwell['ccs'][int(path[4:])]['Function'])
         maxwellccs.cc(int(path[4:]), int(args[0]),'to Maxwell 1')
         #beatstep.UpdateCC(int(path[4:]), int(args[0]))
         #maxwellccs.UpdateCCs(int(path[4:]), int(args[0]))
@@ -310,6 +352,10 @@ def OSChandler(path, tags, args, source):
     if path.find('/C4') == 0:
         #print('Default : Incoming OSC C4 with path', path[4:])
         C4.FromOSC(path[4:],args)
+
+    if path.find('/livecode') == 0:
+        #print('Default : Incoming OSC /livecode with path', path[10:])
+        livecode.FromOSC(path[10:],args)
 
     if path.find('/song/prev') > -1:
         maxwellccs.PSong()
@@ -328,7 +374,7 @@ def OSCsendmx(path, tags, args, source):
     val = args[1]
     updateDmxValue(dmxchannel, val)
 
-# /bhoreal/note note velocity
+# note note velocity
 def OSCNote(path, tags, args, source):
 
     gstt.patchnumber[gstt.lasernumber] = args[0]
@@ -473,7 +519,7 @@ def cc(ccnumber, value):
     else:
         midichannel = gstt.basemidichannel
 
-    gstt.ccs[0][ccnumber]= value
+    gstt.ccs[gstt.lasernumber][ccnumber]= value
     #print("Sending Midi channel", midichannel, "cc", ccnumber, "value", value)
     midi3.MidiMsg([CONTROLLER_CHANGE+midichannel-1, ccnumber,value], mididiest)
     midi3.MidiMsg([CONTROLLER_CHANGE+midichannel-1, ccnumber,value], "BCR2000")
@@ -500,7 +546,7 @@ def LoadCC():
     #print("Loaded.")
 
 
-def SendCC(path,init):
+def SendCC(path, init):
 
     funcpath = path.split("/")
     func = funcpath[len(funcpath)-1]
@@ -509,8 +555,8 @@ def SendCC(path,init):
         value = maxwellccs.specificvalues[func][init]
     else:
         value  = int(init)
-
-    print("sending CC", FindCC(path), "with value", value)
+    if gstt.debug == True:
+        print("sending CC", FindCC(path), "with value", value)
     cc(FindCC(path),value)
     time.sleep(0.005)
 
@@ -710,112 +756,43 @@ def Artnet_thread():
         sock.close()
         artnet.join()
 
+def Artnetframe(p):
 
-#
-# Midifiles
-#
-
-# Load midifile
-def MidiLoad(name):
-    global MidiFileNotes, MidiFileIndex
-
-    MidiFileNotes = []
-    # Don't know how to browse MidiFile one by one.
-
-    #print(ljpath+'/midifiles/')
-    if os.path.exists(ljpath+'/midifiles/'+name):
-        for msg in MidiFile(ljpath+'/midifiles/'+name):
-            MidiFileNotes.append(msg)
+    # Artnet event via redis key 'updates' subscription
+    message = p.get_message()
     
-    else:
-        for msg in MidiFile('plugins/audio/midifiles/'+name):
-            MidiFileNotes.append(msg)
+    if message:
+        messageCC = message['data']
+        # print(type(messageCC))
+        #print("Updates said: %s" % messageCC)
+        if messageCC != 1:
+            #if ":" in str(messageCC.decode('utf_8')):
+            messageCC = messageCC.decode('utf_8')
+            artnetCC = messageCC.split(":")               
+            if len(artnetCC) > 1:
+                print("incoming Artnet will change cc", artnetCC[0], "to", round(int(artnetCC[1])/2) )
+                maxwellccs.cc(int(artnetCC[0]), round(int(artnetCC[1])),  dest="to Maxwell 1")
 
-    MidiFileIndex = 0
-    return MidiFileNotes
+def Events():
 
+    OSCframe()
+    maxwellccs.BeatEvent()
+    Artnetframe(p)
 
-#
-# Run modes
-#
-
-# OSC / Artnet
-def Osc():
-
-    p = r.pubsub()
-    p.subscribe('updates')
-    print("Artnet updates subscribed")
-    
-    while True:
-
-        # Handle OSC based changed
-        OSCframe()
-
-        # Handle Artnet change via redis key 'updates' subscription
-        message = p.get_message()
-        
-        if message:
-            messageCC = message['data']
-            # print(type(messageCC))
-            #print("Updates said: %s" % messageCC)
-            if messageCC != 1:
-                #if ":" in str(messageCC.decode('utf_8')):
-                messageCC = messageCC.decode('utf_8')
-                artnetCC = messageCC.split(":")               
-                if len(artnetCC) > 1:
-                    cc(int(artnetCC[0]), round(int(artnetCC[1])/2))
-                    print()
-
-        #time.sleep(0.0)
-
+def t():
+    return timedelta.total_seconds(datetime.now() - startime) 
 
 # OSC / Artnet
 def Live():
 
-    Startup()
     try:
-
-        artnet = threading.Thread(target = Artnet_thread, args = ())
-        artnet.start()
-        p = r.pubsub()
-        p.subscribe('updates')
-        print("Artnet updates subscribed")
+        if gstt.reset == True:
+            maxwellccs.ResetCCs()
+            print("Reset to defaults Done.")
     
         while True:
     
-            # OSC event
-            OSCframe()
-            #time.sleep(0.01)
-    
-            # will use Ableton Link if enabled and playing
-            if args.link == True:
-                lnkstr = lnk.captureSessionState()
-                link_time = lnk.clock().micros();
-                tempo_str = '{0:.2f}'.format(lnkstr.tempo())
-                beats_str = '{0:.2f}'.format(lnkstr.beatAtTime(link_time, 0))
-                playing_str = str(lnkstr.isPlaying()) # always False ???
-                phase = lnkstr.phaseAtTime(link_time, 4)
-
-                #print("Link time", link_time, "values", lnkstr.tempo(), lnkstr.beatAtTime(link_time, 0), lnkstr.isPlaying(), lnkstr.phaseAtTime(link_time, 4))
-                #print("Link time", link_time, "strings", link_time, tempo_str, beats_str, playing_str, phase)
-
-
-
-            # Artnet event via redis key 'updates' subscription
-            message = p.get_message()
-            
-            if message:
-                messageCC = message['data']
-                # print(type(messageCC))
-                #print("Updates said: %s" % messageCC)
-                if messageCC != 1:
-                    #if ":" in str(messageCC.decode('utf_8')):
-                    messageCC = messageCC.decode('utf_8')
-                    artnetCC = messageCC.split(":")               
-                    if len(artnetCC) > 1:
-                        print("incoming Artnet will change cc", artnetCC[0], "to", round(int(artnetCC[1])/2) )
-                        maxwellccs.cc(int(artnetCC[0]), round(int(artnetCC[1])),  dest="to Maxwell 1")
-                        print()
+            Events()
 
             # Morphing in progress ?
             if  gstt.morphing > -1:
@@ -893,9 +870,10 @@ def Command():
     finally:
         print ("Stopping...")
 
-
+''''
 def Startup():
 
+    print("Startup requested : sending default CCs...")
     for Maxfunction in range(len(maxwell['ccs'])):
 
         path = maxwell['ccs'][Maxfunction]['Function']
@@ -903,6 +881,7 @@ def Startup():
         # print (path, "with", init)
         SendCC(path,init)
         # print()
+'''
 
 def ProgramAll():
 
@@ -991,7 +970,10 @@ def Listto():
 
 
 
-
+# Steps :
+# Range :
+# Rate  :
+# Inhib :
 
 def Randomized():
 
@@ -1367,9 +1349,17 @@ laser.ResetUI()
 print("CurrentBPM :", gstt.currentbpm)
 #maxwellccs.runPatch(0)
 
+
+artnet = threading.Thread(target = Artnet_thread, args = ())
+artnet.start()
+p = r.pubsub()
+p.subscribe('updates')
+print("Artnet updates subscribed")
+        
+
 print()
 print("Updating TouchOSC UI...")
-print ("Beatstep Layer :",gstt.BeatstepLayer)
+#print ("Beatstep Layer :",gstt.BeatstepLayer)
 beatstep.ChangeLayer(gstt.BeatstepLayer)
 print ("Beatstep Layer :",gstt.BeatstepLayers[gstt.BeatstepLayer])
 LPD8.ChangeLayer(gstt.lpd8Layer)
@@ -1388,13 +1378,17 @@ SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/song/status', [gstt.songs[gstt.son
 #SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/patch', [gstt.patchnext[gstt.lasernumber]])
 SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/patch', [gstt.patchnext[gstt.lasernumber]])
 
+
+
 print()
 print("Running in",mode,"mode")
 print()
-maxwellccs.RotarySpecifics(FindCC('/osc/left/Y/curvetype'), 0)
+#maxwellccs.RotarySpecifics(FindCC('/osc/left/Y/curvetype'), 0)
+
+startime = datetime.now()
 
 if mode =="startup":
-    Startup()
+    maxwellccs.ResetCCs()
 
 if mode =="program":
     Program()

@@ -648,25 +648,25 @@
     "name": "m15",
     "laser": 0,
     "type": "encoder",
-    "code": "/translator/X/speed"
+    "code": "/mixer/value"
   },
   {
     "name": "m16",
     "laser": 0,
     "type": "encoder",
-    "code": "/translator/Y/speed"
+    "code": "/points/number"
   },
   {
     "name": "m17",
     "laser": 0,
     "type": "encoder",
-    "code": "/translator/Z/speed"
+    "code": "/duplicator/num"
   },
   {
     "name": "m18",
     "laser": 0,
     "type": "encoder",
-    "code": "/duplicator/num"
+    "code": "/duplicator/offset"
   },
 
 
@@ -695,194 +695,177 @@
     "type": "encoder",
     "code": "/color/intfreq"
   },
+
   {
     "name": "m25",
     "laser": 0,
     "type": "encoder",
-    "code": "/translator/X/amt"
+    "code": "/lfo/1/freq"
   },
   {
     "name": "m26",
     "laser": 0,
     "type": "encoder",
-    "code": "/translator/Y/amt"
+    "code": "/lfo/2/freq"
   },
   {
     "name": "m27",
     "laser": 0,
     "type": "encoder",
-    "code": "/translator/Z/amt"
+    "code": "maxwellccs.BPMAdj"
   },
   {
     "name": "m28",
     "laser": 0,
     "type": "encoder",
-    "code": "/duplicator/offset"
+    "code": "maxwellccs.autoval"
   },
 
 
   {
     "_comment": "HueInt first led line ",
     "name": "m31",
-    "init":  0,
-    "choices": "m31,m32,m33,m34",
-    "cc": 0,
-    "value": 1,
     "laser": 0,
-    "type": "buttonmulti",
-    "code": "/osc/left/X/freqlimit"
+    "cc": 137,
+    "init": -2,
+    "value": 127,
+    "on": 127,
+    "off": 0,
+    "type": "buttontoggle",
+    "code": "/color/colortype"
   },
   {
     "name": "m32",
-    "init":  1,
-    "choices": "m31,m32,m33,m34",
-    "cc": 0,
-    "value": 1,
     "laser": 0,
-    "type": "buttonmulti",
-    "code": "/osc/left/X/freqlimit"
+    "cc": 123,
+    "value": 127,
+    "init":  -2,
+    "on": 127,
+    "off": 64,
+    "type": "buttontoggle",
+    "code": "/draw/mode"
   },
   {
     "name": "m33",
-    "init":  2,
-    "choices": "m31,m32,m33,m34",
-    "cc": 0,
-    "value": 1,
     "laser": 0,
-    "type": "buttonmulti",
-    "code": "/osc/left/X/freqlimit"
+    "cc": 137,
+    "init": -2,
+    "value": 127,
+    "on": 127,
+    "off": 0,
+    "type": "buttontoggle",
+    "code": "maxwellccs.autolink"
   },
   {
     "name": "m34",
-    "init":  3,
-    "choices": "m31,m32,m33,m34",
-    "cc": 0,
-    "value": 1,
     "laser": 0,
-    "type": "buttonmulti",
-    "code": "/osc/left/X/freqlimit"
+    "init":  0,
+    "type": "button",
+    "code": "maxwellccs.autotempo"
   },
+
   {
     "name": "m35",
-    "init":  0,
-    "choices": "m35,m36,m37,m38",
-    "cc": 0,
-    "value": 1,
     "laser": 0,
-    "type": "buttonmulti",
-    "code": "/osc/right/X/inversion"
+    "init":  0,
+    "type": "button",
+    "code": "maxwellccs.bang0"
   },
   {
     "name": "m36",
-    "init":  1,
-    "choices": "m35,m36,m37,m38",
-    "cc": 0,
-    "value": 1,
     "laser": 0,
-    "type": "buttonmulti",
-    "code": "/osc/right/X/freqlimit"
+    "init":  0,
+    "type": "button",
+    "code": "maxwellccs.strobe"
   },
   {
     "name": "m37",
-    "init":  2,
-    "choices": "m35,m36,m37,m38",
-    "cc": 0,
-    "value": 1,
     "laser": 0,
-    "type": "buttonmulti",
-    "code": "/osc/right/X/freqlimit"
+    "init":  0,
+    "type": "button",
+    "code": "maxwellccs.resetCC"
   },
   {
     "name": "m38",
-    "init":  3,
-    "choices": "m35,m36,m37,m38",
-    "cc": 0,
-    "value": 1,
     "laser": 0,
-    "type": "buttonmulti",
-    "code": "/osc/right/X/freqlimit"
+    "init":  0,
+    "type": "button",
+    "code": "maxwellccs.ResetCCs"
   },
 
   {
     "_comment": "HueInt second led line ",
     "name": "m41",
-    "init":  0,
-    "choices": "m41,m42,m43,m44",
-    "cc": 0,
-    "value": 1,
     "laser": 0,
-    "type": "buttonmulti",
-    "code": "/osc/left/Y/freqlimit"
+    "cc": 4,
+    "init": -2,
+    "value": 0,
+    "on": 33,
+    "off": 0,
+    "type": "buttontoggle",
+    "code": "/osc/left/X/amptype"
   },
   {
     "name": "m42",
-    "init":  1,
-    "choices": "m41,m42,m43,m44",
-    "cc": 0,
-    "value": 1,
     "laser": 0,
-    "type": "buttonmulti",
-    "code": "/osc/left/Y/freqlimit"
+    "cc": 16,
+    "init": -2,
+    "value": 0,
+    "on": 33,
+    "off": 0,
+    "type": "buttontoggle",
+    "code": "/osc/left/Y/amptype"
   },
   {
     "name": "m43",
-    "init":  2,
-    "choices": "m41,m42,m43,m44",
-    "cc": 0,
-    "value": 1,
     "laser": 0,
-    "type": "buttonmulti",
-    "code": "/osc/left/Y/freqlimit"
+    "cc": 40,
+    "init": -2,
+    "value": 0,
+    "on": 33,
+    "off": 0,
+    "type": "buttontoggle",
+    "code": "/osc/right/X/amptype"
   },
   {
     "name": "m44",
-    "init":  3,
-    "choices": "m41,m42,m43,m44",
-    "cc": 0,
-    "value": 1,
     "laser": 0,
-    "type": "buttonmulti",
-    "code": "/osc/left/Y/freqlimit"
+    "cc": 137,
+    "init": -2,
+    "value": 0,
+    "on": 42,
+    "off": 0,
+    "type": "buttontoggle",
+    "code": "/osc/right/Y/amptype"
   },
+
   {
     "name": "m45",
-    "init":  0,
-    "choices": "m45,m46,m47,m48",
-    "cc": 0,
-    "value": 1,
     "laser": 0,
-    "type": "buttonmulti",
-    "code": "/osc/right/Y/inversion"
+    "init":  -2,
+    "type": "button",
+    "code": "maxwellccs.Launchpad"
   },
   {
     "name": "m46",
-    "init":  1,
-    "choices": "m45,m46,m47,m48",
-    "cc": 0,
-    "value": 1,
     "laser": 0,
-    "type": "buttonmulti",
-    "code": "/osc/right/Y/freqlimit"
+    "init":  -2,
+    "type": "button",
+    "code": "maxwellccs.Beatstep"
   },
   {
     "name": "m47",
-    "init":  2,
-    "choices": "m45,m46,m47,m48",
-    "cc": 0,
-    "value": 1,
     "laser": 0,
-    "type": "buttonmulti",
-    "code": "/osc/right/Y/freqlimit"
+    "init":  -2,
+    "type": "button",
+    "code": "maxwellccs.c4"
   },
   {
     "name": "m48",
-    "init":  3,
-    "choices": "m45,m46,m47,m48",
-    "cc": 0,
-    "value": 1,
     "laser": 0,
-    "type": "buttonmulti",
-    "code": "/osc/right/Y/freqlimit"
+    "init":  -2,
+    "type": "button",
+    "code": "maxwellccs.Bcr"
   }
 
 

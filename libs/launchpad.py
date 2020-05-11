@@ -58,7 +58,7 @@ import midi3, gstt
 import traceback
 
 from queue import Queue
-import scrolldisp, maxwellccs, beatstep, bhoreal
+import scrolldisp, maxwellccs, beatstep, bhoreal, bcr, LPD8, C4
 #from libs import macros
 import json, subprocess
 from OSC3 import OSCServer, OSCClient, OSCMessage
@@ -114,7 +114,7 @@ matrix1 = [1,1]
 matrix2 = [1,1]
 matrix3 = [1,1]
 TopSelection = [0] *8
-computer = 0
+#computer = 0
 
 
 
@@ -193,7 +193,7 @@ def FromOSC(path, args):
                 RightUpdate()
                 SendOSC(gstt.myIP, 8090, '/laser/led/'+str(number), [1])
                 gstt.lasernumber = number
-                #gstt.computer = number
+                print("lasernumber", gstt.lasernumber)
 
 
         # Button released
@@ -306,12 +306,13 @@ def PadTopOff(number):
 def PadRightOn(number, color):
     msg= [NOTE_ON, LaunchRight[number-1], color]
     midi3.send(msg,"Launchpad")
-    PadRights[number-1]=color
+    PadRights[number-1] = color
+    UpdateAllCCs(number-1)
 
 def PadRightOff(number):
     msg= [NOTE_OFF, LaunchRight[number-1], 0]
     midi3.send(msg,"Launchpad")   
-    PadRights[number-1]=0
+    PadRights[number-1] = 0
 
 def TopUpdate(button, color):
     #print(PadTop)
@@ -324,7 +325,7 @@ def RightUpdate():
     for pad in range(8):
         print(pad,PadRight[pad])
         PadRightOn(pad, PadRight[pad])
-        if PadRight[pad] ==0:
+        if PadRight[pad] == 0:
             SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/pad/r'+ str(pad) +'/button', [0])
         else:
             SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/pad/r'+ str(pad) +'/button', [1])
@@ -338,10 +339,9 @@ def MatrixSelect():
     return 
 
 def ComputerUpdate(comput):
-    global computer
 
-    computer = comput
-    PadRightOn(computer+1,127)
+    gstt.computer = comput
+    PadRightOn(gstt.computer,127)
 
 
 # AllColor for launchpad on given port
@@ -389,13 +389,27 @@ def Cls():
     ClsMatrix()
     ClsTop()
     ClsRight()
-    ComputerUpdate(computer)
+    ComputerUpdate(gstt.computer)
 
+
+def UpdateAllCCs(laser):
+
+    print("laser", laser, "CC 90 stored value", gstt.ccs[laser][90])
+    for ccnumber in range(len(maxwellccs.maxwell['ccs'])):
+        #print("updating cc", ccnumber, "of laser", laser)
+        bhoreal.UpdateCC(ccnumber, gstt.ccs[laser][ccnumber], laser)
+        beatstep.UpdateCC(ccnumber, gstt.ccs[laser][ccnumber], laser)
+        LPD8.UpdateCC(ccnumber, gstt.ccs[laser][ccnumber], laser)
+        UpdateCC(ccnumber, gstt.ccs[laser][ccnumber], laser)
+        C4.UpdateCC(ccnumber, gstt.ccs[laser][ccnumber], laser)
+        bcr.UpdateCC(ccnumber, gstt.ccs[laser][ccnumber], laser)
 
 def Start(port):
 
     #ClsPad(port)
     #time.sleep(0.3)
+    ClsTop()
+    ClsRight()
     SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/pad/on', [1])
     #AllColorPad(20)
     time.sleep(1)
@@ -528,7 +542,7 @@ def UpdateDisplay():
                 ###SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/pad/' + macros[gstt.LaunchpadLayers[gstt.LaunchpadLayer]][led]["name"], [maxwellccs.shortnames[macrocode[:macrocode.rfind('/')]]])
                 
             # Code in maxwellccs library : skip "maxwellccs." display only Empty. maxwellccs.Empty will call maxwellccs.Empty() 
-            elif macrocode.find('maxwellccs') ==0:
+            elif macrocode.find('maxwellccs') == 0:
                 SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/pad/' + macroname, [macrocode[11:]])
 
             else:
@@ -596,7 +610,6 @@ class LaunchAddQueue(object):
 
 # Process events coming from Launchpad in a separate thread.
 def MidinProcess(launchqueue):
-    global computer
 
     while True:
         launchqueue_get = launchqueue.get
@@ -626,13 +639,14 @@ def MidinProcess(launchqueue):
 
             # RIGHT = computer, this host or other computer
             if x == 9:
-                    
+                    SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/laser/led/'+str(gstt.lasernumber), [0])
                     macroname = "r"+str(y)
                     print("Right Button : ", y, macroname)
                     ClsRight()
                     PadRightOn(y, 127)
-                    print("Destination laser :",y)
+                    print("Destination laser :",y-1)
                     gstt.lasernumber = y -1
+                    SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/laser/led/'+str(gstt.lasernumber), [1])
                     gstt.computer = y
                     #time.sleep(0.1)
                     #PadRightOff(y)
@@ -799,7 +813,7 @@ def LoadMacros():
 
     s = f.read()
     macros = json.loads(s)
-    #print(len(macros['OS']),"Macros")
+    print(len(macros['OS']),"Macros")
     nbmacro = len(macros[gstt.LaunchpadLayers[gstt.LaunchpadLayer]])
     #print("Loaded.")
 

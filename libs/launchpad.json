@@ -509,21 +509,21 @@
     "color": 2,
     "laser": 0,
     "type": "button",
-    "code": "maxwellccs.Bhoreal"
+    "code": "maxwellccs.Beatstep"
   },
   {
     "name": "m83",
     "color": 2,
     "laser": 0,
     "type": "button",
-    "code": "maxwellccs.Beatstep"
+    "code": "maxwellccs.c4"
   },
   {
     "name": "m84",
     "color": 2,
     "laser": 0,
     "type": "button",
-    "code": "maxwellccs.c4"
+    "code": "maxwellccs.Bcr"
   },
   {
     "name": "m85",

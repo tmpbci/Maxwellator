@@ -38,7 +38,7 @@
   },
     {
     "Function": "/osc/left/X/phaseoffset",
-    "init": "64", 
+    "init": "0", 
     "maxwell": "gen1-x::interfm-phase-offset"
   },
     {
@@ -48,7 +48,7 @@
   },
     {
     "Function": "/osc/left/X/ampoffset",
-    "init": "64", 
+    "init": "0", 
     "maxwell": "gen1-x::interframe-amp-offset"
   },
   {
@@ -68,7 +68,7 @@
  {
   	"_comment": "Oscillator LEFT Y Functions",
     "Function": "/osc/left/Y/curvetype",
-    "init": "sin", 
+    "init": "lin", 
     "maxwell": "gen1-y::osc-wave-type"
   },
   {
@@ -103,7 +103,7 @@
   },
     {
     "Function": "/osc/left/Y/phaseoffset",
-    "init": "64", 
+    "init": "0", 
     "maxwell": "gen1-y::interfm-phase-offset"
   },
     {
@@ -113,7 +113,7 @@
   },
     {
     "Function": "/osc/left/Y/ampoffset",
-    "init": "64", 
+    "init": "0", 
     "maxwell":  "gen1-y::interframe-amp-offset"
   },
   {
@@ -138,7 +138,7 @@
   },
   {
     "Function": "/osc/left/Z/freq",
-    "init": "1",
+    "init": "0",
     "maxwell" : "gen1-z::osc-freq"
   },
   {
@@ -148,7 +148,7 @@
   },
     {
     "Function": "/osc/left/Z/amp",
-    "init": "100", 
+    "init": "64", 
     "maxwell": "gen1-z::osc-amp" 
   },
     {
@@ -168,7 +168,7 @@
   },
     {
     "Function": "/osc/left/Z/phaseoffset",
-    "init": "64", 
+    "init": "0", 
     "maxwell": "gen1-z::interfm-phase-offset"
   },
     {
@@ -178,7 +178,7 @@
   },
     {
     "Function": "/osc/left/Z/ampoffset",
-    "init": "64", 
+    "init": "0", 
     "maxwell":  "gen1-z::interframe-amp-offset"
   },
   {
@@ -197,7 +197,7 @@
   {
   	"_comment": "Oscillator RIGHT X Functions",
     "Function": "/osc/right/X/curvetype",
-    "init": "sin", 
+    "init": "lin", 
     "maxwell": "gen2-x::osc-wave-type"
   },
   {
@@ -231,7 +231,7 @@
   },
     {
     "Function": "/osc/right/X/phaseoffset",
-    "init": "64", 
+    "init": "0", 
     "maxwell": "gen2-x::interfm-phase-offset"
   },
     {
@@ -241,7 +241,7 @@
   },
     {
     "Function": "/osc/right/X/ampoffset",
-    "init": "64", 
+    "init": "0", 
     "maxwell":  "gen2-x::interframe-amp-offset"
   },
   {
@@ -296,7 +296,7 @@
   },
     {
     "Function": "/osc/right/Y/phaseoffset",
-    "init": "64", 
+    "init": "0", 
     "maxwell": "gen2-y::interfm-phase-offset"
   },
     {
@@ -306,7 +306,7 @@
   },
     {
     "Function": "/osc/right/Y/ampoffset",
-    "init": "64", 
+    "init": "0", 
     "maxwell": "gen2-y::interframe-amp-offset"
   },
   {
@@ -326,7 +326,7 @@
   {
   	"_comment": "Oscillator RIGHT Z Functions",
     "Function": "/osc/right/Z/curvetype",
-    "init": "sin", 
+    "init": "lin", 
     "maxwell": "gen2-z::osc-wave-type"
   },
   {
@@ -341,7 +341,7 @@
   },
     {
     "Function": "/osc/right/Z/amp",
-    "init": "100", 
+    "init": "64", 
     "maxwell": "gen2-z::osc-amp"
   },
     {
@@ -361,7 +361,7 @@
   },
     {
     "Function": "/osc/right/Z/phaseoffset",
-    "init": "64", 
+    "init": "0", 
     "maxwell": "gen2-z::interfm-phase-offset"
   },
     {
@@ -371,7 +371,7 @@
   },
     {
     "Function": "/osc/right/Z/ampoffset",
-    "init": "64", 
+    "init": "0", 
     "maxwell":  "gen2-z::interframe-amp-offset"
   },
   {
@@ -400,7 +400,7 @@
   },
      {
     "Function": "/lfo/1/freq",
-    "init": "64", 
+    "init": "0", 
     "maxwell": "lfo1::lfo-freq"
   },
   {
@@ -431,7 +431,7 @@
   },
      {
     "Function": "/lfo/2/freq",
-    "init": "64", 
+    "init": "0", 
     "maxwell": "lfo2::lfo-freq"
   },
   {
@@ -464,7 +464,7 @@
   },
      {
     "Function": "/lfo/3/freq",
-    "init": "64", 
+    "init": "0", 
     "maxwell": "lfo3::lfo-freq"
   },
   {
@@ -729,7 +729,7 @@
    {
     "_comment": "Colors Functions",
     "Function": "/color/colortype",
-    "init": "solid", 
+    "init": "lfo", 
     "maxwell": "line-fx::line-color-src" 
   },
      {
@@ -759,7 +759,7 @@
   },
       {
     "Function": "/color/intoff",
-    "init": "0", 
+    "init": "90", 
     "maxwell": "line-fx::intensity_dial"
   },
       {
@@ -801,7 +801,7 @@
   },
       {
     "Function": "/draw/mode",
-    "init": "solid",
+    "init": "blank",
     "maxwell": "laser-drawmode"
   },
       {

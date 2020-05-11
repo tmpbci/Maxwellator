@@ -89,7 +89,7 @@ Here = -1
 
 numbertime = [time.time()]*40
 #nbmacro = 33
-computer = 0
+#computer = 0
 
 
 ljpath = r'%s' % os.getcwd().replace('\\','/')
@@ -173,7 +173,6 @@ class BCRAddQueue(object):
 # Process events coming from BCR2000 in a separate thread.
 
 def MidinProcess(BCRqueue):
-    global computer
 
  
     while True:
@@ -270,13 +269,13 @@ def MidinProcess(BCRqueue):
             print("BCR Program change : ", str(msg[1]))
             # Change destination computer mode
             print("Destination computer", int(msg[1]))
-            computer = int(msg[1])
+            gstt.computer = int(msg[1])
 
 
         # CC on all Midi Channels         
         if CONTROLLER_CHANGE -1 < msg[0] < 192:
 
-            if computer == 0 or computer == 1:
+            if gstt.lasernumber == 0:
 
                 #macroname= "m"+str(msg[1]) 
                 #macroargs = msg[2]
@@ -284,7 +283,7 @@ def MidinProcess(BCRqueue):
                 MidiCC = msg[1]
                 MidiVal = msg[2]
 
-                if gstt.resetCC == 0:
+                if gstt.resetCC == True:
                     gstt.ccs[0][MidiCC] =  64
                     print("BCR CC Reset on channel :",MidiChannel, "CC", MidiCC)
                     #print("Change CC (in bcr) : path =", path, "CC :", midi3.FindCC(path), "is now ", gstt.ccs[0][MaxwellCC])
@@ -339,7 +338,10 @@ def MidinProcess(BCRqueue):
 
 
             else: 
-                SendOSC(gstt.computerIP[computer-1], gstt.MaxwellatorPort, '/cc', [int(msg[1]), int(msg[2])])
+                SendOSC(gstt.computerIP[gstt.lasernumber], gstt.MaxwellatorPort, '/cc/'+str(msg[1]), [int(msg[2])])
+                #SendOSC(gstt.computerIP[gstt.computer-1], gstt.MaxwellatorPort, '/cc', [int(msg[1]), int(msg[2])])
+                print("storing for laser", gstt.lasernumber, "CC", int(msg[1]), "value", int(msg[2]))
+                gstt.ccs[gstt.lasernumber][int(msg[1])] =  int(msg[2])
 
 
         '''
@@ -482,9 +484,8 @@ def NoteOff(note, dest = mididest):
 
 
 def ComputerUpdate(comput):
-    global computer
 
-    computer = comput
+    gstt.computer = comput
 
 
 #
@@ -544,27 +545,6 @@ def UpdatePatch(patchnumber):
                 # print(macroname,"line 1",macrocode[:macrocode.rfind('/')])
                 SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/bcr/'+macroname+'/line1', [macrocode[:macrocode.rfind('/')]])
 
-            '''
-            # Display text line 2
-            if macronumber < 50:
-
-                # Encoders : cc function name like 'curvetype'
-                SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/bcr/'+macroname+'/line2', [macrocode[macrocode.rfind('/')+1:]])
-                print(macroname, "line 2", macrocode[macrocode.rfind('/')+1:] )
-            else:
-
-                # button : cc function value like 'Square'
-                SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/bcr/'+macroname+'/button', [0])
-                typevalue = macrocode[macrocode.rfind('/')+1:]
-                print('typevalue', typevalue, "macronumber", macronumber, "macrocc", macrocc, "macroname", macroname)
-                values = list(enumerate(maxwellccs.specificvalues[typevalue]))
-                #print('typevalue', typevalue)
-                #print(maxwellccs.specificvalues[typevalue])
-                init = macros[gstt.BCRLayers[gstt.BCRLayer]][macronumber]["init"]
-                #print("init", init, "value", values[init][1] )
-                SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/bcr/'+macroname+'/line2', [values[init][1]])
-            '''
-
             # Display laser number value
             SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/bcr/'+macroname+'/laser', [macrolaser])
             
@@ -590,6 +570,7 @@ def UpdateCC(ccnumber, value, laser = 0):
         if macrocode == maxwellccs.maxwell['ccs'][ccnumber]['Function']:
            
             macroname = macros[gstt.BCRLayers[gstt.BCRLayer]][macronumber]["name"]
+            
             SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/bcr/'+macroname+'/value', [format(gstt.ccs[laser][ccnumber], "03d")])
             
 
@@ -667,26 +648,28 @@ def findCCMacros(ccnumber, value, macrotype):
 
 def Start(port):
 
+
     SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/bcr/on', [1])
-    Startline = [1, 3, 5, 112, 100, 37, 39, 41]
+    
+    '''
+    Startline = [0]
     # if pads are CC 0, 12, 36, 48
     for encoder in Startline:
-        for value in range(0, 127, 20):
+        for value in range(0, 127, 15):
 
-            midi3.MidiMsg([CONTROLLER_CHANGE, encoder, value], mididest = 'BCR2000')
-            time.sleep(0.01)
-        midi3.MidiMsg([CONTROLLER_CHANGE, encoder, 0], mididest = 'BCR2000')
-
+            midi3.MidiMsg([CONTROLLER_CHANGE, encoder, value], mididest = 'BCR2000 Port 1')
+            time.sleep(0.02)
+        midi3.MidiMsg([CONTROLLER_CHANGE, encoder, 0], mididest = 'BCR2000 Port 1')
+    '''
 
 def Encoder(macroname, value):
-
 
     print("Encoder : macro", macroname, "value", value)
     macronumber = findMacros(macroname, gstt.BCRLayers[gstt.BCRLayer])
 
     if macronumber != -1:
         macrocode = macros[gstt.BCRLayers[gstt.BCRLayer]][macronumber]["code"]
-        print("BCR 2000 Layer", gstt.BCRLayers[gstt.BCRLayer], ":",macrocode)
+        print("BCR 2000 Layer", gstt.BCRLayers[gstt.BCRLayer], ":", macrocode)
 
         if macrocode.count('/') > 0:
 

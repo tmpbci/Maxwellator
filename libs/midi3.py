@@ -147,6 +147,36 @@ def midi2note(midinote):
     return notes[midinote%12]+str(round(midinote/12))
 
 
+def hz_to_note_number(frequency):
+    """Convert a frequency in Hz to a (fractional) note number.
+    Parameters
+    ----------
+    frequency : float
+        Frequency of the note in Hz.
+    Returns
+    -------
+    note_number : float
+        MIDI note number, can be fractional.
+    """
+    # MIDI note numbers are defined as the number of semitones relative to C0
+    # in a 440 Hz tuning
+    return 12*(np.log2(frequency) - np.log2(440.0)) + 69
+
+def note_number_to_hz(note_number):
+    """Convert a (fractional) MIDI note number to its frequency in Hz.
+    Parameters
+    ----------
+    note_number : float
+        MIDI note number, can be fractional.
+    Returns
+    -------
+    note_frequency : float
+        Frequency of the note in Hz.
+    """
+    # MIDI note numbers are defined as the number of semitones relative to C0
+    # in a 440 Hz tuning
+    return 440.0*(2.0**((note_number - 69)/12.0))  
+
 #mycontroller.midiport[LaunchHere].send_message([CONTROLLER_CHANGE, LaunchTop[number-1], color])
 
 def send(msg,device):
@@ -246,8 +276,9 @@ def msg(note, mididest):
 # mididest : all or specifiname, won't be sent to launchpad or Bhoreal.
 def MidiMsg(midimsg, mididest, laser = gstt.lasernumber):
     
-    # not in bang mode or in bang mode and a bang has arrived.
-    if gstt.bang == -1 or (gstt.bang == 0 and gstt.bangbang == 0 and mididest =="to Maxwell 1"):
+    # not in bang 0 mode or in bang mode and a bang has arrived.
+    #if gstt.bang0 == False or (gstt.bang0 == True and gstt.bangbang == True and mididest =="to Maxwell 1"):
+    if gstt.bang0 == True:
         #print("midi3 post bang check, got MidiMsg :", midimsg, "  Dest :", mididest, "  laser :", laser, "bang", gstt.bang, "bangbang", gstt.bangbang)
         desterror = -1
     
@@ -279,9 +310,9 @@ def MidiMsg(midimsg, mididest, laser = gstt.lasernumber):
             gstt.bangbang = -1
 
         if desterror == -1:
-            print ("** This midi or OSC destination doesn't exists **")
+            print (mididest," Midi or OSC destination doesn't exists")
     else: 
-        print("bang mode : midi3 didnnot sent", midimsg, mididest, "bang", gstt.bang, "bangbang", gstt.bangbang)
+        print("Midi3 didnt sent", midimsg, mididest, "bang", gstt.bang0, "bangbang", gstt.bangbang)
 
 def OSCsend(name, oscaddress, oscargs =''):
 

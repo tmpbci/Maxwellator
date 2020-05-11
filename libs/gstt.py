@@ -31,7 +31,7 @@ lpd8Layers = ['Maxwell1','Maxwell2','Maxwell3','OS']
 C4Layer = 0
 C4Layers = ['Midi1','Midi2','Maxwell3','OS']
 
-debug = 0
+debug = False
 
 currentbpm = 60
 MaxwellatorPort = 8090
@@ -45,9 +45,16 @@ TouchOSCIP = '192.168.2.67' 	# iPad 1
 #TouchOSCIP = '192.168.151.213' # CCN
 #TouchOSCIP = '127.0.0.1'		# Localhost
 
-myIP= '127.0.0.1'
-computerIP = ['192.168.2.43','192.168.2.42','192.168.2.166',
+computer = 0
+computerIP = ['192.168.2.43','192.168.2.64','192.168.2.42',
               '127.0.0.1','127.0.0.1','127.0.0.1','127.0.0.1', '127.0.0.1']
+myIP= '127.0.0.1'
+
+# Will be updated a startup
+myNetIP = myIP
+MasterMode = True
+
+
 basemidichannel = 1
 lasernumber = 0
 patchnumber = [0,0,0,0]
@@ -58,14 +65,32 @@ morphing = -1
 morphCCinc = [0.0] * 140
 morphCC = [0] * 140
 
-# reset CC mode OFF
-resetCC = -1
+# reset one CC mode when modified
+resetCC = False
 
-# Bang mode OFF
-bang = -1
-bangbang = -1
+# Bang modes OFF
+bang0 = True
+bang1 = False
+bang2 = False
+bang3 = False
+bangbang = True
+
+# Link (Ableton) flag
+link = True
+
+# automodification at each Beat from Link
+autolink = False
+# random ccvalue between 0-autovalue
+autoval = 127
+
+strobe = False
+
 
 ccs =[[0] * 140] * 4
+
+# Strobe data storage for LFO color mode
+intoff = 0
+
 
 #PatchFiles = ["3d.json","3d.json","3d.json","3d.json"]
 PatchFiles = ["3d.json","rands.json","rands.json","rands.json"]
@@ -93,6 +118,7 @@ Range = 32
 inhib = 0
 fixedgenes = [200]
 lasermode = 0
+
 
 # DMX serial port max 4, because why not ?
 dmxport = [0,0,0,0]

@@ -39,8 +39,8 @@ Yes you can do all that with midi learn and rtpmidi. Problems starts with severa
 # What's new ?
 
 - v0.2.3b : BCR 2000 module, BPM tap tempo, Songs
-- v0.2.4b : support Link, reset CCs to default value button
-
+- v0.2.4b : support Link, reset particular CCs to default value button
+- v0.2.5b : strobe, bang modes, points number, OSC Timecode receiver, tempo encoder, random changes on Link beat events, new controllers mapping
 
 
 # Modes 
@@ -231,6 +231,10 @@ Global OSC commands :
 /patch/next/button
 /go
 /morph
+
+/TC1	 		timecode layer 1 /TC1/time/30 "00:01:10:23"
+/TC2			timecode layer 2 /TC2/time/30 "00:01:10:23"  		
+
 
 Each module has it's own OSC commands and common ones like :
 /modulename/status

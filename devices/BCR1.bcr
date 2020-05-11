@@ -31,6 +31,21 @@ $encoder 3 ;Num Points
   .showvalue on
   .mode 1dot
   .default 0
+$encoder 4 ;Tra X Speed
+  .easypar CC 1 112 0 127 absolute
+  .showvalue on
+  .mode 1dot
+  .default 0
+$encoder 5 ;Tra Y Speed
+  .easypar CC 1 116 0 127 absolute
+  .showvalue on
+  .mode 1dot
+  .default 0
+$encoder 6 ;Tra Z Speed
+  .easypar CC 1 120 0 127 absolute
+  .showvalue on
+  .mode 1dot
+  .default 0
 $encoder 7 ;Dupl
   .easypar CC 1 87 0 127 absolute
   .showvalue on
@@ -41,32 +56,112 @@ $encoder 8 ;DuplAng
   .showvalue on
   .mode 1dot
   .default 0
-$encoder 9 ;Electr. X
+$encoder 9 ;Mixer
+  .easypar CC 1 90 0 127 absolute
+  .showvalue on
+  .mode 1dot
+  .default 0
+$encoder 10 ;Scale
+  .easypar CC 1 98 0 127 absolute
+  .showvalue on
+  .mode 1dot
+  .default 0
+$encoder 11 ;Num Points
+  .easypar CC 2 11 0 127 absolute
+  .showvalue on
+  .mode 1dot
+  .default 0
+$encoder 12 ;Rot X Speed
+  .easypar CC 1 100 0 127 absolute
+  .showvalue on
+  .mode 1dot
+  .default 0
+$encoder 13 ;Rot Y Speed
+  .easypar CC 1 104 0 127 absolute
+  .showvalue on
+  .mode 1dot
+  .default 0
+$encoder 14 ;Rot Z Speed
+  .easypar CC 1 108 0 127 absolute
+  .showvalue on
+  .mode 1dot
+  .default 0
+$encoder 15 ;Dupl
+  .easypar CC 1 87 0 127 absolute
+  .showvalue on
+  .mode 1dot
+  .default 0
+$encoder 16 ;DuplAng
+  .easypar CC 1 88 0 127 absolute
+  .showvalue on
+  .mode 1dot
+  .default 0
+$encoder 17 ;Tra X Speed
+  .easypar CC 1 112 0 127 absolute
+  .showvalue on
+  .mode 1dot
+  .default 0
+$encoder 18 ;Tra Y Speed
+  .easypar CC 1 116 0 127 absolute
+  .showvalue on
+  .mode 1dot
+  .default 0
+$encoder 19 ;Tra Z Speed
+  .easypar CC 1 120 0 127 absolute
+  .showvalue on
+  .mode 1dot
+  .default 0
+$encoder 20 ;Dupl
+  .easypar CC 1 87 0 127 absolute
+  .showvalue on
+  .mode 1dot
+  .default 0
+$encoder 21 ;DuplAng
+  .easypar CC 1 88 0 127 absolute
+  .showvalue on
+  .mode 1dot
+  .default 0
+$encoder 22 ;Rot X Speed
+  .easypar CC 1 100 0 127 absolute
+  .showvalue on
+  .mode 1dot
+  .default 0
+$encoder 23 ;Rot Y Speed
+  .easypar CC 1 104 0 127 absolute
+  .showvalue on
+  .mode 1dot
+  .default 0
+$encoder 24 ;Rot Z Speed
+  .easypar CC 1 108 0 127 absolute
+  .showvalue on
+  .mode 1dot
+  .default 0
+$encoder 25 ;Electr. X
   .easypar CC 16 103 0 127 absolute
   .showvalue on
   .mode 1dot
   .default 0
-$encoder 10 ;Electri. Y
+$encoder 26 ;Electri. Y
   .easypar CC 16 103 5 127 absolute
   .showvalue on
   .mode 1dot
   .default 0
-$encoder 11 ;Electr. Cutoff
+$encoder 27 ;Electr. Cutoff
   .easypar CC 16 74 0 127 absolute
   .showvalue on
   .mode 1dot
   .default 0
-$encoder 12 ;Electr. Reson
+$encoder 28 ;Electr. Reson
   .easypar CC 16 71 0 127 absolute
   .showvalue off
   .mode 1dot
   .default 0
-$encoder 13 ;Electr. Relea
+$encoder 29 ;Electr. Relea
   .easypar CC 16 72 0 127 absolute
   .showvalue on
   .mode 1dot
   .default 0
-$encoder 14 ;Electr. Atta
+$encoder 30 ;Electr. Atta
   .easypar CC 16 73 0 127 absolute
   .showvalue on
   .mode 1dot
@@ -191,27 +286,31 @@ $encoder 56 ;R Z pm
   .showvalue on
   .mode 1dot
   .default 0
-$button 37 ;   
-  .easypar NOTE 1 66 1 toggleon
-  .showvalue on
-  .default 0
-$button 38 ;DrawMode
-  .easypar CC 2 10 127 65 toggleon
-  .showvalue on
-  .default 0
-$button 39 ;ColorType
+$button 34 ;ColorType
   .easypar CC 1 123 0 127 toggleon
   .showvalue on
   .default 0
-$button 40 ;Tempo
+$button 35 ;DrawMode
+  .easypar CC 2 10 127 65 toggleon
+  .showvalue on
+  .default 0
+$button 36 ;Tempo
   .easypar NOTE 16 127 1 toggleoff
   .showvalue on
   .default 3
-$button 47 ;Bang
+$button 40 ;redefault
+  .easypar NOTE 16 120 127 toggleon
+  .showvalue on
+  .default 0
+$button 42 ;Stribe
+  .easypar NOTE 16 124 127 toggleon
+  .showvalue on
+  .default 0
+$button 43 ;Bang
   .easypar NOTE 16 125 127 toggleon
   .showvalue on
   .default 0
-$button 48 ;resetCC
+$button 44 ;resetCC
   .easypar NOTE 16 126 127 toggleon
   .showvalue on
   .default 0
@@ -337,22 +436,342 @@ $preset
   .init
 $store 11
 $preset
-  .name '                        '
+  .name 'OCS-2 Chan 2            '
   .snapshot off
   .request off
   .egroups 4
   .fkeys on
   .lock off
   .init
+$encoder 1 ;FQ VCO 1
+  .easypar CC 2 0 0 127 absolute
+  .showvalue on
+  .mode 1dot
+  .default 0
+$encoder 2 ;FQ VCO 2
+  .easypar CC 2 5 0 127 absolute
+  .showvalue on
+  .mode 1dot
+  .default 0
+$encoder 3 ;FQ VCF
+  .easypar CC 2 9 0 127 absolute
+  .showvalue on
+  .mode 1dot
+  .default 0
+$encoder 4 ;FQ LFO 1
+  .easypar CC 2 13 0 127 absolute
+  .showvalue on
+  .mode 1dot
+  .default 0
+$encoder 5 ;FQ LFO 2
+  .easypar CC 2 17 0 127 absolute
+  .showvalue on
+  .mode 1dot
+  .default 0
+$encoder 6 ;FQ LFO 3
+  .easypar CC 2 21 0 127 absolute
+  .showvalue on
+  .mode 1dot
+  .default 0
+$encoder 7 ;PARAM 1
+  .easypar CC 2 25 0 127 absolute
+  .showvalue on
+  .mode 1dot
+  .default 0
+$encoder 8 ;VCA MIx
+  .easypar CC 2 29 0 127 absolute
+  .showvalue on
+  .mode 1dot
+  .default 0
+$encoder 33 ;WF
+  .easypar CC 2 1 0 127 absolute
+  .showvalue on
+  .mode 1dot
+  .default 0
+$encoder 34 ;WF
+  .easypar CC 2 6 0 127 absolute
+  .showvalue on
+  .mode 1dot
+  .default 0
+$encoder 35 ;Q
+  .easypar CC 2 10 0 127 absolute
+  .showvalue on
+  .mode 1dot
+  .default 0
+$encoder 36 ;WF
+  .easypar CC 2 14 0 127 absolute
+  .showvalue on
+  .mode 1dot
+  .default 0
+$encoder 37 ;WF
+  .easypar CC 2 18 0 127 absolute
+  .showvalue on
+  .mode 1dot
+  .default 0
+$encoder 38 ;MOD
+  .easypar CC 2 22 0 127 absolute
+  .showvalue on
+  .mode 1dot
+  .default 0
+$encoder 39 ;PARAM 2
+  .easypar CC 2 26 0 127 absolute
+  .showvalue on
+  .mode 1dot
+  .default 0
+$encoder 40 ;MOD
+  .easypar CC 2 30 0 127 absolute
+  .showvalue on
+  .mode 1dot
+  .default 0
+$encoder 41 ;mod 1
+  .easypar CC 2 2 0 127 absolute
+  .showvalue on
+  .mode 1dot
+  .default 0
+$encoder 42 ;mod 1
+  .easypar CC 2 7 0 127 absolute
+  .showvalue on
+  .mode 1dot
+  .default 0
+$encoder 43 ;mod 1
+  .easypar CC 2 11 0 127 absolute
+  .showvalue on
+  .mode 1dot
+  .default 0
+$encoder 44 ;SYM
+  .easypar CC 2 15 0 127 absolute
+  .showvalue on
+  .mode 1dot
+  .default 0
+$encoder 45 ;SYM
+  .easypar CC 2 19 0 127 absolute
+  .showvalue on
+  .mode 1dot
+  .default 0
+$encoder 46 ;WET Effect
+  .easypar CC 2 23 0 127 absolute
+  .showvalue on
+  .mode 1dot
+  .default 0
+$encoder 47 ;MOD Effect
+  .easypar CC 2 27 0 127 absolute
+  .showvalue on
+  .mode 1dot
+  .default 0
+$encoder 48 ;VOL
+  .easypar CC 2 31 0 127 absolute
+  .showvalue on
+  .mode 1dot
+  .default 0
+$encoder 49 ;mod 2
+  .easypar CC 2 3 0 127 absolute
+  .showvalue on
+  .mode 1dot
+  .default 0
+$encoder 50 ;mod 2
+  .easypar CC 2 8 0 127 absolute
+  .showvalue on
+  .mode 1dot
+  .default 0
+$encoder 51 ;mod 2
+  .easypar CC 2 12 0 127 absolute
+  .showvalue on
+  .mode 1dot
+  .default 0
+$encoder 52 ;ATTACK
+  .easypar CC 2 16 0 127 absolute
+  .showvalue on
+  .mode 1dot
+  .default 0
+$encoder 53 ;DECAY
+  .easypar CC 2 20 0 127 absolute
+  .showvalue on
+  .mode 1dot
+  .default 0
+$encoder 54 ;SUSTAIN
+  .easypar CC 2 24 0 127 absolute
+  .showvalue on
+  .mode 1dot
+  .default 0
+$encoder 55 ;RELEASE
+  .easypar CC 2 28 0 127 absolute
+  .showvalue on
+  .mode 1dot
+  .default 0
+$encoder 56
+  .easypar CC 2 1 0 127 absolute
+  .showvalue on
+  .mode 1dot
+  .default 0
 $store 12
 $preset
-  .name '                        '
+  .name 'MMO-3 chan 1            '
   .snapshot off
   .request off
   .egroups 4
   .fkeys on
   .lock off
   .init
+$encoder 1 ;FQ OSC 1
+  .easypar CC 1 0 0 127 absolute
+  .showvalue on
+  .mode 1dot
+  .default 0
+$encoder 2 ;FQ OSC 2
+  .easypar CC 1 5 0 127 absolute
+  .showvalue on
+  .mode 1dot
+  .default 0
+$encoder 3 ;FQ OSC 3
+  .easypar CC 1 9 0 127 absolute
+  .showvalue on
+  .mode 1dot
+  .default 0
+$encoder 4 ;FQ LFO 1
+  .easypar CC 1 13 0 127 absolute
+  .showvalue on
+  .mode 1dot
+  .default 0
+$encoder 5 ;FQ LFO 2
+  .easypar CC 1 17 0 127 absolute
+  .showvalue on
+  .mode 1dot
+  .default 0
+$encoder 6 ;FQ LFO 3
+  .easypar CC 1 21 0 127 absolute
+  .showvalue on
+  .mode 1dot
+  .default 0
+$encoder 7 ;OSC 1 MIX
+  .easypar CC 1 25 0 127 absolute
+  .showvalue on
+  .mode 1dot
+  .default 0
+$encoder 8 ;VOL
+  .easypar CC 1 29 0 127 absolute
+  .showvalue on
+  .mode 1dot
+  .default 0
+$encoder 33 ;mod 1
+  .easypar CC 1 1 0 127 absolute
+  .showvalue on
+  .mode 1dot
+  .default 0
+$encoder 34 ;mod 1
+  .easypar CC 1 6 0 127 absolute
+  .showvalue on
+  .mode 1dot
+  .default 0
+$encoder 35 ;mod 1
+  .easypar CC 1 10 0 127 absolute
+  .showvalue on
+  .mode 1dot
+  .default 0
+$encoder 36 ;WF
+  .easypar CC 1 14 0 127 absolute
+  .showvalue on
+  .mode 1dot
+  .default 0
+$encoder 37 ;FQ 2
+  .easypar CC 1 18 0 127 absolute
+  .showvalue on
+  .mode 1dot
+  .default 0
+$encoder 38 ;param 1
+  .easypar CC 1 22 0 127 absolute
+  .showvalue on
+  .mode 1dot
+  .default 0
+$encoder 39 ;OSC 2 MIX
+  .easypar CC 1 26 0 127 absolute
+  .showvalue on
+  .mode 1dot
+  .default 0
+$encoder 40 ; 
+  .easypar CC 1 30 0 127 absolute
+  .showvalue on
+  .mode 1dot
+  .default 0
+$encoder 41 ;mod 2
+  .easypar CC 1 2 0 127 absolute
+  .showvalue on
+  .mode 1dot
+  .default 0
+$encoder 42 ;mod 2
+  .easypar CC 1 7 0 127 absolute
+  .showvalue on
+  .mode 1dot
+  .default 0
+$encoder 43 ;mod 2
+  .easypar CC 1 11 0 127 absolute
+  .showvalue on
+  .mode 1dot
+  .default 0
+$encoder 44 ;SYM
+  .easypar CC 1 15 0 127 absolute
+  .showvalue on
+  .mode 1dot
+  .default 0
+$encoder 45 ;MOD
+  .easypar CC 1 19 0 127 absolute
+  .showvalue on
+  .mode 1dot
+  .default 0
+$encoder 46 ;param 2
+  .easypar CC 1 23 0 127 absolute
+  .showvalue on
+  .mode 1dot
+  .default 0
+$encoder 47 ;OSC 3 MIX
+  .easypar CC 1 27 0 127 absolute
+  .showvalue on
+  .mode 1dot
+  .default 0
+$encoder 48 ; 
+  .easypar CC 1 31 0 127 absolute
+  .showvalue on
+  .mode 1dot
+  .default 0
+$encoder 49 ;mod 3
+  .easypar CC 1 3 0 127 absolute
+  .showvalue on
+  .mode 1dot
+  .default 0
+$encoder 50 ;mod 3
+  .easypar CC 1 8 0 127 absolute
+  .showvalue on
+  .mode 1dot
+  .default 0
+$encoder 51 ;mod 3
+  .easypar CC 1 12 0 127 absolute
+  .showvalue on
+  .mode 1dot
+  .default 0
+$encoder 52 ;ATTACK
+  .easypar CC 1 16 0 127 absolute
+  .showvalue on
+  .mode 1dot
+  .default 0
+$encoder 53 ;DECAY
+  .easypar CC 1 20 0 127 absolute
+  .showvalue on
+  .mode 1dot
+  .default 0
+$encoder 54 ;SUSTAIN
+  .easypar CC 1 24 0 127 absolute
+  .showvalue on
+  .mode 1dot
+  .default 0
+$encoder 55 ;RELEASE
+  .easypar CC 1 28 0 127 absolute
+  .showvalue on
+  .mode 1dot
+  .default 0
+$encoder 56 ;  
+  .easypar CC 1 1 0 127 absolute
+  .showvalue on
+  .mode 1dot
+  .default 0
 $store 13
 $preset
   .name '                        '
