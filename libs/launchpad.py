@@ -126,7 +126,7 @@ def cc(ccnumber, value, dest=mididest):
         midi3.MidiMsg([CONTROLLER_CHANGE+midichannel-1, ccnumber, value], dest)
     else:
         SendOSC(gstt.computerIP[gstt.lasernumber], gstt.MaxwellatorPort, '/cc/'+str(ccnumber),[value])
-    SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/cc/'+str(ccnumber), [value])
+    SendOSCUI('/cc/'+str(ccnumber), [value])
 
 #       
 # Events from OSC
@@ -152,6 +152,12 @@ def SendOSC(ip,port,oscaddress,oscargs=''):
     except:
         print ('Connection to', ip, 'refused : died ?')
         return False
+
+
+def SendOSCUI(address, args):
+    if gstt.debug >0:
+        print("SendOSCUI is sending", address, args)
+    SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, address, [args])
 
 
 def FromOSC(path, args):
@@ -211,7 +217,7 @@ def FromOSC(path, args):
 
                 number = int(path[2:3])
                 print("Pad Top Button : ", number, "off")
-                SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/pad/t'+ str(number) +'/button', [1])
+                SendOSCUI('/pad/t'+ str(number) +'/button', [1])
 
             # right button
             if path[1:2] == 'r':
@@ -219,7 +225,7 @@ def FromOSC(path, args):
                 number = int(path[2:3])
                 print("Right Button : ", number, "off")
                 PadRightOn(number, 127)
-                SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/pad/r'+ str(number) +'/button', [1])
+                SendOSCUI('/pad/r'+ str(number) +'/button', [1])
                 #RightUpdate()
 
 
@@ -326,9 +332,9 @@ def RightUpdate():
         print(pad,PadRight[pad])
         PadRightOn(pad, PadRight[pad])
         if PadRight[pad] == 0:
-            SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/pad/r'+ str(pad) +'/button', [0])
+            SendOSCUI('/pad/r'+ str(pad) +'/button', [0])
         else:
-            SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/pad/r'+ str(pad) +'/button', [1])
+            SendOSCUI('/pad/r'+ str(pad) +'/button', [1])
 
 def MatrixUpdate():
     for pad in range(64):
@@ -373,11 +379,10 @@ def ClsRight():
 
     for rightled in range(8):
         PadRightOff(rightled+1)
-        SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/pad/r'+ str(rightled+1) +'/button', [0])
+        SendOSCUI('/pad/r'+ str(rightled+1) +'/button', [0])
 
 
 # ClsPatch 3th lines for Launchpad on given port
-
 def ClsPatchs(port):
     for led in range(0,24,1):
         msg = [NOTE_OFF, led, 0]
@@ -391,10 +396,10 @@ def Cls():
     ClsRight()
     ComputerUpdate(gstt.computer)
 
-
+# Laser change
 def UpdateAllCCs(laser):
 
-    print("laser", laser, "CC 90 stored value", gstt.ccs[laser][90])
+    
     for ccnumber in range(len(maxwellccs.maxwell['ccs'])):
         #print("updating cc", ccnumber, "of laser", laser)
         bhoreal.UpdateCC(ccnumber, gstt.ccs[laser][ccnumber], laser)
@@ -410,7 +415,7 @@ def Start(port):
     #time.sleep(0.3)
     ClsTop()
     ClsRight()
-    SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/pad/on', [1])
+    SendOSCUI('/pad/on', [1])
     #AllColorPad(20)
     time.sleep(1)
 
@@ -423,6 +428,7 @@ def Start(port):
     #time.sleep(0.3)
     #UpdateDisplay()
     PadRightOn(gstt.lasernumber+1, 127)
+    print("POST PadRightON")
     #RightUpdate()
     TopUpdate(gstt.LaunchpadLayer, 127)
 
@@ -433,7 +439,7 @@ def DisplayFunctionsLeds():
     for led in range(40,64):
         #print(gstt.LaunchpadLayers[gstt.LaunchpadLayer])
         PadNoteOn(led, macros[gstt.LaunchpadLayers[gstt.LaunchpadLayer]][led]["color"])
-        SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/pad', [1])
+        SendOSCUI('/pad', [1])
     #macros[gstt.LaunchpadLayers[gstt.LaunchpadLayer]][macronumber]["code"]
 
 def DisplayPatchs():
@@ -452,7 +458,7 @@ def UpdateDisplay():
     '''
     for led in range(0,nbmacro,1):
         print(led, "off")
-        SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/bhoreal/' + macros[gstt.LaunchpadLayers[gstt.LaunchpadLayer]][led]["name"]+'/led', [0.0])
+        SendOSCUI('/bhoreal/' + macros[gstt.LaunchpadLayers[gstt.LaunchpadLayer]][led]["name"]+'/led', [0.0])
     '''
     
     for led in range(0,8,1):
@@ -486,7 +492,7 @@ def UpdateDisplay():
             macrolaser = macros[gstt.LaunchpadLayers[gstt.LaunchpadLayer]][led]["laser"]
             macroname = macros[gstt.LaunchpadLayers[gstt.LaunchpadLayer]][led]["name"]
             buttonname = macroname
-            SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/pad/' + macroname+'/led', [0.0])
+            SendOSCUI('/pad/' + macroname+'/led', [0.0])
             #print(macrocode,macros[gstt.LaunchpadLayers[gstt.LaunchpadLayer]][led])
             macronumber = findMacros(macroname, gstt.LaunchpadLayers[gstt.LaunchpadLayer])
 
@@ -497,7 +503,7 @@ def UpdateDisplay():
                 typevalue = macrocode[macrocode.rfind('/')+1:]
                 values = list(enumerate(maxwellccs.specificvalues[typevalue]))
                 init = macros[gstt.LaunchpadLayers[gstt.LaunchpadLayer]][led]["init"]
-                SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/pad/'+macroname, [maxwellccs.shortnames[macrocode[:macrocode.rfind('/')]]+" "+values[init][1]])
+                SendOSCUI('/pad/'+macroname, [maxwellccs.shortnames[macrocode[:macrocode.rfind('/')]]+" "+values[init][1]])
                 #PadNoteOn(macronumber, macros[gstt.LaunchpadLayers[gstt.LaunchpadLayer]][macronumber]["color"])
                 
                 if macrotype =='buttonmulti':
@@ -507,46 +513,46 @@ def UpdateDisplay():
                     #print("Resetting choices", macrochoices)
                     for choice in macrochoices:
                         #print(choice, macronumber, gstt.ccs[macrolaser][macrocc], maxwellccs.FindCC(macrocode), maxwellccs.specificvalues[typevalue][values[init][1]])
-                        SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/pad/'+choice+'/led', [0])
+                        SendOSCUI('/pad/'+choice+'/led', [0])
                         PadNoteOn(findMacros(choice, gstt.LaunchpadLayers[gstt.LaunchpadLayer]), macros[gstt.LaunchpadLayers[gstt.LaunchpadLayer]][macronumber]["color"])
                     
                     #maxwellccs.cc(maxwellccs.FindCC(macrocode), maxwellccs.specificvalues[typevalue][values[init][1]], 'to Maxwell 1')
                     #PadNoteOn(macronumber, macros[gstt.LaunchpadLayers[gstt.LaunchpadLayer]][macronumber]["color"]-1)
-                    #SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/pad/'+buttonname+'/led', [1])
+                    #SendOSCUI('/pad/'+buttonname+'/led', [1])
                     #print(macronumber, macroname,macrocode,"CC",maxwellccs.FindCC(macrocode), "cc value", gstt.ccs[macrolaser][macrocc],"macrochoices", macrochoices,"values", values,"initvalue",maxwellccs.maxwell['ccs'][maxwellccs.FindCC(macrocode)]['init'])
                     #print(macronumber, macroname,macrocode,"CC",maxwellccs.FindCC(macrocode), "cc value", gstt.ccs[macrolaser][macrocc],"macrochoices", macrochoices)
                     if gstt.ccs[macrolaser][macrocc] == 0:
-                        SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/pad/'+macrochoices[0]+'/led', [1])
+                        SendOSCUI('/pad/'+macrochoices[0]+'/led', [1])
                         PadNoteOn(findMacros(macrochoices[0], gstt.LaunchpadLayers[gstt.LaunchpadLayer]), macros[gstt.LaunchpadLayers[gstt.LaunchpadLayer]][macronumber]["color"]-1)
                         #PadNoteOn(led, macros[gstt.LaunchpadLayers[gstt.LaunchpadLayer]][macronumber]["color"]-1)
                         #print(macrochoices[0])
                     if gstt.ccs[macrolaser][macrocc] == 127:
-                        SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/pad/'+macrochoices[1]+'/led', [1])
+                        SendOSCUI('/pad/'+macrochoices[1]+'/led', [1])
                         PadNoteOn(findMacros(macrochoices[1], gstt.LaunchpadLayers[gstt.LaunchpadLayer]), macros[gstt.LaunchpadLayers[gstt.LaunchpadLayer]][macronumber]["color"]-1)
                         #print(macrochoices[1])
                     if gstt.ccs[macrolaser][macrocc] == 254:
-                        SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/pad/'+macrochoices[2]+'/led', [1])
+                        SendOSCUI('/pad/'+macrochoices[2]+'/led', [1])
                         PadNoteOn(findMacros(macrochoices[2], gstt.LaunchpadLayers[gstt.LaunchpadLayer]), macros[gstt.LaunchpadLayers[gstt.LaunchpadLayer]][macronumber]["color"]-1)
                         #print(macrochoices[2])
                     if gstt.ccs[macrolaser][macrocc] == 381:
-                        SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/pad/'+macrochoices[3]+'/led', [1])
+                        SendOSCUI('/pad/'+macrochoices[3]+'/led', [1])
                         PadNoteOn(findMacros(macrochoices[3], gstt.LaunchpadLayers[gstt.LaunchpadLayer]), macros[gstt.LaunchpadLayers[gstt.LaunchpadLayer]][macronumber]["color"]-1)
                         #print(macrochoices[3])
                     
 
                 if gstt.ccs[macrolaser][macrocc] == 127 and macrotype !='buttonmulti':
                     #print(macronumber, gstt.ccs[macrolaser][macrocc], maxwellccs.FindCC(macrocode), maxwellccs.specificvalues[typevalue][values[init][1]], macros[gstt.LaunchpadLayers[gstt.LaunchpadLayer]][macronumber]["color"]-1)
-                    SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/pad/'+macroname+'/led', [1])
+                    SendOSCUI('/pad/'+macroname+'/led', [1])
                     PadNoteOn(macronumber, macros[gstt.LaunchpadLayers[gstt.LaunchpadLayer]][macronumber]["color"]-1)
-                #SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/pad/' + macros[gstt.LaunchpadLayers[gstt.LaunchpadLayer]][led]["name"], [maxwellccs.shortnames[macrocode[:macrocode.rfind('/')]]+" "+macrocode[macrocode.rfind('/')+1:]])
-                ###SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/pad/' + macros[gstt.LaunchpadLayers[gstt.LaunchpadLayer]][led]["name"], [maxwellccs.shortnames[macrocode[:macrocode.rfind('/')]]])
+                #SendOSCUI('/pad/' + macros[gstt.LaunchpadLayers[gstt.LaunchpadLayer]][led]["name"], [maxwellccs.shortnames[macrocode[:macrocode.rfind('/')]]+" "+macrocode[macrocode.rfind('/')+1:]])
+                ###SendOSCUI('/pad/' + macros[gstt.LaunchpadLayers[gstt.LaunchpadLayer]][led]["name"], [maxwellccs.shortnames[macrocode[:macrocode.rfind('/')]]])
                 
             # Code in maxwellccs library : skip "maxwellccs." display only Empty. maxwellccs.Empty will call maxwellccs.Empty() 
             elif macrocode.find('maxwellccs') == 0:
-                SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/pad/' + macroname, [macrocode[11:]])
+                SendOSCUI('/pad/' + macroname, [macrocode[11:]])
 
             else:
-                SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/pad/' + macroname, [macrocode])
+                SendOSCUI('/pad/' + macroname, [macrocode])
             #macros[gstt.LaunchpadLayers[gstt.LaunchpadLayer]][macronumber]["code"]
 
 # Update one CC value on TouchOSC UI and BCR 2000
@@ -561,7 +567,7 @@ def UpdateCC(ccnumber, value, laser = 0):
             macroname = macros[gstt.LaunchpadLayers[gstt.LaunchpadLayer]][macronumber]["name"]
             
             # Update TouchOSC UI
-            SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/pad/'+macroname+'/value', [format(gstt.ccs[laser][ccnumber], "03d")])
+            SendOSCUI('/pad/'+macroname+'/value', [format(gstt.ccs[laser][ccnumber], "03d")])
 
             break
 
@@ -571,7 +577,7 @@ def ChangeLayer(layernumber, laser = 0):
     gstt.LaunchpadLayer = layernumber
     # update iPad UI
     print('Launchpad layer :', layernumber)
-    SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/pad/status', [gstt.LaunchpadLayers[gstt.LaunchpadLayer]])
+    SendOSCUI('/pad/status', [gstt.LaunchpadLayers[gstt.LaunchpadLayer]])
     
     UpdateDisplay()
     
@@ -626,7 +632,7 @@ def MidinProcess(launchqueue):
             if x < 9:
 
                 # Launchpad Led pressed
-                print ("Launchpad Matrix : ", BhorNoteXY(x,y), PadLeds[BhorNoteXY(x,y)])
+                print ("Incoming Launchpad Matrix : ", BhorNoteXY(x,y), PadLeds[BhorNoteXY(x,y)])
 
                 # A led is pressed
                 if msg[0] == NOTE_ON and msg[2] == 127:
@@ -639,14 +645,14 @@ def MidinProcess(launchqueue):
 
             # RIGHT = computer, this host or other computer
             if x == 9:
-                    SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/laser/led/'+str(gstt.lasernumber), [0])
+                    SendOSCUI('/laser/led/'+str(gstt.lasernumber), [0])
                     macroname = "r"+str(y)
-                    print("Right Button : ", y, macroname)
+                    print("Launchpad Right Button : ", y, macroname)
                     ClsRight()
                     PadRightOn(y, 127)
-                    print("Destination laser :",y-1)
+                    print("Laucnpad Destination laser :",y-1)
                     gstt.lasernumber = y -1
-                    SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/laser/led/'+str(gstt.lasernumber), [1])
+                    SendOSCUI('/laser/led/'+str(gstt.lasernumber), [1])
                     gstt.computer = y
                     #time.sleep(0.1)
                     #PadRightOff(y)
@@ -683,11 +689,11 @@ def LedOn(number):
             #PadNoteOn(gstt.patchnumber[0],127)
             # Change color of pushed led
             bhoreal.NoteOn(realnumber, 127)
-            SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/bhoreal/' +macros[gstt.LaunchpadLayers[gstt.LaunchpadLayer]][realnumber]["name"]+'/button', [1])
+            SendOSCUI('/bhoreal/' +macros[gstt.LaunchpadLayers[gstt.LaunchpadLayer]][realnumber]["name"]+'/button', [1])
             bhoreal.NoteOn(gstt.patchnumber[0],18)
 
             PadNoteOn(number, 21)
-            SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/bhoreal/' +macros[gstt.LaunchpadLayers[gstt.LaunchpadLayer]][gstt.patchnumber[0]]["name"]+'/button', [0])
+            SendOSCUI('/bhoreal/' +macros[gstt.LaunchpadLayers[gstt.LaunchpadLayer]][gstt.patchnumber[0]]["name"]+'/button', [0])
             SendOSC(gstt.computerIP[gstt.lasernumber], 8090, '/bhoreal/note', realnumber)
             gstt.patchnumber[gstt.lasernumber] = realnumber
         else:
@@ -704,7 +710,7 @@ def LedOn(number):
         else:
             eval(macros[gstt.LaunchpadLayers[gstt.LaunchpadLayer]][number]["code"]+"()")
             PadNoteOn(number, macrocolor-1)
-            SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/pad/' + macros[gstt.LaunchpadLayers[gstt.LaunchpadLayer]][number]["name"]+'/led', [1.0])
+            SendOSCUI('/pad/' + macros[gstt.LaunchpadLayers[gstt.LaunchpadLayer]][number]["name"]+'/led', [1.0])
 
 
 def LedOff(number):
@@ -713,11 +719,11 @@ def LedOff(number):
     # Non patch & non multibutton led : light on hardware led.
     if macros[gstt.LaunchpadLayers[gstt.LaunchpadLayer]][number]["code"] != 'patch' and macros[gstt.LaunchpadLayers[gstt.LaunchpadLayer]][number]["type"] !='buttonmulti' and macros[gstt.LaunchpadLayers[gstt.LaunchpadLayer]][number]["type"] !='buttontoggle':
         PadNoteOn(number, macros[gstt.LaunchpadLayers[gstt.LaunchpadLayer]][number]["color"])
-        SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/pad/' + macros[gstt.LaunchpadLayers[gstt.LaunchpadLayer]][number]["name"]+'/led', [0])
+        SendOSCUI('/pad/' + macros[gstt.LaunchpadLayers[gstt.LaunchpadLayer]][number]["name"]+'/led', [0])
     
     # Existing Patch led :   
     elif (str(number + 1) in gstt.patchs['pattrstorage']['slots']) == True:
-        SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/pad/' + macros[gstt.LaunchpadLayers[gstt.LaunchpadLayer]][number]["name"]+'/led', [1.0])
+        SendOSCUI('/pad/' + macros[gstt.LaunchpadLayers[gstt.LaunchpadLayer]][number]["name"]+'/led', [1.0])
 
 
 # Send to Maxwell a pad value given its Launchpad matrix name
@@ -748,7 +754,7 @@ def padCC(buttonname, state):
                     macros[gstt.LaunchpadLayers[gstt.LaunchpadLayer]][macronumber]["init"] = -1
                     PadNoteOn(macronumber, macros[gstt.LaunchpadLayers[gstt.LaunchpadLayer]][macronumber]["color"]-1)
                     print('/pad/'+buttonname+'/led 1')
-                    SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/pad/'+buttonname+'/led', [1])
+                    SendOSCUI('/pad/'+buttonname+'/led', [1])
                 else:
                     # goes OFF
                     print(macrocode, 'OFF')
@@ -756,7 +762,7 @@ def padCC(buttonname, state):
                     macros[gstt.LaunchpadLayers[gstt.LaunchpadLayer]][macronumber]["init"] = -2
                     PadNoteOn(macronumber, macros[gstt.LaunchpadLayers[gstt.LaunchpadLayer]][macronumber]["color"])
                     print('/pad/'+buttonname+'/led 0')
-                    SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/pad/'+buttonname+'/led', [0])
+                    SendOSCUI('/pad/'+buttonname+'/led', [0])
 
             if macrotype =='buttonmulti':
 
@@ -765,18 +771,18 @@ def padCC(buttonname, state):
                 #rint("Resetting choices", macrochoices)
                 for choice in macrochoices:
                     print(choice, macronumber)
-                    SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/pad/'+choice+'/led', [0])
+                    SendOSCUI('/pad/'+choice+'/led', [0])
                     PadNoteOn(findMacros(choice, gstt.LaunchpadLayers[gstt.LaunchpadLayer]), macros[gstt.LaunchpadLayers[gstt.LaunchpadLayer]][macronumber]["color"])
                 
                 #print(maxwellccs.FindCC(macrocode),maxwellccs.specificvalues[typevalue][values[init][1]] )                
                 maxwellccs.cc(maxwellccs.FindCC(macrocode), maxwellccs.specificvalues[typevalue][values[init][1]], 'to Maxwell 1')
                 PadNoteOn(macronumber, macros[gstt.LaunchpadLayers[gstt.LaunchpadLayer]][macronumber]["color"]-1)
-                SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/pad/'+buttonname+'/led', [1])
+                SendOSCUI('/pad/'+buttonname+'/led', [1])
         
         if state == 0:
             # Button released
             print('reselect button /Launchpad/'+'m'+buttonname+'/button')
-            SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/pad/'+buttonname+'/led', [1])
+            SendOSCUI('/pad/'+buttonname+'/led', [1])
 
     
 launchqueue = Queue()
@@ -806,10 +812,6 @@ def LoadMacros():
     elif os.path.exists('launchpad.json'):
         #print('File is launchpad.json')
         f=open("launchpad.json","r")
-
-    elif os.path.exists(ljpath+'/../../libs/launchpad.json'):
-        #print('File is '+ljpath+'/../../libs/launchpad.json')
-        f=open(ljpath+"/../../libs/launchpad.json","r")
 
     s = f.read()
     macros = json.loads(s)
@@ -846,9 +848,7 @@ def TopMacro(arg):
  
 #ComputerUpdate(computer)
 LoadMacros()
-SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/pad/status', ['Running'])
-
-
+SendOSCUI('/pad/status', ['Running'])
 
 #
 # Notes Macros

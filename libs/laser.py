@@ -57,6 +57,12 @@ def SendOSC(ip,port,oscaddress,oscargs=''):
         print ('Connection to', ip, 'refused : died ?')
         return False
 
+def SendOSCUI(address, args):
+    if gstt.debug >0:
+        print("SendOSCUI is sending", address, args)
+    SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, address, [args])
+
+
 
 def FromOSC(path, args):
 
@@ -65,11 +71,11 @@ def FromOSC(path, args):
         if args[0] == 1.0:
 
             # New laser choice
-            SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/laser/led/'+str(gstt.lasernumber), [0])
+            SendOSCUI('/laser/led/'+str(gstt.lasernumber), [0])
             bhoreal.NoteOnXY(5+gstt.lasernumber, 8, 1)
             gstt.lasernumber = int(path[1:2])
             print("New lasernumber", gstt.lasernumber)
-            SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/laser/led/'+str(gstt.lasernumber), [1])
+            SendOSCUI('/laser/led/'+str(gstt.lasernumber), [1])
             bhoreal.NoteOnXY(5+gstt.lasernumber, 8, 127)
 
             for ccnumber in range(0,len(maxwellccs.maxwell['ccs'])):
@@ -80,4 +86,4 @@ def FromOSC(path, args):
 def ResetUI():
 
     for laserid in range(0,4):
-        SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/laser/led/'+str(laserid), [0])
+        SendOSCUI('/laser/led/'+str(laserid), [0])

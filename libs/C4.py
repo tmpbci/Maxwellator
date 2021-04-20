@@ -108,6 +108,11 @@ def SendOSC(ip,port,oscaddress,oscargs=''):
         print ('Connection to', ip, 'refused : died ?')
         return False
 
+def SendOSCUI(address, args):
+    if gstt.debug >0:
+        print("SendOSCUI is sending", address, args)
+    SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, address, [args])
+
 
 def FromOSC(path, args):
 
@@ -187,9 +192,9 @@ def padCC(buttonname, state):
                 print("Resetting choices", macrochoices)
                 for choice in macrochoices:
                     #print('/C4/'+choice+'/button')
-                    SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/C4/'+choice+'/button', [0])
+                    SendOSCUI('/C4/'+choice+'/button', [0])
                 #for button in range(macros[gstt.C4Layers[gstt.C4Layer]][macronumber]["choices"]):
-                #    SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/C4/'+macros[gstt.C4Layers[gstt.LaunchpadLayer]][macronumber]["choice"+str(button)]+'/button', [0])
+                #    SendOSCUI('/C4/'+macros[gstt.C4Layers[gstt.LaunchpadLayer]][macronumber]["choice"+str(button)]+'/button', [0])
 
                 print(maxwellccs.FindCC(macrocode),maxwellccs.specificvalues[typevalue][values[init][1]] )                
                 maxwellccs.cc(maxwellccs.FindCC(macrocode), maxwellccs.specificvalues[typevalue][values[init][1]], 'to Maxwell 1')
@@ -197,7 +202,7 @@ def padCC(buttonname, state):
                 '''
                 # Reset all buttons related to button name (see choices in C4.json)
                 for button in range(macros[gstt.C4Layers[gstt.C4Layer]][macronumber]["choices"]):
-                    SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/C4/'+macros[gstt.C4Layers[gstt.C4Layer]][macronumber]["choice"+str(button)]+'/button', [0])
+                    SendOSCUI('/C4/'+macros[gstt.C4Layers[gstt.C4Layer]][macronumber]["choice"+str(button)]+'/button', [0])
 
             
                 maxwellccs.cc(maxwellccs.FindCC(macrocode), maxwellccs.specificvalues[typevalue][values[init][1]], 'to Maxwell 1')
@@ -206,7 +211,7 @@ def padCC(buttonname, state):
         if state == 0:
             # Button released
             print('reselect button /C4/'+'m'+buttonname+'/button')
-            SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/C4/'+'m'+buttonname+'/button', [1])
+            SendOSCUI('/C4/'+'m'+buttonname+'/button', [1])
 
  
 
@@ -225,27 +230,27 @@ def Encoder(macroname, value):
             if value == 1:
                 maxwellccs.EncoderPlusOne(value, path = macrocode)
                 macrocc = maxwellccs.FindCC(macrocode)
-                SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/C4/'+macroname+'/value', [format(gstt.ccs[0][macrocc], "03d")])
+                SendOSCUI('/C4/'+macroname+'/value', [format(gstt.ccs[0][macrocc], "03d")])
 
             # encoder fastly turned to right
             if value > 1 and value <20:
                 maxwellccs.EncoderPlusTen(value, path = macrocode)
                 macrocc = maxwellccs.FindCC(macrocode)
-                SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/C4/'+macroname+'/value', [format(gstt.ccs[0][macrocc], "03d")])
+                SendOSCUI('/C4/'+macroname+'/value', [format(gstt.ccs[0][macrocc], "03d")])
 
 
             # encoder slowly turned to left
             if value == 127:
                 maxwellccs.EncoderMinusOne(value, path = macrocode)
                 macrocc = maxwellccs.FindCC(macrocode)
-                SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/C4/'+macroname+'/value', [format(gstt.ccs[0][macrocc], "03d")])
+                SendOSCUI('/C4/'+macroname+'/value', [format(gstt.ccs[0][macrocc], "03d")])
 
 
             # encoder fasly turned to left
             if value < 127 and value > 90:
                 maxwellccs.EncoderMinusTen(value, path = macrocode)
                 macrocc = maxwellccs.FindCC(macrocode)
-                SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/C4/'+macroname+'/value', [format(gstt.ccs[0][macrocc], "03d")])
+                SendOSCUI('/C4/'+macroname+'/value', [format(gstt.ccs[0][macrocc], "03d")])
 
         else:
             print(macrocode+"("+str(value)+")")
@@ -269,7 +274,7 @@ def Rotary(macroname, value):
 
             maxwellccs.EncoderPlusOne(value, path = macrocode)
             macrocc = maxwellccs.FindCC(macrocode)
-            SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/C4/'+macroname+'/value', [format(gstt.ccs[0][macrocc], "03d")])
+            SendOSCUI('/C4/'+macroname+'/value', [format(gstt.ccs[0][macrocc], "03d")])
 
         else:
             print(macrocode+"("+str(value)+")")
@@ -372,13 +377,13 @@ def MidinProcess(C4queue):
             #macrocode = macros[gstt.C4Layers[gstt.C4Layer]][msg[1]]["code"]
             print("channel 10 macro",macroname, "ccnumber",msg[1], "value", msg[2])
 
-            #SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/C4/'+macroname+'/button', [1])
+            #SendOSCUI('/C4/'+macroname+'/button', [1])
             gstt.ccs[gstt.lasernumber][msg[1]]= msg[2]
 
             if gstt.lasernumber == 0:
                 # CC message is sent locally to channel 1
                 midi3.MidiMsg([CONTROLLER_CHANGE+midichannel-1, msg[1], msg[2]], 'to Maxwell 1')
-                #SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/C4/'+macroname+'/button', [1])
+                #SendOSCUI('/C4/'+macroname+'/button', [1])
             else:
                 SendOSC(gstt.computerIP[gstt.lasernumber], gstt.MaxwellatorPort, '/cc/'+str(msg[1]),[msg[2]])
 
@@ -392,7 +397,7 @@ def UpdatePatch(patchnumber):
     #print('C4 updatePatch', patchnumber)
 
     # update iPad UI
-    #SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/C4/status', [gstt.C4Layers[gstt.C4Layer]])
+    #SendOSCUI('/C4/status', [gstt.C4Layers[gstt.C4Layer]])
     
     for macronumber in range(nbmacro):
         #print(macronumber, len(macros[gstt.C4Layers[gstt.C4Layer]]))
@@ -410,15 +415,15 @@ def UpdatePatch(patchnumber):
 
             # Display VALUE
             #print("name",macroname, "cc", macrocc, "value", gstt.ccs[macrolaser][macrocc],"laser", macrolaser, 'type', macrotype)
-            SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/C4/'+macroname+'/value', [format(gstt.ccs[macrolaser][macrocc], "03d")])
+            SendOSCUI('/C4/'+macroname+'/value', [format(gstt.ccs[macrolaser][macrocc], "03d")])
             
 
             # Display text LINE 1
             if (macrocode[:macrocode.rfind('/')] in maxwellccs.shortnames) == True:
                 
                 if macrotype =='encoder':
-                    #SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/C4/'+macroname+'/line1', [maxwellccs.shortnames[macrocode[:macrocode.rfind('/')]]])
-                    SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/C4/'+macroname+'/line1', [maxwellccs.shortnames[macrocode[:macrocode.rfind('/')]]+" "+macrocode[macrocode.rfind('/')+1:]])
+                    #SendOSCUI('/C4/'+macroname+'/line1', [maxwellccs.shortnames[macrocode[:macrocode.rfind('/')]]])
+                    SendOSCUI('/C4/'+macroname+'/line1', [maxwellccs.shortnames[macrocode[:macrocode.rfind('/')]]+" "+macrocode[macrocode.rfind('/')+1:]])
                 
                 if macrotype.find('button') >-1:
                     typevalue = macrocode[macrocode.rfind('/')+1:]
@@ -426,10 +431,10 @@ def UpdatePatch(patchnumber):
                     init = macros[gstt.C4Layers[gstt.C4Layer]][macronumber]["init"]
                     #print(values)
                     #print("button",macroname, init, type(values[init][1]))
-                    SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/C4/'+macroname+'/line1', [maxwellccs.shortnames[macrocode[:macrocode.rfind('/')]]+" "+values[init][1]])
+                    SendOSCUI('/C4/'+macroname+'/line1', [maxwellccs.shortnames[macrocode[:macrocode.rfind('/')]]+" "+values[init][1]])
 
             else:
-                SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/C4/'+macroname+'/line1', [macrocode[:macrocode.rfind('/')]])
+                SendOSCUI('/C4/'+macroname+'/line1', [macrocode[:macrocode.rfind('/')]])
 
 
             '''
@@ -439,30 +444,30 @@ def UpdatePatch(patchnumber):
 
                 # Encoders : cc function name like 'curvetype'
                 #print("encoders", macrotype)
-                SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/C4/'+macroname+'/line2', [macrocode[macrocode.rfind('/')+1:]])
+                SendOSCUI('/C4/'+macroname+'/line2', [macrocode[macrocode.rfind('/')+1:]])
                 
 
             #if macrotype == 'button':
             if macrotype.find('button') >0:
 
                 # button : cc function value like 'Square'
-                SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/C4/'+macroname+'/button', [0])
+                SendOSCUI('/C4/'+macroname+'/button', [0])
                 #typevalue = macrocode[macrocode.rfind('/')+1:]
                 #values = list(enumerate(maxwellccs.specificvalues[typevalue]))
                 #init = macros[gstt.C4Layers[gstt.C4Layer]][macronumber]["init"]
                 #print("button", typevalue, macrotype)
                 #print("init", init, "value", values[init][1] )
-                SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/C4/'+macroname+'/line2', [values[init][1]])
+                SendOSCUI('/C4/'+macroname+'/line2', [values[init][1]])
             '''
 
             # Display LASER number value
-            SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/C4/'+macroname+'/laser', [macrolaser])
+            SendOSCUI('/C4/'+macroname+'/laser', [macrolaser])
             
         # Code function
         if macrocode.find('.') >0:
             # maxwellccs.something
             print(macrocode.index('.'))
-            SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/C4/'+macroname+'/line1', [macrocode[macrocode.index('.')+1:]])
+            SendOSCUI('/C4/'+macroname+'/line1', [macrocode[macrocode.index('.')+1:]])
      
 # Update one CC value on C4 TouchOSC UI 
 def UpdateCC(ccnumber, value, laser = 0):
@@ -474,7 +479,7 @@ def UpdateCC(ccnumber, value, laser = 0):
         if macrocode == maxwellccs.maxwell['ccs'][ccnumber]['Function']:
            
             macroname = macros[gstt.C4Layers[gstt.C4Layer]][macronumber]["name"]
-            SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/C4/'+macroname+'/value', [format(gstt.ccs[laser][ccnumber], "03d")])
+            SendOSCUI('/C4/'+macroname+'/value', [format(gstt.ccs[laser][ccnumber], "03d")])
 
             break
            
@@ -488,10 +493,10 @@ def ChangeLayer(layernumber, laser = 0):
     gstt.C4Layer = layernumber
     print('C4 layer :', layernumber)
     # update iPad UI
-    SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/C4/status', [gstt.C4Layers[gstt.C4Layer]])
-    SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/C4/m10/value', [format(layernumber, "03d")])
-    SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/C4/m10/line1', ['Layer'])
-    SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/C4/m10/line2', [''])
+    SendOSCUI('/C4/status', [gstt.C4Layers[gstt.C4Layer]])
+    SendOSCUI('/C4/m10/value', [format(layernumber, "03d")])
+    SendOSCUI('/C4/m10/line1', ['Layer'])
+    SendOSCUI('/C4/m10/line2', [''])
     UpdatePatch(gstt.patchnumber[laser])
 
 def NLayer():
@@ -566,5 +571,5 @@ def findMacros(macroname,macrotype):
 
 
 LoadMacros()
-SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/C4/status', ['C4'])
+SendOSCUI('/C4/status', ['C4'])
 

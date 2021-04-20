@@ -63,7 +63,7 @@ print()
 #print('Midi startup.')
 
 sys.path.append('libs/')
-
+import log
 import gstt, bhoreal
 import launchpad
 import LPD8, dj, beatstep, sequencer, bcr
@@ -230,7 +230,7 @@ def NoteOn(note,color, mididest, laser = gstt.lasernumber):
             midiport[port].send_message([NOTE_ON, note, color])
 
         # To All 
-        elif mididest == "all" and midiname[port].find(mididest) != 0 and  midiname[port].find(BhorealMidiName) != 0 and midiname[port].find(BeastepName) != 0:
+        elif mididest == "all" and midiname[port].find(mididest) != 0 and  midiname[port].find(BhorealMidiName) != 0 and midiname[port].find(BeatstepName) != 0:
             midiport[port].send_message([NOTE_ON, note, color])
 
         #virtual.send_message([NOTE_ON, note, color])
@@ -279,7 +279,7 @@ def MidiMsg(midimsg, mididest, laser = gstt.lasernumber):
     # not in bang 0 mode or in bang mode and a bang has arrived.
     #if gstt.bang0 == False or (gstt.bang0 == True and gstt.bangbang == True and mididest =="to Maxwell 1"):
     if gstt.bang0 == True:
-        #print("midi3 post bang check, got MidiMsg :", midimsg, "  Dest :", mididest, "  laser :", laser, "bang", gstt.bang, "bangbang", gstt.bangbang)
+        print("midi3 sending : post bang check, got MidiMsg :", midimsg, "for Dest :", mididest, "  laser :", laser) #, "bang", gstt.bang, "bangbang", gstt.bangbang)
         desterror = -1
     
         #for port in range(MidInsNumber):
@@ -410,7 +410,7 @@ def MidinProcess(inqueue, portname):
             MidiChannel = msg[0]-144
             MidiNote = msg[1]
             MidiVel = msg[2]
-            print ("NOTE ON :", MidiNote, 'velocity :', MidiVel, "Channel", MidiChannel)
+            print ("Generic NOTE ON :", MidiNote, 'velocity :', MidiVel, "Channel", MidiChannel)
             NoteOn(msg[1], msg[2], "Bus 1")
             
            #print(gstt.maxwell)
@@ -468,7 +468,7 @@ def MidinProcess(inqueue, portname):
                else:
                    MidiChannel = msg[0]-128
             '''
-            print ("NOTE OFF :", MidiNote, 'velocity :', MidiVel, "Channel", MidiChannel)
+            print ("Generic NOTE OFF :", MidiNote, 'velocity :', MidiVel, "Channel", MidiChannel)
             #print("from", portname,"noteoff", msg[0], msg[1],msg[2])
             #NoteOff(msg[1],msg[2], mididest)
             NoteOff(msg[2], mididest)
@@ -476,7 +476,7 @@ def MidinProcess(inqueue, portname):
                 
         # Midi CC message          
         if msg[0] == CONTROLLER_CHANGE:
-            print("CC :", msg[1], msg[2])
+            print("Generic CC :", msg[1], msg[2])
             '''
             Webstatus("CC :" + str(msg[1]) + " " + str(msg[2]))
             for OSCtarget in midi2OSC:
@@ -554,7 +554,7 @@ def OutConfig():
     # 
     if len(OutDevice) == 0:
         print("")
-        print("MIDIout...")
+        log.info("MIDIout...")
         print("List and attach to available devices on host with IN port :")
     
         # Display list of available midi IN devices on the host, create and start an OUT instance to talk to each of these Midi IN devices 
@@ -576,7 +576,7 @@ def OutConfig():
                 print("Bhoreal start animation")
                 bhoreal.Here = port
                 bhoreal.Start(port)
-                time.sleep(0.2)
+                time.sleep(0.5)
     
             # Search for a LaunchPad
             elif name.find(LaunchMidiName) == 0:
@@ -717,7 +717,7 @@ class InObject():
 def InConfig():
 
     print("")
-    print("MIDIin...")
+    log.info("MIDIin...")
     print("List and attach to available devices on host with OUT port :")
 
     if platform == 'darwin':

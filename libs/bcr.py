@@ -120,6 +120,12 @@ def SendOSC(ip,port,oscaddress,oscargs=''):
         return False
 
 
+def SendOSCUI(address, args):
+    if gstt.debug >0:
+        print("SendOSCUI is sending", address, args)
+    SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, address, [args])
+
+
 def FromOSC(path, args):
 
     print('BCR2000 OSC got', path, args)
@@ -288,7 +294,7 @@ def MidinProcess(BCRqueue):
                     print("BCR CC Reset on channel :",MidiChannel, "CC", MidiCC)
                     #print("Change CC (in bcr) : path =", path, "CC :", midi3.FindCC(path), "is now ", gstt.ccs[0][MaxwellCC])
                     maxwellccs.cc(MidiCC, 64 , midichannel = MidiChannel, dest ='to Maxwell 1')
-                    SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/status', ["CC", MidiCC, "to 64"])
+                    SendOSCUI('/status', ["CC", MidiCC, "to 64"])
 
                 else:
                     gstt.ccs[0][MidiCC] =  MidiVal
@@ -362,13 +368,13 @@ def MidinProcess(BCRqueue):
             #macrocode = macros[gstt.BCRLayers[gstt.BCRLayer]][msg[1]]["code"]
             print("channel 10 macro",macroname, "ccnumber",msg[1], "value", msg[2])
 
-            #SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/bcr/'+macroname+'/button', [1])
+            #SendOSCUI('/bcr/'+macroname+'/button', [1])
             gstt.ccs[gstt.lasernumber][msg[1]]= msg[2]
 
             if gstt.lasernumber == 0:
                 # CC message is sent locally to channel 1
                 midi3.MidiMsg([CONTROLLER_CHANGE+midichannel-1, msg[1], msg[2]], 'to Maxwell 1')
-                #SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/bcr/'+macroname+'/button', [1])
+                #SendOSCUI('/bcr/'+macroname+'/button', [1])
             else:
                 SendOSC(gstt.computerIP[gstt.lasernumber], gstt.MaxwellatorPort, '/cc/'+str(msg[1]),[msg[2]])
 
@@ -395,7 +401,7 @@ def padCC(buttonname, state):
     # Patch Led ?
     if state >0:
 
-        SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/bcr/'+buttonname+'/button', [1])
+        SendOSCUI('/bcr/'+buttonname+'/button', [1])
         numbertime[macronumber] = time.time()
 
         # Toggle Button
@@ -405,15 +411,15 @@ def padCC(buttonname, state):
             if init == -2:
                 # goes ON
                 print(macrocode, 'ON')
-                SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/status', [macrocode+" ON"])
-                SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/bcr/status', [macrocode+" ON"])
+                SendOSCUI('/status', [macrocode+" ON"])
+                SendOSCUI('/bcr/status', [macrocode+" ON"])
                 maxwellccs.cc(maxwellccs.FindCC(macrocode), 127, 'to Maxwell 1')
                 macros[gstt.BCRLayers[gstt.BCRLayer]][macronumber]["init"] = -1
             else:
                 # goes OFF
                 print(macrocode, 'OFF')
-                SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/status', [macrocode+" OFF"])
-                SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/bcr/status', [macrocode+" OFF"])
+                SendOSCUI('/status', [macrocode+" OFF"])
+                SendOSCUI('/bcr/status', [macrocode+" OFF"])
                 maxwellccs.cc(maxwellccs.FindCC(macrocode), 0, 'to Maxwell 1')
                 macros[gstt.BCRLayers[gstt.BCRLayer]][macronumber]["init"] = -2
         
@@ -424,7 +430,7 @@ def padCC(buttonname, state):
             macrochoices = list(macros[gstt.BCRLayers[gstt.BCRLayer]][macronumber]["choices"].split(","))
             numbertime[findMacros(macrochoices[3], gstt.BCRLayers[gstt.BCRLayer])] = time.time()
             for choice in macrochoices:
-                SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/bcr/'+choice+'/button', [0])
+                SendOSCUI('/bcr/'+choice+'/button', [0])
 
             # Do the change
             maxwellccs.cc(maxwellccs.FindCC(macrocode), maxwellccs.specificvalues[typevalue][values[init][1]], 'to Maxwell 1')
@@ -441,7 +447,7 @@ def padCC(buttonname, state):
             # Many buttons (choices)
             # Reset all buttons 
             for button in range(macros[gstt.BCRLayers[gstt.BCRLayer]][macronumber]["choices"]):
-                SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/bcr/'+macros[gstt.BCRLayers[gstt.LaunchpadLayer]][macronumber]["choice"+str(button)]+'/button', [0])
+                SendOSCUI('/bcr/'+macros[gstt.BCRLayers[gstt.LaunchpadLayer]][macronumber]["choice"+str(button)]+'/button', [0])
 
             maxwellccs.cc(maxwellccs.FindCC(macrocode), maxwellccs.specificvalues[typevalue][values[init][1]], 'to Maxwell 1')
         '''
@@ -452,7 +458,7 @@ def padCC(buttonname, state):
         #print('reselect button /bcr/'+buttonname+'/button')
         print('elapsed push :', buttonname, macrotype, macronumber, state, macrocode, time.time()-numbertime[macronumber])
         #numbertime[macronumber] = time.time()
-        SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/bcr/'+buttonname+'/button', [0])
+        SendOSCUI('/bcr/'+buttonname+'/button', [0])
         
         if macronumber != -1 and macrotype == 'button':
             value = 0
@@ -497,7 +503,7 @@ def ChangeLayer(layernumber, laser = 0):
     gstt.BCRLayer = layernumber
     print('BCR2000 layer :', layernumber)
     # update iPad UI
-    SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/bcr/status', [gstt.BCRLayers[gstt.BCRLayer]])
+    SendOSCUI('/bcr/status', [gstt.BCRLayers[gstt.BCRLayer]])
     UpdatePatch(gstt.patchnumber[laser])
 
 def NLayer():
@@ -518,7 +524,7 @@ def UpdatePatch(patchnumber):
     # update iPad UI
     
     #print('BCR2000 updatePatch', patchnumber)
-    # SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/bcr/status', [gstt.BCRLayers[gstt.BCRLayer]])
+    # SendOSCUI('/bcr/status', [gstt.BCRLayers[gstt.BCRLayer]])
     for macronumber in range(nbmacro):
 
         macrocode = macros[gstt.BCRLayers[gstt.BCRLayer]][macronumber]["code"]
@@ -533,30 +539,30 @@ def UpdatePatch(patchnumber):
 
             # Display value
             # print("name",macroname, "cc", macrocc, "value", gstt.ccs[macrolaser][macrocc],"laser", macrolaser)
-            SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/bcr/'+macroname+'/value', [format(gstt.ccs[macrolaser][macrocc], "03d")])
+            SendOSCUI('/bcr/'+macroname+'/value', [format(gstt.ccs[macrolaser][macrocc], "03d")])
             
 
             # Display text line 1
             if (macrocode[:macrocode.rfind('/')] in maxwellccs.shortnames) == True:
                 # print(macroname,"line 1",maxwellccs.shortnames[macrocode[:macrocode.rfind('/')]])
-                SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/bcr/'+macroname+'/line1', [maxwellccs.shortnames[macrocode[:macrocode.rfind('/')]]+" "+macrocode[macrocode.rfind('/')+1:]])
-                #SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/bcr/'+macroname+'/line1', [maxwellccs.shortnames[macrocode[:macrocode.rfind('/')]]])
+                SendOSCUI('/bcr/'+macroname+'/line1', [maxwellccs.shortnames[macrocode[:macrocode.rfind('/')]]+" "+macrocode[macrocode.rfind('/')+1:]])
+                #SendOSCUI('/bcr/'+macroname+'/line1', [maxwellccs.shortnames[macrocode[:macrocode.rfind('/')]]])
             else:
                 # print(macroname,"line 1",macrocode[:macrocode.rfind('/')])
-                SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/bcr/'+macroname+'/line1', [macrocode[:macrocode.rfind('/')]])
+                SendOSCUI('/bcr/'+macroname+'/line1', [macrocode[:macrocode.rfind('/')]])
 
             # Display laser number value
-            SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/bcr/'+macroname+'/laser', [macrolaser])
+            SendOSCUI('/bcr/'+macroname+'/laser', [macrolaser])
             
         # Code in maxwellccs library : skip "maxwellccs." display only Empty. maxwellccs.Empty will call maxwellccs.Empty() 
         elif macrocode.find('maxwellccs') ==0:
                 #print("BCR 2000",macronumber, macrocode, '/bcr/'+ macroname+'/line1', macrocode[11:])
-                SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/bcr/'+ macros[gstt.BCRLayers[gstt.BCRLayer]][macronumber]["name"]+'/line2', [" "])
-                SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/bcr/'+macros[gstt.BCRLayers[gstt.BCRLayer]][macronumber]["name"]+'/line1', [macrocode[11:]])
-                SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/bcr/'+macros[gstt.BCRLayers[gstt.BCRLayer]][macronumber]["name"]+'/value', [format(gstt.ccs[macrolaser][macrocc], "03d")])
+                SendOSCUI('/bcr/'+ macros[gstt.BCRLayers[gstt.BCRLayer]][macronumber]["name"]+'/line2', [" "])
+                SendOSCUI('/bcr/'+macros[gstt.BCRLayers[gstt.BCRLayer]][macronumber]["name"]+'/line1', [macrocode[11:]])
+                SendOSCUI('/bcr/'+macros[gstt.BCRLayers[gstt.BCRLayer]][macronumber]["name"]+'/value', [format(gstt.ccs[macrolaser][macrocc], "03d")])
                 #print( '/bcr/'+macros[gstt.BCRLayers[gstt.BCRLayer]][macronumber]["name"]+'/value', [format(gstt.ccs[macrolaser][macrocc], "03d")])
         else:
-            SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/bcr/'+macroname+'/line1', [macrocode])
+            SendOSCUI('/bcr/'+macroname+'/line1', [macrocode])
      
 
 # Update one CC value to BCR 2000 via MIDI and TouchOSC BCR 2000 UI
@@ -571,12 +577,13 @@ def UpdateCC(ccnumber, value, laser = 0):
            
             macroname = macros[gstt.BCRLayers[gstt.BCRLayer]][macronumber]["name"]
             
-            SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/bcr/'+macroname+'/value', [format(gstt.ccs[laser][ccnumber], "03d")])
-            
+            SendOSCUI('/bcr/'+macroname+'/value', [format(value, "03d")])
+            #SendOSCUI('/bcr/'+macroname+'/value', [format(gstt.ccs[laser][ccnumber], "03d")])
 
             # Update BCR 2000 via MIDI if connected.
             if Here != -1:
-                midi3.MidiMsg([CONTROLLER_CHANGE, ccnumber, gstt.ccs[laser][ccnumber]], "BCR2000")
+                midi3.MidiMsg([CONTROLLER_CHANGE, ccnumber, value], "BCR2000")
+                #midi3.MidiMsg([CONTROLLER_CHANGE, ccnumber, gstt.ccs[laser][ccnumber]], "BCR2000")
             
             break
 
@@ -649,7 +656,7 @@ def findCCMacros(ccnumber, value, macrotype):
 def Start(port):
 
 
-    SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/bcr/on', [1])
+    SendOSCUI('/bcr/on', [1])
     
     '''
     Startline = [0]
@@ -677,27 +684,27 @@ def Encoder(macroname, value):
             if value == 1:
                 maxwellccs.EncoderPlusOne(value, path = macrocode)
                 macrocc = maxwellccs.FindCC(macrocode)
-                SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/bcr/'+macroname+'/value', [format(gstt.ccs[0][macrocc], "03d")])
+                SendOSCUI('/bcr/'+macroname+'/value', [format(gstt.ccs[0][macrocc], "03d")])
 
             # encoder fastly turned to right
             if value > 1 and value <20:
                 maxwellccs.EncoderPlusTen(value, path = macrocode)
                 macrocc = maxwellccs.FindCC(macrocode)
-                SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/bcr/'+macroname+'/value', [format(gstt.ccs[0][macrocc], "03d")])
+                SendOSCUI('/bcr/'+macroname+'/value', [format(gstt.ccs[0][macrocc], "03d")])
 
 
             # encoder slowly turned to left
             if value == 127:
                 maxwellccs.EncoderMinusOne(value, path = macrocode)
                 macrocc = maxwellccs.FindCC(macrocode)
-                SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/bcr/'+macroname+'/value', [format(gstt.ccs[0][macrocc], "03d")])
+                SendOSCUI('/bcr/'+macroname+'/value', [format(gstt.ccs[0][macrocc], "03d")])
 
 
             # encoder fasly turned to left
             if value < 127 and value > 90:
                 maxwellccs.EncoderMinusTen(value, path = macrocode)
                 macrocc = maxwellccs.FindCC(macrocode)
-                SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/bcr/'+macroname+'/value', [format(gstt.ccs[0][macrocc], "03d")])
+                SendOSCUI('/bcr/'+macroname+'/value', [format(gstt.ccs[0][macrocc], "03d")])
 
         else:
             print(macrocode+"("+str(value)+',"'+macroname+'")')
@@ -721,5 +728,5 @@ def CLayer(value):
 
 
 LoadMacros()
-SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/bcr/status', ['BCR 2000'])
+SendOSCUI('/bcr/status', ['BCR 2000'])
 

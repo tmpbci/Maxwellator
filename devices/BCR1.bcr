@@ -286,32 +286,84 @@ $encoder 56 ;R Z pm
   .showvalue on
   .mode 1dot
   .default 0
-$button 34 ;ColorType
+$button 33 ;ColorType
   .easypar CC 1 123 0 127 toggleon
   .showvalue on
   .default 0
-$button 35 ;DrawMode
+$button 34 ;DrawMode
   .easypar CC 2 10 127 65 toggleon
+  .showvalue on
+  .default 0
+$button 35 ;Autolink
+  .easypar CC 2 117 127 65 toggleon
   .showvalue on
   .default 0
 $button 36 ;Tempo
   .easypar NOTE 16 127 1 toggleoff
   .showvalue on
   .default 3
-$button 40 ;redefault
-  .easypar NOTE 16 120 127 toggleon
-  .showvalue on
-  .default 0
-$button 42 ;Stribe
-  .easypar NOTE 16 124 127 toggleon
-  .showvalue on
-  .default 0
-$button 43 ;Bang
+$button 37 ;Bang
   .easypar NOTE 16 125 127 toggleon
   .showvalue on
   .default 0
-$button 44 ;resetCC
-  .easypar NOTE 16 126 127 toggleon
+$button 38 ;Stribe
+  .easypar NOTE 16 124 127 toggleon
+  .showvalue on
+  .default 0
+$button 39 ;ResetCC
+  .easypar NOTE 16 118 127 toggleon
+  .showvalue on
+  .default 0
+$button 40 ;ResetCCs
+  .easypar NOTE 16 118 127 toggleon
+  .showvalue on
+  .default 0
+$button 41 ;Left X amptype
+  .easypar CC 1 4 0 33 toggleon
+  .showvalue on
+  .default 0
+$button 42 ;Left Y amptype
+  .easypar CC 1 16 0 33 toggleon
+  .showvalue on
+  .default 0
+$button 43 ;Right X amptype
+  .easypar CC 1 40 0 33 toggleon
+  .showvalue on
+  .default 0
+$button 44 ;Right Y amptype
+  .easypar CC 1 52 0 33 toggleon
+  .showvalue on
+  .default 0
+$button 45 ;LaunchPad
+  .easypar NOTE 16 123 127 toggleoff
+  .showvalue on
+  .default 0
+$button 46 ;Beatstep
+  .easypar NOTE 16 122 127 toggleoff
+  .showvalue on
+  .default 0
+$button 47 ;C4
+  .easypar NOTE 16 121 127 toggleoff
+  .showvalue on
+  .default 0
+$button 48 ;BCR
+  .easypar NOTE 16 120 127 toggleoff
+  .showvalue on
+  .default 0
+$button 49 ;MAXWELL onlly
+  .easypar NOTE 16 116 127 toggleoff
+  .showvalue on
+  .default 0
+$button 50 ;BLACK
+  .easypar NOTE 16 115 127 toggleoff
+  .showvalue on
+  .default 0
+$button 51 ;Live
+  .easypar NOTE 16 113 127 toggleoff
+  .showvalue on
+  .default 0
+$button 52 ;STUFF maxwell
+  .easypar NOTE 16 114 127 toggleoff
   .showvalue on
   .default 0
 $store 1

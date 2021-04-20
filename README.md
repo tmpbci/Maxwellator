@@ -1,5 +1,5 @@
 
-Maxwellator v0.2.4b (python3)
+Maxwellator v0.2.5b (python 3.8)
 By Sam Neurohack, AC
 
 LICENCE : CC NC
@@ -39,7 +39,7 @@ Yes you can do all that with midi learn and rtpmidi. Problems starts with severa
 # What's new ?
 
 - v0.2.3b : BCR 2000 module, BPM tap tempo, Songs
-- v0.2.4b : support Link, reset particular CCs to default value button
+- v0.2.4b : support Link, reset particular CCs to default value button. 
 - v0.2.5b : strobe, bang modes, points number, OSC Timecode receiver, tempo encoder, random changes on Link beat events, new controllers mapping
 
 
@@ -166,7 +166,8 @@ python3 maxwellator.py -h
 
 # Install
 
-You need python3 and pip3 
+You need python3 and pip3. 
+Python Link library doesn't look to load properly with python 3.9 in this project, so use python 3.8
 
 sudo apt-get install python3-pip 
 
@@ -183,6 +184,12 @@ pip3 install mido
 
 pip3 install numpy
 
+pip3 install easygui
+
+cd /tmp
+git clone https://github.com/Elektordi/obs-websocket-py.git
+cd obs-websocket-py
+python3 setup.py install
 
 
 # Compile Maxwellator with nuitka :

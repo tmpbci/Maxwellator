@@ -4,10 +4,7 @@
 Global states variables
 v0.8.0
 
-
-
 LICENCE : CC NC
-
 
 '''
 BhorealLayer = 0
@@ -45,7 +42,7 @@ TouchOSCIP = '192.168.2.67' 	# iPad 1
 #TouchOSCIP = '192.168.151.213' # CCN
 #TouchOSCIP = '127.0.0.1'		# Localhost
 
-computer = 0
+computer = 2
 computerIP = ['192.168.2.43','192.168.2.64','192.168.2.42',
               '127.0.0.1','127.0.0.1','127.0.0.1','127.0.0.1', '127.0.0.1']
 myIP= '127.0.0.1'
@@ -93,7 +90,7 @@ intoff = 0
 
 
 #PatchFiles = ["3d.json","3d.json","3d.json","3d.json"]
-PatchFiles = ["3d.json","rands.json","rands.json","rands.json"]
+PatchFiles = ["lasamples.json","3d.json","rands.json","rands.json"]
 Midikeyboards = ["midikeys","Samson Carbon49"]
 
 songs = ["song1", "song2"]

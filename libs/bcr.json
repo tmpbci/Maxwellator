@@ -99,17 +99,136 @@
     "value" : 105,
     "laser" : 0
   },
-  {
-    "name": "Redefault",
+   {
+    "name": "launchpad",
+    "songname": "all",
+    "chanIN" : 16,
+    "notes" : 123,
+    "notetype" : "on",
+    "code": "maxwellccs.launchpad",
+    "value" : 105,
+    "laser" : 0
+  },
+   {
+    "name": "Beatstep",
+    "songname": "all",
+    "chanIN" : 16,
+    "notes" : 122,
+    "notetype" : "on",
+    "code": "maxwellccs.beatstep",
+    "value" : 105,
+    "laser" : 0
+  },
+   {
+    "name": "C4",
+    "songname": "all",
+    "chanIN" : 16,
+    "notes" : 121,
+    "notetype" : "on",
+    "code": "maxwellccs.c4",
+    "value" : 105,
+    "laser" : 0
+  },
+   {
+    "name": "BCR",
     "songname": "all",
     "chanIN" : 16,
     "notes" : 120,
+    "notetype" : "on",
+    "code": "maxwellccs.bcr",
+    "value" : 105,
+    "laser" : 0
+  },
+  {
+    "name": "ResetCCON",
+    "songname": "all",
+    "chanIN" : 16,
+    "notes" : 119,
+    "notetype" : "on",
+    "code": "maxwellccs.ResetCC",
+    "value" : 105,
+    "laser" : 0
+  },
+  {
+    "name": "ResetCCOFF",
+    "songname": "all",
+    "chanIN" : 16,
+    "notes" : 119,
     "notetype" : "off",
+    "code": "maxwellccs.ResetCC",
+    "value" : 105,
+    "laser" : 0
+  },
+  {
+    "name": "ResetCCs",
+    "songname": "all",
+    "chanIN" : 16,
+    "notes" : 118,
+    "notetype" : "on",
     "code": "maxwellccs.ResetCCs",
     "value" : 105,
     "laser" : 0
+  },
+  {
+    "name": "autolinkON",
+    "songname": "all",
+    "chanIN" : 16,
+    "notes" : 117,
+    "notetype" : "on",
+    "code": "maxwellccs.autolink",
+    "value" : 105,
+    "laser" : 0
+  },
+  {
+    "name": "autolinkOFF",
+    "songname": "all",
+    "chanIN" : 16,
+    "notes" : 117,
+    "notetype" : "off",
+    "code": "maxwellccs.autolink",
+    "value" : 105,
+    "laser" : 0
+  },
+  {
+    "name": "OBS MAXWELL",
+    "songname": "all",
+    "chanIN" : 16,
+    "notes" : 116,
+    "notetype" : "on",
+    "code": "maxwellccs.OBSmax",
+    "value" : 105,
+    "laser" : 0
+  },
+  {
+    "name": "OBS black",
+    "songname": "all",
+    "chanIN" : 16,
+    "notes" : 115,
+    "notetype" : "on",
+    "code": "maxwellccs.OBSblck",
+    "value" : 105,
+    "laser" : 0
+  },
+  {
+    "name": "OBS Stuff",
+    "songname": "all",
+    "chanIN" : 16,
+    "notes" : 114,
+    "notetype" : "on",
+    "code": "maxwellccs.OBStuff",
+    "value" : 105,
+    "laser" : 0
+  },
+  {
+    "name": "OBS Live",
+    "songname": "all",
+    "chanIN" : 16,
+    "notes" : 113,
+    "notetype" : "on",
+    "code": "maxwellccs.OBSlive",
+    "value" : 105,
+    "laser" : 0
   }
-
 ],
 
 
@@ -135,6 +254,7 @@
     "value" : "curved",
     "mididest" : "Bus 1"
   }
+
 ],
 
 
@@ -452,10 +572,10 @@
   {
     "name": "m64",
     "laser": 0,
-    "cc": 137,
+    "cc": 52,
     "init": -2,
     "value": 0,
-    "on": 42,
+    "on": 33,
     "off": 0,
     "type": "buttontoggle",
     "code": "/osc/right/Y/amptype"
@@ -463,34 +583,31 @@
   {
     "name": "m65",
     "laser": 0,
-    "init":  0,
+    "init":  -2,
     "type": "button",
-    "code": "maxwellccs.Empty"
+    "code": "maxwellccs.launchpad"
   },
   {
     "name": "m66",
     "laser": 0,
-    "init":  0,
+    "init":  -2,
     "type": "button",
-    "code": "maxwellccs.Empty"
+    "code": "maxwellccs.beatstep"
   },
   {
     "name": "m67",
     "laser": 0,
-    "init":  0,
+    "init":  -2,
     "type": "button",
-    "code": "maxwellccs.Empty"
+    "code": "maxwellccs.c4"
   },
   {
     "name": "m68",
     "laser": 0,
-    "init":  0,
+    "init":  -2,
     "type": "button",
-    "code": "maxwellccs.Empty"
+    "code": "maxwellccs.bcr"
   }
-
-
-
 
 ],
 

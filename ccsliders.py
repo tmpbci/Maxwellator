@@ -1,3 +1,15 @@
+#!/usr/bin/python3
+# -*- coding: utf-8 -*-
+# -*- mode: Python -*-
+
+'''
+ccsliders
+
+Midi fader sending cc messages 
+
+'''
+
+
 from tkinter import *
 
 import time

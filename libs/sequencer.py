@@ -110,6 +110,11 @@ def SendOSC(ip,port,oscaddress,oscargs=''):
         print ('Connection to', ip, 'refused : died ?')
         return False
 
+def SendOSCUI(address, args):
+    if gstt.debug >0:
+        print("SendOSCUI is sending", address, args)
+    SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, address, [args])
+
 
 def FromOSC(path, args):
 
@@ -181,7 +186,7 @@ def MidinProcess(SEQUENCERqueue):
             MidiChannel = msg[0]-143
             MidiNote = msg[1]
             MidiVel = msg[2]
-            print ("NOTE ON :", MidiNote, 'velocity :', MidiVel, "Channel", MidiChannel)
+            print ("Sequencer NOTE ON :", MidiNote, 'velocity :', MidiVel, "Channel", MidiChannel)
 
             # ZnotesLcc
             if len(macros["ZnotesLcc"]) > 0:
@@ -250,7 +255,7 @@ def MidinProcess(SEQUENCERqueue):
             
             MidiNote = msg[1]
 
-            print ("NOTE OFF :", MidiNote, "Channel", MidiChannel)
+            print ("Sequencer NOTE OFF :", MidiNote, "Channel", MidiChannel)
             
             # ZnotesLcc
             if len(macros["ZnotesLcc"]) > 0:
@@ -289,7 +294,7 @@ def MidinProcess(SEQUENCERqueue):
         # PROGRAM CHANGE button selected : change destination computer
         if msg[0]==PROGRAM_CHANGE:
         
-            print("Program change : ", str(msg[1]))
+            print("Sequencer Program change : ", str(msg[1]))
             # Change destination computer mode
             print("Destination computer", int(msg[1]))
             computer = int(msg[1])
@@ -302,7 +307,7 @@ def MidinProcess(SEQUENCERqueue):
             MidiChannel = msg[0]-176
             MidiCC = msg[1]
             MidiVal = msg[2]
-            print("CC :", MidiCC , " Value :", MidiVal, "Channel :", MidiChannel)
+            print("Sequencer got CC :", MidiCC , " Value :", MidiVal, "Channel :", MidiChannel)
             '''
             if computer == 0 or computer == 1:
 
@@ -330,7 +335,7 @@ def MidinProcess(SEQUENCERqueue):
                         # Maxwell function
                         elif macrocode.count('/') > 0:                        
 
-                            #print("ZccLcc got song :", macros["ZccLcc"][counter]["songname"],"  IN Channel :", macros["ZccLcc"][counter]["chanIN"],"  Code :", macros["ZccLcc"][counter]["code"], "  value :",macros["ZnotesLcc"][counter]["value"], )
+                            print("In Sequencer ZccLcc got song :", macros["ZccLcc"][counter]["songname"],"  IN Channel :", macros["ZccLcc"][counter]["chanIN"],"  Code :", macros["ZccLcc"][counter]["code"], "  value :",macros["ZnotesLcc"][counter]["value"], )
                             midi3.MidiMsg((CONTROLLER_CHANGE,maxwellccs.FindCC(macros["ZccLcc"][counter]["code"]),macros["ZccLcc"][counter]["value"]), mididest, laser = macros["ZccLcc"][counter]["laser"])
 
 
@@ -350,7 +355,7 @@ def MidinProcess(SEQUENCERqueue):
 
                         # Maxwell function
                         elif macrocode.count('/') > 0:
-                            #print("Specials NoteON got Song :", macros["Specials"][counter]["songname"],"  IN Channel :", macros["Specials"][counter]["chanIN"],"  Code :", macrocode, "  CC", maxwellccs.FindCC(macros["Specials"][counter]["code"]), "  value :",macros["Specials"][counter]["value"], "  laser :", macros["ZccLcc"][counter]["laser"] )
+                            print("In sequencer Specials NoteON got Song :", macros["Specials"][counter]["songname"],"  IN Channel :", macros["Specials"][counter]["chanIN"],"  Code :", macrocode, "  CC", maxwellccs.FindCC(macros["Specials"][counter]["code"]), "  value :",macros["Specials"][counter]["value"], "  laser :", macros["ZccLcc"][counter]["laser"] )
                             midi3.MidiMsg((CONTROLLER_CHANGE, maxwellccs.FindCC(macros["Specials"][counter]["code"]), macros["Specials"][counter]["value"]), mididest, laser = macros["Specials"][counter]["laser"])
 
 
@@ -380,13 +385,13 @@ def MidinProcess(SEQUENCERqueue):
             #macrocode = macros[gstt.SequencerLayers[gstt.SequencerLayer]][msg[1]]["code"]
             print("channel 10 macro",macroname, "ccnumber",msg[1], "value", msg[2])
 
-            #SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/Sequencer/'+macroname+'/button', [1])
+            #SendOSCUI('/Sequencer/'+macroname+'/button', [1])
             gstt.ccs[gstt.lasernumber][msg[1]]= msg[2]
 
             if gstt.lasernumber == 0:
                 # CC message is sent locally to channel 1
                 midi3.MidiMsg([CONTROLLER_CHANGE+midichannel-1, msg[1], msg[2]], 'to Maxwell 1')
-                #SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/Sequencer/'+macroname+'/button', [1])
+                #SendOSCUI('/Sequencer/'+macroname+'/button', [1])
             else:
                 SendOSC(gstt.computerIP[gstt.lasernumber], gstt.MaxwellatorPort, '/cc/'+str(msg[1]),[msg[2]])
 
@@ -401,14 +406,14 @@ def padCC(buttonname, state):
     macronumber = findMacros(buttonname, gstt.SequencerLayers[gstt.SequencerLayer])
     macrotype = macros[gstt.SequencerLayers[gstt.SequencerLayer]][macronumber]["type"]
     #print()
-    print("padCC buttoname", buttonname,"in", gstt.SequencerLayers[gstt.SequencerLayer], "macronumber" , macronumber, "state", state)
+    print("in Sequencer padCC buttoname", buttonname,"in", gstt.SequencerLayers[gstt.SequencerLayer], "macronumber" , macronumber, "state", state)
     
     #if macronumber != -1:
 
     # Patch Led ?
     if state >0:
 
-        SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/Sequencer/'+buttonname+'/button', [1])
+        SendOSCUI('/Sequencer/'+buttonname+'/button', [1])
         macrocode = macros[gstt.SequencerLayers[gstt.SequencerLayer]][macronumber]["code"]
         typevalue = macrocode[macrocode.rfind('/')+1:]
         values = list(enumerate(maxwellccs.specificvalues[typevalue]))
@@ -438,7 +443,7 @@ def padCC(buttonname, state):
             macrochoices = list(macros[gstt.SequencerLayers[gstt.SequencerLayer]][macronumber]["choices"].split(","))
             numbertime[findMacros(macrochoices[3], gstt.SequencerLayers[gstt.SequencerLayer])] = time.time()
             for choice in macrochoices:
-                SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/Sequencer/'+choice+'/button', [0])
+                SendOSCUI('/Sequencer/'+choice+'/button', [0])
 
             # Do the change
             maxwellccs.cc(maxwellccs.FindCC(macrocode), maxwellccs.specificvalues[typevalue][values[init][1]], 'to Maxwell 1')
@@ -455,7 +460,7 @@ def padCC(buttonname, state):
             # Many buttons (choices)
             # Reset all buttons 
             for button in range(macros[gstt.SequencerLayers[gstt.SequencerLayer]][macronumber]["choices"]):
-                SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/Sequencer/'+macros[gstt.SequencerLayers[gstt.LaunchpadLayer]][macronumber]["choice"+str(button)]+'/button', [0])
+                SendOSCUI('/Sequencer/'+macros[gstt.SequencerLayers[gstt.LaunchpadLayer]][macronumber]["choice"+str(button)]+'/button', [0])
 
             maxwellccs.cc(maxwellccs.FindCC(macrocode), maxwellccs.specificvalues[typevalue][values[init][1]], 'to Maxwell 1')
         '''
@@ -466,12 +471,12 @@ def padCC(buttonname, state):
         #print('reselect button /Sequencer/'+buttonname+'/button')
         print('elapsed push :', buttonname, macrotype, macronumber, state, macrocode, time.time()-numbertime[macronumber])
         #numbertime[macronumber] = time.time()
-        SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/Sequencer/'+buttonname+'/button', [0])
+        SendOSCUI('/Sequencer/'+buttonname+'/button', [0])
         
         if macronumber != -1 and macrotype == 'button':
             value = 0
  
-            print(macrocode+"("+str(value)+',"'+buttonname+'")')
+            print("Sequencer : "+macrocode+"("+str(value)+',"'+buttonname+'")')
             eval(macrocode+"("+str(value)+',"'+buttonname+'")')
 
 # send a CC to a local Sequencer (pads are on channel 10 with my Sequencer presets)
@@ -504,10 +509,10 @@ def ChangeLayer(layernumber, laser = 0):
     gstt.SequencerLayer = layernumber
     print('Sequencer layer :', layernumber)
     # update iPad UI
-    SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/sequencer/status', [gstt.SequencerLayers[gstt.SequencerLayer]])
-    SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/sequencer/m10/value', [format(layernumber, "03d")])
-    SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/sequencer/m10/line1', ['Layer'])
-    SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/sequencer/m10/line2', [''])
+    SendOSCUI('/sequencer/status', [gstt.SequencerLayers[gstt.SequencerLayer]])
+    SendOSCUI('/sequencer/m10/value', [format(layernumber, "03d")])
+    SendOSCUI('/sequencer/m10/line1', ['Layer'])
+    SendOSCUI('/sequencer/m10/line2', [''])
     UpdatePatch(gstt.patchnumber[laser])
 
 def NLayer():
@@ -526,7 +531,7 @@ def UpdatePatch(patchnumber):
 
     #print('Sequencer updatePatch', patchnumber)
     # update iPad UI
-    # SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/Sequencer/status', [gstt.SequencerLayers[gstt.SequencerLayer]])
+    # SendOSCUI('/Sequencer/status', [gstt.SequencerLayers[gstt.SequencerLayer]])
     for macronumber in range(nbmacro):
 
         macrocode = macros[gstt.SequencerLayers[gstt.SequencerLayer]][macronumber]["code"]
@@ -541,46 +546,46 @@ def UpdatePatch(patchnumber):
 
             # Display value
             #print("name",macroname, "cc", macrocc, "value", gstt.ccs[macrolaser][macrocc],"laser", macrolaser)
-            SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/sequencer/'+macroname+'/value', [format(gstt.ccs[macrolaser][macrocc], "03d")])
+            SendOSCUI('/sequencer/'+macroname+'/value', [format(gstt.ccs[macrolaser][macrocc], "03d")])
             
 
             # Display text line 1
             if (macrocode[:macrocode.rfind('/')] in maxwellccs.shortnames) == True:
-                SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/sequencer/'+macroname+'/line1', [maxwellccs.shortnames[macrocode[:macrocode.rfind('/')]]])
+                SendOSCUI('/sequencer/'+macroname+'/line1', [maxwellccs.shortnames[macrocode[:macrocode.rfind('/')]]])
             else:
-                SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/sequencer/'+macroname+'/line1', [macrocode[:macrocode.rfind('/')]])
+                SendOSCUI('/sequencer/'+macroname+'/line1', [macrocode[:macrocode.rfind('/')]])
 
 
             # Display text line 2
             if macronumber < 17 or (macronumber > 32 and macronumber < 50):
 
                 # Encoders : cc function name like 'curvetype'
-                SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/sequencer/'+macroname+'/line2', [macrocode[macrocode.rfind('/')+1:]])
+                SendOSCUI('/sequencer/'+macroname+'/line2', [macrocode[macrocode.rfind('/')+1:]])
             else:
 
                 # button : cc function value like 'Square'
-                SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/sequencer/'+macroname+'/button', [0])
+                SendOSCUI('/sequencer/'+macroname+'/button', [0])
                 typevalue = macrocode[macrocode.rfind('/')+1:]
                 values = list(enumerate(maxwellccs.specificvalues[typevalue]))
                 #print('typevalue', typevalue)
                 #print(maxwellccs.specificvalues[typevalue])
                 init = macros[gstt.SequencerLayers[gstt.SequencerLayer]][macronumber]["init"]
                 #print("init", init, "value", values[init][1] )
-                SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/sequencer/'+macroname+'/line2', [values[init][1]])
+                SendOSCUI('/sequencer/'+macroname+'/line2', [values[init][1]])
 
 
             # Display laser number value
-            SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/sequencer/'+macroname+'/laser', [macrolaser])
+            SendOSCUI('/sequencer/'+macroname+'/laser', [macrolaser])
             
         # Code in maxwellccs library : skip "maxwellccs." display only Empty. maxwellccs.Empty will call maxwellccs.Empty() 
         elif macrocode.find('maxwellccs') ==0:
                 #print("SEQUENCER",macronumber, macrocode, '/sequencer/'+ macroname+'/line1', macrocode[11:])
-                SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/sequencer/'+ macros[gstt.SequencerLayers[gstt.SequencerLayer]][macronumber]["name"]+'/line2', [macrocode[11:]])
-                SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/sequencer/'+macros[gstt.SequencerLayers[gstt.SequencerLayer]][macronumber]["name"]+'/line1', [" "])
-                SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/sequencer/'+macros[gstt.SequencerLayers[gstt.SequencerLayer]][macronumber]["name"]+'/value', [format(gstt.ccs[macrolaser][macrocc], "03d")])
+                SendOSCUI('/sequencer/'+ macros[gstt.SequencerLayers[gstt.SequencerLayer]][macronumber]["name"]+'/line2', [macrocode[11:]])
+                SendOSCUI('/sequencer/'+macros[gstt.SequencerLayers[gstt.SequencerLayer]][macronumber]["name"]+'/line1', [" "])
+                SendOSCUI('/sequencer/'+macros[gstt.SequencerLayers[gstt.SequencerLayer]][macronumber]["name"]+'/value', [format(gstt.ccs[macrolaser][macrocc], "03d")])
                 #print( '/sequencer/'+macros[gstt.SequencerLayers[gstt.SequencerLayer]][macronumber]["name"]+'/value', [format(gstt.ccs[macrolaser][macrocc], "03d")])
         else:
-            SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/sequencer/'+macroname+'/line1', [macrocode])
+            SendOSCUI('/sequencer/'+macroname+'/line1', [macrocode])
      
 
 def UpdateCC(ccnumber, value, laser = 0):
@@ -593,7 +598,7 @@ def UpdateCC(ccnumber, value, laser = 0):
         if macrocode == maxwellccs.maxwell['ccs'][ccnumber]['Function']:
            
             macroname = macros[gstt.SequencerLayers[gstt.SequencerLayer]][macronumber]["name"]
-            SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/sequencer/'+macroname+'/value', [format(gstt.ccs[laser][ccnumber], "03d")])
+            SendOSCUI('/sequencer/'+macroname+'/value', [format(gstt.ccs[laser][ccnumber], "03d")])
             break
            
 
@@ -664,7 +669,7 @@ def findCCMacros(ccnumber, value, macrotype):
 
 def Start(port):
 
-    SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/sequencer/on', [1])
+    SendOSCUI('/sequencer/on', [1])
 
 
 def Encoder(macroname, value):
@@ -683,27 +688,27 @@ def Encoder(macroname, value):
             if value == 1:
                 maxwellccs.EncoderPlusOne(value, path = macrocode)
                 macrocc = maxwellccs.FindCC(macrocode)
-                SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/sequencer/'+macroname+'/value', [format(gstt.ccs[0][macrocc], "03d")])
+                SendOSCUI('/sequencer/'+macroname+'/value', [format(gstt.ccs[0][macrocc], "03d")])
 
             # encoder fastly turned to right
             if value > 1 and value <20:
                 maxwellccs.EncoderPlusTen(value, path = macrocode)
                 macrocc = maxwellccs.FindCC(macrocode)
-                SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/sequencer/'+macroname+'/value', [format(gstt.ccs[0][macrocc], "03d")])
+                SendOSCUI('/sequencer/'+macroname+'/value', [format(gstt.ccs[0][macrocc], "03d")])
 
 
             # encoder slowly turned to left
             if value == 127:
                 maxwellccs.EncoderMinusOne(value, path = macrocode)
                 macrocc = maxwellccs.FindCC(macrocode)
-                SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/sequencer/'+macroname+'/value', [format(gstt.ccs[0][macrocc], "03d")])
+                SendOSCUI('/sequencer/'+macroname+'/value', [format(gstt.ccs[0][macrocc], "03d")])
 
 
             # encoder fasly turned to left
             if value < 127 and value > 90:
                 maxwellccs.EncoderMinusTen(value, path = macrocode)
                 macrocc = maxwellccs.FindCC(macrocode)
-                SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/sequencer/'+macroname+'/value', [format(gstt.ccs[0][macrocc], "03d")])
+                SendOSCUI('/sequencer/'+macroname+'/value', [format(gstt.ccs[0][macrocc], "03d")])
 
         else:
             print(macrocode+"("+str(value)+',"'+macroname+'")')
@@ -727,5 +732,5 @@ def CLayer(value):
 
 
 LoadMacros()
-SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/sequencer/status', ['SEQUENCER'])
+SendOSCUI('/sequencer/status', ['SEQUENCER'])
 

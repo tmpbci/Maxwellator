@@ -179,7 +179,7 @@ def ClsPatch(port):
         midi3.send(msg,"Bhoreal")
 
 # Start Rainbow in time
-def SStartBhoreal(port):
+def StartBhoreal(port):
 
     Cls(port)
     time.sleep(0.2)

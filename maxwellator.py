@@ -5,7 +5,7 @@
 """
 
 Maxwellator
-v0.2.4b
+v0.2.5b
 
 
 LICENCE : CC
@@ -41,8 +41,8 @@ import redis
 import weakref
 import sys
 
-
 sys.path.append('libs/')
+import log 
 import pysimpledmx
 import gstt, random
 from OSC3 import OSCServer, OSCClient, OSCMessage
@@ -50,7 +50,7 @@ from OSC3 import OSCServer, OSCClient, OSCMessage
 print ("")
 print ("")
 print ("")
-print ("Maxwellator v0.2.4b")
+log.infog("Maxwellator v0.2.5b")
 print ("Loading modules and auto configuring...")
 
 #myHostName = socket.gethostname()
@@ -85,7 +85,7 @@ from datetime import datetime, timedelta
 
 print ("")
 print ("Arguments parsing if needed...")
-argsparser = argparse.ArgumentParser(description="Maxwellator v0.2.4b commands. Defaults : Live Mode / Ableton Link Disabled / Reset")
+argsparser = argparse.ArgumentParser(description="Maxwellator v0.2.5b commands. Defaults : Live Mode / Ableton Link Disabled / Reset")
 argsparser.add_argument("-m","--mode",help="MODE : startup, program, programall, list, listto, command, osc, live, rand, mitraille, keyboard (live by default)", type=str)
 argsparser.add_argument("-d","--destination",help="Midi destination name like Bus 1, to Maxwell 1,.. (to Maxwell 1 by default)", type=str)
 argsparser.add_argument("-o","--oscip",help="iPad IP for TouchOSC UI", type=str)
@@ -149,7 +149,7 @@ if args.IP  != None:
 
 myHostName = socket.gethostname()
 gstt.myNetIP = socket.gethostbyname(myHostName)
-print("My net IP is", gstt.myNetIP)
+log.infog("My net IP is " +gstt.myNetIP)
 
 if gstt.myNetIP == gstt.computerIP[0]:
     print("running in MasterMode")
@@ -167,9 +167,12 @@ else:
 
 # with Ableton Link
 if args.link  == True:
-    lnk = maxwellccs.StartLink()
+    gstt.link == True
+    maxwellccs.StartLink()
 else:
+
     print("Link DISABLED")
+    gstt.link == False
 
 
 # Default values sent at statup to Maxwell.
@@ -195,9 +198,10 @@ else:
 if args.oscip  != None:
     gstt.TouchOSCIP = args.oscip
 
-# Universe
+# TouchOSC Port TouchOSCPort
 if args.oscport:
     gstt.TouchOSCPort = args.oscport
+
 
 
 
@@ -246,7 +250,8 @@ import scrolldisp
 # OSC
 #
 
-print("OSC Server", gstt.myIP,':', gstt.MaxwellatorPort)
+log.info("OSC Server " +str(gstt.myIP)+' : '+ str(gstt.MaxwellatorPort))
+log.info("ToucOSC UI : IP "+ gstt.TouchOSCIP+ ":"+ str(gstt.TouchOSCPort))
 oscserver = OSCServer( (gstt.myIP, gstt.MaxwellatorPort) )
 oscserver.timeout = 0
 #oscrun = True
@@ -281,6 +286,11 @@ def SendOSC(ip,port,oscaddress,oscargs=''):
     except:
         print ('Connection to', ip, 'refused : died ?')
         return False
+
+def SendOSCUI(address, args):
+    if gstt.debug >0:
+        print("SendOSCUI is sending", address, args)
+    SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, address, [args])
 
 
 # RAW OSC Frame available ? 
@@ -366,6 +376,8 @@ def OSChandler(path, tags, args, source):
     if path.find('/blackout') > -1:
         print("SHOULD DO SOMETHING")
 
+    if path.find('/TC1/time') > -1 or path.find('/TC2/time') > -1:
+        OSCtimecode(path, args, tags, source)
 
 # /sendmx channel value
 def OSCsendmx(path, tags, args, source):
@@ -430,7 +442,7 @@ def OSCBPM(path, tags, args, source):
 
     gstt.currentbpm = int(args[0])
     print("New BPM :", gstt.currentbpm)
-    SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/bpm', [gstt.currentbpm])
+    SendOSCUI('/bpm', [gstt.currentbpm])
 
 
 # /bpm/plus increase BPM + 1
@@ -438,7 +450,7 @@ def OSCBPMplus(path, tags, args, source):
 
     gstt.currentbpm += 1
     print("New BPM :", gstt.currentbpm)
-    SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/bpm', [gstt.currentbpm])
+    SendOSCUI('/bpm', [gstt.currentbpm])
 
 
 # /bpm/plus derease BPM - 1
@@ -447,7 +459,7 @@ def OSCBPMminus(path, tags, args, source):
     if gstt.currentbpm > 0:
         gstt.currentbpm -= 1
         print("New BPM :", gstt.currentbpm)
-        SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/bpm', [gstt.currentbpm])
+        SendOSCUI('/bpm', [gstt.currentbpm])
 
 
 # Maxwell PATCHS
@@ -458,7 +470,7 @@ def OSCPATCH(path, tags, args, source):
     if (str(int(args[0])) in gstt.patchs['pattrstorage']['slots']) != False:
         gstt.patchnext[gstt.lasernumber] = int(args[0])
         print("New NextPatch for laser", gstt.lasernumber , ":", gstt.patchnext[gstt.lasernumber])
-        SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/patch', [gstt.patchnext[gstt.lasernumber]])
+        SendOSCUI('/patch', [gstt.patchnext[gstt.lasernumber]])
     else:
         print("PatchNext change not possible, exists ?")
 
@@ -468,7 +480,7 @@ def OSCPATCHnext(path, tags, args, source):
     if ((str(gstt.patchnext[gstt.lasernumber] + 1) in gstt.patchs['pattrstorage']['slots']) != False or gstt.patchnext[gstt.lasernumber] + 1 < 41) and args[0]==0.0:
         gstt.patchnext[gstt.lasernumber] += 1
         print("New NextPatch for laser", gstt.lasernumber , ":", gstt.patchnext[gstt.lasernumber])
-        SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/patch', [gstt.patchnext[gstt.lasernumber]])
+        SendOSCUI('/patch', [gstt.patchnext[gstt.lasernumber]])
     else:
         print("PatchNext change not possible, exists ?")
 
@@ -478,7 +490,7 @@ def OSCPATCHprev(path, tags, args, source):
     if ((str(gstt.patchnext[gstt.lasernumber] - 1) in gstt.patchs['pattrstorage']['slots']) != False or gstt.patchnext[gstt.lasernumber] - 1 > -1) and args[0]==0.0:
         gstt.patchnext[gstt.lasernumber] -= 1
         print("New NextPatch for laser", gstt.lasernumber , ":", gstt.patchnext[gstt.lasernumber])
-        SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/patch', [gstt.patchnext[gstt.lasernumber]])
+        SendOSCUI('/patch', [gstt.patchnext[gstt.lasernumber]])
     else:
         print("PatchNext change not possible, exists ?")
 
@@ -487,7 +499,7 @@ def OSCPATCHgo(path, tags, args, source):
 
     # only when button is released
     if args[0]==0.0:
-        SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/status', ["GO "+str(gstt.patchnext[gstt.lasernumber])])
+        SendOSCUI('/status', ["GO "+str(gstt.patchnext[gstt.lasernumber])])
         maxwellccs.runPatch(gstt.patchnext[gstt.lasernumber], laser = gstt.lasernumber)
 
 
@@ -496,7 +508,7 @@ def OSCPATCHmorph(path, tags, args, source):
 
     # only when button is released
     if args[0]==0.0:
-        SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/status', ["Morphing to"+str(gstt.patchnext[gstt.lasernumber])])
+        SendOSCUI('/status', ["Morphing to"+str(gstt.patchnext[gstt.lasernumber])])
         maxwellccs.morphPatch(gstt.patchnumber[gstt.lasernumber], laser = gstt.lasernumber)
 
 # XY widget
@@ -788,7 +800,7 @@ def Live():
     try:
         if gstt.reset == True:
             maxwellccs.ResetCCs()
-            print("Reset to defaults Done.")
+            print("Reset to defaults Done. Go ON !!")
     
         while True:
     
@@ -798,13 +810,13 @@ def Live():
             if  gstt.morphing > -1:
 
                 #print("morphing step :", gstt.morphing)
-                SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/status', ["Morph step"+" : "+str(gstt.morphing)])
+                SendOSCUI('/status', ["Morph step"+" : "+str(gstt.morphing)])
                 for ccnumber in range(len(maxwell['ccs'])):
         
                     gstt.ccs[gstt.lasernumber][ccnumber] = round(gstt.morphCC[ccnumber] + gstt.morphCCinc[ccnumber])
                     
                     # print("morphing step :", gstt.morphing, "CC", ccnumber, gstt.ccs[gstt.lasernumber][ccnumber])
-                    #SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/cc/'+str(ccnumber), [gstt.ccs[gstt.lasernumber][ccnumber]])
+                    #SendOSCUI('/cc/'+str(ccnumber), [gstt.ccs[gstt.lasernumber][ccnumber]])
                     # Update BCR 2000 CC if exists
                     if bcr.Here != -1:
                         if gstt.ccs[gstt.lasernumber][ccnumber] < 127:
@@ -812,7 +824,7 @@ def Live():
                     else:
                         midi3.MidiMsg([CONTROLLER_CHANGE, ccnumber, 127], "BCR2000")
                     # Update OSC UI patch number and send to Maxwell via midi
-                    #SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/laser/patch/'+str(gstt.lasernumber), [gstt.patchnumber[gstt.lasernumber]])
+                    #SendOSCUI('/laser/patch/'+str(gstt.lasernumber), [gstt.patchnumber[gstt.lasernumber]])
                     #print(CONTROLLER_CHANGE, ccnumber, gstt.ccs[gstt.lasernumber][ccnumber])
                     
                     # bad conversion from patch file so limit value to send
@@ -827,7 +839,7 @@ def Live():
             # Morphing stop.
             if  gstt.morphing == gstt.morphsteps:
                 gstt.morphing = -1
-                SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/status', ["Morph Ends."])
+                SendOSCUI('/status', ["Morph Ends."])
 
 
          
@@ -963,7 +975,7 @@ def Listto():
         else: 
             midichannel = gstt.basemidichannel
             ccnumber = Maxfunction
-        SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, maxwell['ccs'][Maxfunction]['Function'], maxwell['ccs'][Maxfunction]['init'])
+        SendOSCUI(maxwell['ccs'][Maxfunction]['Function'], maxwell['ccs'][Maxfunction]['init'])
         print (maxwell['ccs'][Maxfunction]['Function'], maxwell['ccs'][Maxfunction]['init'])
     print(Maxfunction +1, 'functions')
 
@@ -1328,8 +1340,9 @@ def Midikeys():
 # startup
 #
 
-SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/status', 'Aurora')
+SendOSCUI('/status', 'Aurora')
 Disp('...')
+
 oscserver.addMsgHandler( "default", OSChandler )
 oscserver.addMsgHandler( "/bhoreal/note", OSCNote )
 oscserver.addMsgHandler( "/mixer/value", OSCMixerValue )
@@ -1358,7 +1371,7 @@ print("Artnet updates subscribed")
         
 
 print()
-print("Updating TouchOSC UI...")
+log.info("Updating TouchOSC UI...")
 #print ("Beatstep Layer :",gstt.BeatstepLayer)
 beatstep.ChangeLayer(gstt.BeatstepLayer)
 print ("Beatstep Layer :",gstt.BeatstepLayers[gstt.BeatstepLayer])
@@ -1369,19 +1382,19 @@ bhoreal.NoteOn(gstt.patchnumber[0],0)
 C4.ChangeLayer(gstt.C4Layer)
 sequencer.ChangeLayer(gstt.SequencerLayer)
 bcr.ChangeLayer(gstt.BCRLayer)
-SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/laser/patch/0', [0])
-SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/laser/patch/1', [0])
-SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/laser/patch/2', [0])
-SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/laser/patch/3', [0])
-SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/laser/led/'+str(gstt.lasernumber), [1])
-SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/song/status', [gstt.songs[gstt.song]])
-#SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/patch', [gstt.patchnext[gstt.lasernumber]])
-SendOSC(gstt.TouchOSCIP, gstt.TouchOSCPort, '/patch', [gstt.patchnext[gstt.lasernumber]])
+SendOSCUI('/laser/patch/0', [0])
+SendOSCUI('/laser/patch/1', [0])
+SendOSCUI('/laser/patch/2', [0])
+SendOSCUI('/laser/patch/3', [0])
+SendOSCUI('/laser/led/'+str(gstt.lasernumber), [1])
+SendOSCUI('/song/status', [gstt.songs[gstt.song]])
+#SendOSCUI('/patch', [gstt.patchnext[gstt.lasernumber]])
+SendOSCUI('/patch', [gstt.patchnext[gstt.lasernumber]])
 
 
 
 print()
-print("Running in",mode,"mode")
+log.infog("Running in " +str(mode) +" mode...")
 print()
 #maxwellccs.RotarySpecifics(FindCC('/osc/left/Y/curvetype'), 0)
 
