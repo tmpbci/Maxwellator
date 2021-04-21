@@ -27,7 +27,7 @@ from datetime import datetime, timedelta
 import midi3, gstt, beatstep, launchpad, bhoreal, LPD8, C4, bcr, obs
 
 #import tkinter.filedialog
-import easygui
+#import easygui
 
 if os.uname()[1]=='raspberrypi':
     pass
@@ -973,11 +973,14 @@ def Reload():
 
 
 def Load():
-    
+
+    pass
     #Tk().withdraw()
     #PatchFile =  tkinter.filedialog.askopenfilename()
+    '''
     PatchFile = easygui.fileopenbox(default='patchs/*.json', filetypes=["*.json"], multiple=False)
     print(PatchFile)
+    '''
     #LoadPatchFile(gstt.PatchFiles[0])
 
 def L():
